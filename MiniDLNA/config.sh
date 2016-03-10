@@ -85,16 +85,16 @@ case "$action" in
 
     # Create autostart configuration file
     
-    sudo chmod -x autostart_header
-    sudo chmod -x autostart_source
-
-    cat autostart_header > $srvname
-    echo "" >> $srvname
-    echo "deamonSRV=\"minidlna\"" >> $srvname
-    echo "deamoncnf=\"$scriptpath/$config/minidlna.conf\"" >> $srvname
-    echo "" >> $srvname
-    cat autostart_source >> $srvname
-    echo "" >> $srvname
+    sudo rm -f $scriptpath/$srvname
+    sudo chmod 666 $scriptpath/autostart_header.txt
+    sudo chmod 666 $scriptpath/autostart_source.txt
+    sudo cat $scriptpath/autostart_header.txt > $scriptpath/$srvname
+    sudo echo "" >> $scriptpath/$srvname
+    sudo echo "deamonSRV=\"minidlna\"" >> $scriptpath/$srvname
+    sudo echo "deamoncnf=\"$scriptpath/$config/minidlna.conf\"" >> $scriptpath/$srvname
+    sudo echo "" >> $scriptpath/$srvname
+    sudo cat $scriptpath/autostart_source.txt >> $scriptpath/$srvname
+    sudo echo "" >> $scriptpath/$srvname
 
     # Install autostart server configuration
     sudo cp $scriptpath/$srvname /etc/init.d/$srvname

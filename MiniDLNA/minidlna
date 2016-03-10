@@ -13,9 +13,8 @@
 deamonPID=""
 deamonNAM="minidlnad"
 deamonLOC="/usr/local/sbin/$deamonNAM"
-
 deamonSRV="minidlna"
-deamoncnf="/home/test/Documents/.minidlna/minidlna.conf"
+deamoncnf="/home/test/Documents/TEST/.minidlna/minidlna.conf"
 
 case "$1" in
   "start")
