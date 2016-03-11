@@ -2,6 +2,7 @@ This script is based on the commands from this tutorial:
 
 http://www.htpcbeginner.com/install-minidlna-on-ubuntu-ultimate-guide/
 
+'''
 The installation using this script is automatic and it's
 done by placing it in a folder of choice, then running it
 via "./config.sh" with one of the following parameters:
@@ -9,7 +10,7 @@ via "./config.sh" with one of the following parameters:
 Type "./config.sh" for options:
   "install" Installs miniDLNA after compiling it from the source
   "update"  Updates the miniDLNA installation
-  "update"  Removes the miniDLNA package and auto-start 
+  "remove"  Removes the miniDLNA package and auto-start 
   "config"  Opens the configuration located in /.minidlna
   "stats"   Views the common script variable paths
   
@@ -35,6 +36,4 @@ sudo service minidlna rescan
 
 If the service does not start on "restart" or "reload", be persistent,
 run the command again until you get a different Process ID !
-
-
-
+'''
