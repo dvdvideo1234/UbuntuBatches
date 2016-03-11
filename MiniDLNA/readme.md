@@ -2,7 +2,7 @@ This script is based on the commands from this tutorial:
 
 http://www.htpcbeginner.com/install-minidlna-on-ubuntu-ultimate-guide/
 
-'''
+```
 The installation using this script is automatic and it's
 done by placing it in a folder of choice, then running it
 via "./config.sh" with one of the following parameters:
@@ -36,4 +36,4 @@ sudo service minidlna rescan
 
 If the service does not start on "restart" or "reload", be persistent,
 run the command again until you get a different Process ID !
-'''
+```
