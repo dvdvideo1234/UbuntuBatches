@@ -63,7 +63,7 @@ case "$action" in
     echo "EtcC: $configloc/$srvname.conf"
   ;;
   *)
-    echo "Usage: $0 { update | install | remove | config | stats }"
+    echo "Usage: $0 { install <port> | remove | config | start <port> | stop | stats }"
   ;;
 esac
 
