@@ -59,32 +59,33 @@ case "$action" in
       sudo apt-get install git
     fi
 
+    # Set the proxy if any
     echo "Are you using a proxy [no or <proxy:port>]  ?"
     read -r proxysv
     if test "$proxysv" == "no"
     then
-      git config --global -l
-      git config --global --unset http.proxy
+      sudo git config --global -l
+      sudo git config --global --unset http.proxy
     else
-      git config --global http.proxy "$proxysv"
+      sudo git config --global http.proxy "$proxysv"
       echo "Proxy set to [$proxysv] !" 
     fi
-
+      
+    # Download and compile the source
     sudo rm -fr $config
     sudo mkdir $config
     cd $config
 
-    git clone http://git.code.sf.net/p/minidlna/git $projdir
+    sudo git clone http://git.code.sf.net/p/minidlna/git $projdir
 
     cd $projdir
-    ./autogen.sh
-    ./configure
-    make
+    sudo ./autogen.sh
+    sudo ./configure
+    sudo make
     sudo checkinstall
     sudo cp $scriptpath/$config/$projdir/minidlna.conf $scriptpath/$config/minidlna.conf
 
     # Create autostart configuration file
-    
     sudo rm -f $scriptpath/$srvname
     sudo chmod 666 $scriptpath/autostart_header.txt
     sudo chmod 666 $scriptpath/autostart_source.txt
@@ -128,4 +129,3 @@ case "$action" in
 esac
 
 exit 0
-
