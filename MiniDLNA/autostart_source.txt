@@ -37,9 +37,10 @@ case "$1" in
   ;;
   "rescan")
     sudo service $deamonSRV stop
+    echo "Rescanning ..."
     sudo $deamonLOC -R -f $deamonCNF
     deamonPID=$(/bin/pidof $deamonNAM)
-    echo "Rescanning [$deamonPID]"
+    echo "Ready [$deamonPID]"
   ;;
   *)
     echo "Usage: $0 { start | stop | restart | status | rescan }"

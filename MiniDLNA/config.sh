@@ -71,7 +71,7 @@ case "$action" in
     fi
 
     sudo rm -fr $config
-    mkdir $config
+    sudo mkdir $config
     cd $config
 
     git clone http://git.code.sf.net/p/minidlna/git $projdir
