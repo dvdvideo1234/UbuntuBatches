@@ -3,8 +3,8 @@
 bool=""
 
 echo "This script is designed to ge run before"
-echo "inserting the guest addition CD in Ubuntu VirtualBox guest."
-read -p "Do you want to install this script [y/n]? : " bool
+echo "inserting the Guest Addition CD in Ubuntu VirtualBox system."
+read -p "Do you want to install this software [y/n]? : " bool
 
 if test "$bool" == "y"
 then
@@ -25,6 +25,7 @@ then
     sudo update-manager -d
     echo "Click the RESTART button in the update dialog box"
   fi
+  echo "Proceed with installing Guest Additions CD .."
 fi
 
 exit 0
