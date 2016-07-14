@@ -7,16 +7,16 @@ action="$1"
 
 bool=""
 proxysv=""
-configdir=""
+
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
-srvname="mangos"
-config="$srvname"
-projdir="$srvname-git"
+
+# Title names
 nmtitle[0]="Vanilla"
 nmtitle[1]="The burning crusade (TBC)"
 nmtitle[2]="Wrath of the lich king (WoTLK)"
 nmtitle[3]="Cataclysm"
+# Chosen title ID
 idtitle=""
 
 case "$action" in
@@ -37,13 +37,13 @@ case "$action" in
         echo "$i >> ${nmtitle[$i]}"
     done
     read -p "Enter tiltle ID: " idtitle
-    
+
     if [[ -z "${nmtitle[$idtitle]}" ]]
     then
       echo "Wrong title ID: $idtitle"
       exit 0
     fi
-    
+
     echo "Installing package [${nmtitle[$idtitle]}] ..."
 
     read -p "Install dependancies [y or n] ? " bool
@@ -76,37 +76,50 @@ case "$action" in
     # Set the proxy if any
     echo "Are you using a proxy [no or <proxy:port>]  ?"
     read -r proxysv
+
     if test "$proxysv" == "no"
     then
       sudo git config --global -l
       sudo git config --global --unset http.proxy
     else
       sudo git config --global http.proxy "$proxysv"
-      echo "Proxy set to [$proxysv] !" 
+      echo "Proxy set to [$proxysv] !"
     fi
-      
-    # Download and compile the source
-    sudo rm -fr $config
-    mkdir $config
-    cd $config
-    
+
+    if [ 1 -eq 0 ]; then #comment
+
     case "$idtitle" in
     "0")
-      git clone https://github.com/cmangos/mangos-classic.git $projdir
+      git clone https://github.com/cmangos/mangos-classic.git $scriptpath/mangos
+      git clone https://github.com/ACID-Scripts/Classic.git $scriptpath/acid
     ;;
     "1")
-      git clone https://github.com/cmangos/mangos-tbc.git $projdir
+      git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/mangos
+      git clone https://github.com/ACID-Scripts/TBC.git $scriptpath/acid
     ;;
     "2")
-      git clone https://github.com/cmangos/mangos-wotlk.git $projdir
+      git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/mangos
+      git clone https://github.com/ACID-Scripts/WOTLK.git $scriptpath/acid
+      git clone https://github.com/unified-db/Database.git $scriptpath/unifieddb
     ;;
     "3")
-      git clone https://github.com/cmangos/mangos-cata.git $projdir
+      git clone https://github.com/cmangos/mangos-cata.git $scriptpath/mangos
+      git clone https://github.com/ACID-Scripts/CATA.git $scriptpath/acid
+      git clone https://github.com/UDB-434/Database.git $scriptpath/unifieddb
     ;;
     esac
-    
-    
-    
+
+    read -p "Do you want to intall a boost package [y or n] ? " bool
+    if test "$bool" == "y"
+    then
+      sudo apt-get install libboost-all-dev
+    fi
+
+    # Build the thing
+    mkdir $scriptpath/build
+       cd $scriptpath/build
+    cmake ../mangos
+
   ;;
   "remove")
     echo "Removing package ..."
