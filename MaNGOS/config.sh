@@ -133,15 +133,15 @@ case "$action" in
     read -p "Do you want to create empty databases [y or n] ? " bool
     if test "$bool" == "y"
     then
-      mysql -uroot -p < mangos/sql/create/db_create_mysql.sql
+      mysql -uroot -p < $scriptpath/mangos/sql/create/db_create_mysql.sql
     fi
 
     read -p "Do you want to initialize databases [y or n] ? " bool
     if test "$bool" == "y"
     then
-      mysql -uroot -p mangos < mangos/sql/base/mangos.sql
-      mysql -uroot -p characters < mangos/sql/base/characters.sql
-      mysql -uroot -p realmd < mangos/sql/base/realmd.sql
+      mysql -uroot -p mangos < $scriptpath/mangos/sql/base/mangos.sql
+      mysql -uroot -p characters < $scriptpath/mangos/sql/base/characters.sql
+      mysql -uroot -p realmd < $scriptpath/mangos/sql/base/realmd.sql
     fi
 
     read -p "Do you want to populate the database [y or n] ? " bool
