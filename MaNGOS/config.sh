@@ -19,14 +19,9 @@ nmtitle[3]="Cataclysm"
 idtitle=""
 
 case "$action" in
-  "update")
-    echo "Updating package ..."
-    cd $scriptpath/$config/$projdir
-    sudo make distclean
-    git pull
-    ./configure
-    sudo make
-    sudo checkinstall
+  "start")
+    $scriptpath/run/bin/mangosd -c $scriptpath/run/mangosd.conf -a $scriptpath/run/ahbot.conf
+    $scriptpath/run/bin/realmd  -c $scriptpath/run/realmd.conf
   ;;
   "install")
     echo "Which title do you want to install:"
@@ -72,8 +67,8 @@ case "$action" in
       sudo apt-get install libboost-all-dev
     fi
 
-    read -p "Are you using a proxy [no or <proxy:port>] ? " proxysv
-    if test "$proxysv" == "no"
+    read -p "Are you using a proxy [n or <proxy:port>] ? " proxysv
+    if test "$proxysv" == "n"
     then
       sudo git config --global -l
       sudo git config --global --unset http.proxy
@@ -85,26 +80,30 @@ case "$action" in
     read -p "Do you wish to download the sources now [y or n] ? " bool
     if test "$bool" == "y"
     then
+      cd $scriptpath
+      sudo rm -rf mangos
+      sudo rm -rf acid
+      sudo rm -rf db
       case "$idtitle" in
       "0")
-        git clone https://github.com/cmangos/mangos-classic.git $scriptpath/mangos
-        git clone https://github.com/ACID-Scripts/Classic.git $scriptpath/acid
-        git clone https://github.com/classicdb/database.git $scriptpath/db
+        sudo git clone https://github.com/cmangos/mangos-classic.git $scriptpath/mangos
+        sudo git clone https://github.com/ACID-Scripts/Classic.git $scriptpath/acid
+        sudo git clone https://github.com/classicdb/database.git $scriptpath/db
       ;;
       "1")
-        git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/mangos
-        git clone https://github.com/ACID-Scripts/TBC.git $scriptpath/acid
-        git clone https://github.com/TBC-DB/Database.git $scriptpath/db
+        sudo git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/mangos
+        sudo git clone https://github.com/ACID-Scripts/TBC.git $scriptpath/acid
+        sudo git clone https://github.com/TBC-DB/Database.git $scriptpath/db
       ;;
       "2")
-        git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/mangos
-        git clone https://github.com/ACID-Scripts/WOTLK.git $scriptpath/acid
-        git clone https://github.com/unified-db/Database.git $scriptpath/db
+        sudo git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/mangos
+        sudo git clone https://github.com/ACID-Scripts/WOTLK.git $scriptpath/acid
+        sudo git clone https://github.com/unified-db/Database.git $scriptpath/db
       ;;
       "3")
-        git clone https://github.com/cmangos/mangos-cata.git $scriptpath/mangos
-        git clone https://github.com/ACID-Scripts/CATA.git $scriptpath/acid
-        git clone https://github.com/UDB-434/Database.git $scriptpath/db
+        sudo git clone https://github.com/cmangos/mangos-cata.git $scriptpath/mangos
+        sudo git clone https://github.com/ACID-Scripts/CATA.git $scriptpath/acid
+        sudo git clone https://github.com/UDB-434/Database.git $scriptpath/db
       ;;
       esac
     fi
@@ -119,21 +118,29 @@ case "$action" in
     if test "$bool" == "y"
     then
       sudo rm -rf $scriptpath/build
-        mkdir $scriptpath/build
+      sudo mkdir $scriptpath/build
            cd $scriptpath/build
         cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/run -DPCH=1 -DDEBUG=0
          make
          make install
     fi
 
-    cp $scriptpath/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/run/mangosd.conf
-    cp $scriptpath/mangos/src/realmd/realmd.conf.dist.in $scriptpath/run/realmd.conf
-    cp $scriptpath/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/run/ahbot.conf
+    echo "Installing configuation files. Default is located in $scriptpath/run/etc !"
+    sudo cp $scriptpath/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/run/mangosd.conf
+    sudo cp $scriptpath/mangos/src/realmd/realmd.conf.dist.in $scriptpath/run/realmd.conf
+    sudo cp $scriptpath/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/run/ahbot.conf
 
-    read -p "Do you want to create empty databases [y or n] ? " bool
-    if test "$bool" == "y"
+    read -p "Execute database command [n or create/drop] ? " bool
+    if test "$bool" != "n"
     then
-      mysql -uroot -p < $scriptpath/mangos/sql/create/db_create_mysql.sql
+      case "$bool" in
+      "create")
+        mysql -uroot -p < $scriptpath/mangos/sql/create/db_create_mysql.sql
+      ;;
+      "drop")
+        mysql -uroot -p < $scriptpath/mangos/sql/create/db_drop_mysql.sql
+      ;;
+      esac
     fi
 
     read -p "Do you want to initialize databases [y or n] ? " bool
@@ -159,8 +166,8 @@ case "$action" in
           sh InstallFullDB.sh
         echo "Please replace the following line for CORE_PATH"
         echo "CORE_PATH=$scriptpath/mangos"
-        sudo gedit InstallFullDB.config
-          sh InstallFullDB.sh
+        sudo -i gedit InstallFullDB.config
+        sudo sh InstallFullDB.sh
       ;;
       "3")
       ;;
