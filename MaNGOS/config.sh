@@ -5,75 +5,100 @@
 action="$1"
 
 bool=""
+idtitle=""
+nmtitle=""
+drtitle=""
 proxysv=""
 
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
 
-# Title names
-nmtitle[0]="Vanilla"
-nmtitle[1]="The burning crusade (TBC)"
-nmtitle[2]="Wrath of the lich king (WoTLK)"
-nmtitle[3]="Cataclysm"
-# Chosen title ID
-idtitle=""
+function getTitle()
+{
+  local res1=""
+  local res2=""
+  local res3=""
+
+  # Title names
+  local info[0]="[Vanilla] {vanilla}"
+  local info[1]="[The burning crusade (TBC)] {tbc}"
+  local info[2]="[Wrath of the lich king (WoTLK)] {wotlk}"
+  local info[3]="[Cataclysm] {cataclysm}"
+  local info[4]="[Mysts of Pandaria (MoP)] {pandaria}"
+  local info[5]="[Legion] {legion}"
+
+  echo -e $1
+
+  for (( i=0; i<=$(( ${#info[*]} -1 )); i++ ))
+  do
+    echo "$i >> $(sed -e 's/.*\[\([^]]*\)\].*/\1/g' <<< ${info[$i]})"
+  done
+  read -p "Enter tiltle ID: " res1
+
+  if [[ -z "${info[$res1]}" ]]
+  then
+    echo "Wrong title ID: $res1"
+    exit 0
+  fi
+
+  res3=$(sed -e 's/.*\[\([^]]*\)\].*/\1/g' <<< ${info[$res1]})
+  res2=$(sed -e 's/[^{]*{\([^}]*\)}.*/\1/g' <<< ${info[$res1]})
+
+  echo "getTitle: [$res1] > $res3 > $res2"
+
+  eval "$2='$res1'"
+  eval "$3='$res2'"
+  eval "$4='$res3'"
+}
 
 case "$action" in
   "start")
-    $scriptpath/run/bin/mangosd -c $scriptpath/run/mangosd.conf -a $scriptpath/run/ahbot.conf
-    $scriptpath/run/bin/realmd  -c $scriptpath/run/realmd.conf
+    getTitle "Select tiltle to start:" idtitle drtitle nmtitle
+
+    echo "Starting package: $nmtitle ..."
+
+    gnome-terminal -e $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
+    gnome-terminal -e $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
   ;;
   "install")
-    echo "Which title do you want to install:"
+    getTitle "The dirctory in {} will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle
 
-    for (( i=0; i<=$(( ${#nmtitle[*]} -1 )); i++ ))
-    do
-        echo "$i >> ${nmtitle[$i]}"
-    done
-    read -p "Enter tiltle ID: " idtitle
-
-    if [[ -z "${nmtitle[$idtitle]}" ]]
-    then
-      echo "Wrong title ID: $idtitle"
-      exit 0
-    fi
-
-    echo "Installing package [${nmtitle[$idtitle]}] ..."
+    echo "Installing package: <$nmtitle> in $scriptpath/$drtitle"
 
     read -p "Install dependancies [y or n] ? " bool
     if test "$bool" == "y"
     then
-      sudo apt-get update
+      apt-get update
       # Dependancies
-      sudo apt-get install build-essential
-      sudo apt-get install gcc
-      sudo apt-get install g++
-      sudo apt-get install automake
-      sudo apt-get install git-core
-      sudo apt-get install autoconf
-      sudo apt-get install make
-      sudo apt-get install patch
-      sudo apt-get install libmysql++-dev
-      sudo apt-get install mysql-server
-      sudo apt-get install libtool
-      sudo apt-get install libssl-dev
-      sudo apt-get install grep
-      sudo apt-get install binutils
-      sudo apt-get install zlibc
-      sudo apt-get install libc6
-      sudo apt-get install libbz2-dev
-      sudo apt-get install cmake
-      sudo apt-get install subversion
-      sudo apt-get install libboost-all-dev
+      apt-get install build-essential
+      apt-get install gcc
+      apt-get install g++
+      apt-get install automake
+      apt-get install git-core
+      apt-get install autoconf
+      apt-get install make
+      apt-get install patch
+      apt-get install libmysql++-dev
+      apt-get install mysql-server
+      apt-get install libtool
+      apt-get install libssl-dev
+      apt-get install grep
+      apt-get install binutils
+      apt-get install zlibc
+      apt-get install libc6
+      apt-get install libbz2-dev
+      apt-get install cmake
+      apt-get install subversion
+      apt-get install libboost-all-dev
     fi
 
     read -p "Are you using a proxy [n or <proxy:port>] ? " proxysv
     if test "$proxysv" == "n"
     then
-      sudo git config --global -l
-      sudo git config --global --unset http.proxy
+      git config --global -l
+      git config --global --unset http.proxy
     else
-      sudo git config --global http.proxy "$proxysv"
+      git config --global http.proxy "$proxysv"
       echo "Proxy set to [$proxysv] !"
     fi
 
@@ -81,29 +106,34 @@ case "$action" in
     if test "$bool" == "y"
     then
       cd $scriptpath
-      sudo rm -rf mangos
-      sudo rm -rf acid
-      sudo rm -rf db
+
+      rm -rf $drtitle
+      mkdir $drtitle
+      cd $scriptpath/$drtitle
+
+      rm -rf mangos
+      rm -rf acid
+      rm -rf db
       case "$idtitle" in
       "0")
-        sudo git clone https://github.com/cmangos/mangos-classic.git $scriptpath/mangos
-        sudo git clone https://github.com/ACID-Scripts/Classic.git $scriptpath/acid
-        sudo git clone https://github.com/classicdb/database.git $scriptpath/db
+        git clone https://github.com/cmangos/mangos-classic.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/ACID-Scripts/Classic.git $scriptpath/$drtitle/acid
+        git clone https://github.com/classicdb/database.git $scriptpath/$drtitle/db
       ;;
       "1")
-        sudo git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/mangos
-        sudo git clone https://github.com/ACID-Scripts/TBC.git $scriptpath/acid
-        sudo git clone https://github.com/TBC-DB/Database.git $scriptpath/db
+        git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/ACID-Scripts/TBC.git $scriptpath/$drtitle/acid
+        git clone https://github.com/TBC-DB/Database.git $scriptpath/$drtitle/db
       ;;
       "2")
-        sudo git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/mangos
-        sudo git clone https://github.com/ACID-Scripts/WOTLK.git $scriptpath/acid
-        sudo git clone https://github.com/unified-db/Database.git $scriptpath/db
+        git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/ACID-Scripts/WOTLK.git $scriptpath/$drtitle/acid
+        git clone https://github.com/unified-db/Database.git $scriptpath/$drtitle/db
       ;;
       "3")
-        sudo git clone https://github.com/cmangos/mangos-cata.git $scriptpath/mangos
-        sudo git clone https://github.com/ACID-Scripts/CATA.git $scriptpath/acid
-        sudo git clone https://github.com/UDB-434/Database.git $scriptpath/db
+        git clone https://github.com/cmangos/mangos-cata.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/ACID-Scripts/CATA.git $scriptpath/$drtitle/acid
+        git clone https://github.com/UDB-434/Database.git $scriptpath/$drtitle/db
       ;;
       esac
     fi
@@ -111,34 +141,34 @@ case "$action" in
     read -p "Do you want to intall a boost package [y or n] ? " bool
     if test "$bool" == "y"
     then
-      sudo apt-get install libboost-all-dev
+      apt-get install libboost-all-dev
     fi
 
     read -p "Do you want to build the source now [y or n] ? " bool
     if test "$bool" == "y"
     then
-      sudo rm -rf $scriptpath/build
-      sudo mkdir $scriptpath/build
-           cd $scriptpath/build
-        cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/run -DPCH=1 -DDEBUG=0
-         make
-         make install
+      rm -rf $scriptpath/$drtitle/build
+      mkdir  $scriptpath/$drtitle/build
+         cd  $scriptpath/$drtitle/build
+      cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DPCH=1 -DDEBUG=0
+       make
+       make install
     fi
 
-    echo "Installing configuation files. Default is located in $scriptpath/run/etc !"
-    sudo cp $scriptpath/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/run/mangosd.conf
-    sudo cp $scriptpath/mangos/src/realmd/realmd.conf.dist.in $scriptpath/run/realmd.conf
-    sudo cp $scriptpath/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/run/ahbot.conf
+    echo "Installing configuation files. Default is located in $scriptpath/$drtitle/run/etc !"
+      cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
+      cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
+      cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
 
     read -p "Execute database command [n or create/drop] ? " bool
     if test "$bool" != "n"
     then
       case "$bool" in
       "create")
-        mysql -uroot -p < $scriptpath/mangos/sql/create/db_create_mysql.sql
+        mysql -uroot -p < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
       ;;
       "drop")
-        mysql -uroot -p < $scriptpath/mangos/sql/create/db_drop_mysql.sql
+        mysql -uroot -p < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
       ;;
       esac
     fi
@@ -146,9 +176,9 @@ case "$action" in
     read -p "Do you want to initialize databases [y or n] ? " bool
     if test "$bool" == "y"
     then
-      mysql -uroot -p mangos < $scriptpath/mangos/sql/base/mangos.sql
-      mysql -uroot -p characters < $scriptpath/mangos/sql/base/characters.sql
-      mysql -uroot -p realmd < $scriptpath/mangos/sql/base/realmd.sql
+      mysql -uroot -p mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
+      mysql -uroot -p characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
+      mysql -uroot -p realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
     fi
 
     read -p "Do you want to populate the database [y or n] ? " bool
@@ -160,14 +190,16 @@ case "$action" in
       "1")
       ;;
       "2")
-          cd $scriptpath/db/
-        sudo rm -f InstallFullDB.config
-        sudo chmod 777 InstallFullDB.sh
-          sh InstallFullDB.sh
-        echo "Please replace the following line for CORE_PATH"
-        echo "CORE_PATH=$scriptpath/mangos"
-        sudo -i gedit InstallFullDB.config
-        sudo sh InstallFullDB.sh
+           cd $scriptpath/$drtitle/db/
+           rm -f $scriptpath/$drtitle/db/InstallFullDB.config
+        chmod 777 InstallFullDB.sh
+           sh InstallFullDB.sh
+          sed -i "s|.*CORE_PATH.*|CORE_PATH=$scriptpath/$drtitle/mangos|" $scriptpath/$drtitle/db/InstallFullDB.config
+         read -p "Start the population [y or n] ? " bool
+           if test "$bool" == "y"
+           then
+            sh InstallFullDB.sh
+           fi
       ;;
       "3")
       ;;
@@ -180,10 +212,10 @@ case "$action" in
     read -p "Do you want to continue with this process [y or n] ? " bool
     if test "$bool" == "y"
     then
-      sudo apt-get purge mysql-server mysql-client mysql-common mysql-server-core-5.5 mysql-client-core-5.5
-      sudo rm -rf /etc/mysql /var/lib/mysql
-      sudo apt-get autoremove
-      sudo apt-get autoclean
+      apt-get purge mysql-server mysql-client mysql-common mysql-server-core-5.5 mysql-client-core-5.5
+      rm -rf /etc/mysql /var/lib/mysql
+      apt-get autoremove
+      apt-get autoclean
     fi
   ;;
   "config")
