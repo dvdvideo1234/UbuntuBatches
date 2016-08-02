@@ -57,8 +57,8 @@ case "$action" in
 
     echo "Starting package: $nmtitle ..."
 
-    gnome-terminal -e $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
-    gnome-terminal -e $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
+    $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
+    $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
   ;;
   "install")
     getTitle "The dirctory in {} will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle
