@@ -15,48 +15,48 @@ case "$action" in
   "update")
     echo "Updating package ..."
     cd $scriptpath/$config/$projdir
-    sudo make distclean
+    make distclean
     git pull
     ./configure
-    sudo make
-    sudo checkinstall
+    make
+    checkinstall
   ;;
   "install")
     echo "Installing package ..."
-    
+
     echo "Install dependancies [y or n] ?"
     read -r bool
     if test "$bool" == "y"
     then
-      sudo apt-get update
+      apt-get update
       # Dependancies
-      sudo apt-get install libexif
-      sudo apt-get install libjpeg
-      sudo apt-get install libid3tag
-      sudo apt-get install libFLAC
-      sudo apt-get install libvorbis
-      sudo apt-get install libsqlite3
-      sudo apt-get install libavformat
+      apt-get install libexif
+      apt-get install libjpeg
+      apt-get install libid3tag
+      apt-get install libFLAC
+      apt-get install libvorbis
+      apt-get install libsqlite3
+      apt-get install libavformat
       # Needed compiling binaries
-      sudo apt-get install libavutil-dev
-      sudo apt-get install libavcodec-dev
-      sudo apt-get install libavformat-dev
-      sudo apt-get install libjpeg-dev
-      sudo apt-get install libsqlite3-dev
-      sudo apt-get install libexif-dev
-      sudo apt-get install libid3tag0-dev
-      sudo apt-get install libbogg-dev
-      sudo apt-get install libvorbis-dev
-      sudo apt-get install libflac-dev
+      apt-get install libavutil-dev
+      apt-get install libavcodec-dev
+      apt-get install libavformat-dev
+      apt-get install libjpeg-dev
+      apt-get install libsqlite3-dev
+      apt-get install libexif-dev
+      apt-get install libid3tag0-dev
+      apt-get install libbogg-dev
+      apt-get install libvorbis-dev
+      apt-get install libflac-dev
       # Compiling tools
-      sudo apt-get install autoconf
-      sudo apt-get install automake
-      sudo apt-get install autopoint
-      sudo apt-get install make
+      apt-get install autoconf
+      apt-get install automake
+      apt-get install autopoint
+      apt-get install make
       # Installation tools
-      sudo apt-get install checkinstall
+      apt-get install checkinstall
       # Download the project
-      sudo apt-get install git
+      apt-get install git
     fi
 
     # Set the proxy if any
@@ -64,55 +64,55 @@ case "$action" in
     read -r proxysv
     if test "$proxysv" == "no"
     then
-      sudo git config --global -l
-      sudo git config --global --unset http.proxy
+      git config --global -l
+      git config --global --unset http.proxy
     else
-      sudo git config --global http.proxy "$proxysv"
-      echo "Proxy set to [$proxysv] !" 
+      git config --global http.proxy "$proxysv"
+      echo "Proxy set to [$proxysv] !"
     fi
-      
+
     # Download and compile the source
-    sudo rm -fr $config
-    sudo mkdir $config
+    rm -fr $config
+    mkdir $config
     cd $config
 
-    sudo git clone http://git.code.sf.net/p/minidlna/git $projdir
+    git clone http://git.code.sf.net/p/minidlna/git $projdir
 
     cd $projdir
-    sudo ./autogen.sh
-    sudo ./configure
-    sudo make
-    sudo checkinstall
-    sudo cp $scriptpath/$config/$projdir/minidlna.conf $scriptpath/$config/minidlna.conf
+    ./autogen.sh
+    ./configure
+    make
+    checkinstall
+    cp $scriptpath/$config/$projdir/minidlna.conf $scriptpath/$config/minidlna.conf
 
     # Create autostart configuration file
-    sudo rm -f $scriptpath/$srvname
-    sudo chmod 666 $scriptpath/autostart_header.txt
-    sudo chmod 666 $scriptpath/autostart_source.txt
-    sudo cat $scriptpath/autostart_header.txt > $scriptpath/$srvname
-    sudo echo "" >> $scriptpath/$srvname
-    sudo echo "deamonSRV=\"minidlna\"" >> $scriptpath/$srvname
-    sudo echo "deamoncnf=\"$scriptpath/$config/minidlna.conf\"" >> $scriptpath/$srvname
-    sudo echo "" >> $scriptpath/$srvname
-    sudo cat $scriptpath/autostart_source.txt >> $scriptpath/$srvname
-    sudo echo "" >> $scriptpath/$srvname
+    rm -f $scriptpath/$srvname
+    chmod 666 $scriptpath/autostart_header.txt
+    chmod 666 $scriptpath/autostart_source.txt
+    cat $scriptpath/autostart_header.txt > $scriptpath/$srvname
+    echo "" >> $scriptpath/$srvname
+    echo "deamonSRV=\"minidlna\"" >> $scriptpath/$srvname
+    echo "deamonCNF=\"$scriptpath/$config/minidlna.conf\"" >> $scriptpath/$srvname
+    echo "" >> $scriptpath/$srvname
+    cat $scriptpath/autostart_source.txt >> $scriptpath/$srvname
+    echo "" >> $scriptpath/$srvname
 
     # Install autostart server configuration
-    sudo cp $scriptpath/$srvname /etc/init.d/$srvname
-    sudo chmod +x /etc/init.d/$srvname
-    sudo update-rc.d $srvname defaults
+    cp $scriptpath/$srvname /etc/init.d/$srvname
+    chmod +x /etc/init.d/$srvname
+    update-rc.d $srvname defaults
 
   ;;
   "remove")
     echo "Removing package ..."
-    sudo apt-get remove $srvname
-    sudo update-rc.d -f $srvname remove
-    sudo rm /etc/init.d/$srvname
-    sudo rm -r $scriptpath/$config
+    apt-get remove $srvname
+    update-rc.d -f $srvname remove
+    rm /etc/init.d/$srvname
+    rm -r $scriptpath/$config
   ;;
   "config")
     echo "Opening settings ..."
-    sudo gedit $scriptpath/$config/minidlna.conf
+    gedit $scriptpath/$config/minidlna.conf
   ;;
   "stats")
     echo "Home: $HOME"

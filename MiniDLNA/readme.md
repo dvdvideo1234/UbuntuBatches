@@ -14,14 +14,13 @@ Type "./config.sh" for options:
   "config"  Opens the configuration located in /.minidlna
   "stats"   Views the common script variable paths
   
-( For example "./config.sh install" starts the installation)
+( For example "sudo ./config.sh install" starts the installation)
   
 The user can chose whenever to install the dependencies needed by
 answering a question [y or n]. Then it asks for a proxy ( if needed ),
 automatically creates a hidden ".minidlna" installation configuration folder,
 where the compiled sources are downloaded using "git clone" ( trough the proxy if given ).
-Later on if configures, the sources for compilation,
-creates a configuration file and installs the package.
+Later on if configures, the sources for compilation, creates a configuration file and installs the package.
 
 Auto-start deamon control script is automatically generated inside the file
 "minidlna" and copied inside /etc/init.d/minidlna

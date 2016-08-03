@@ -201,7 +201,7 @@ case "$action" in
       "2")
            cd $scriptpath/$drtitle/db/
            rm -f $scriptpath/$drtitle/db/InstallFullDB.config
-        chmod 777 InstallFullDB.sh
+        chmod +x InstallFullDB.sh
            sh InstallFullDB.sh
           sed -i "s|.*CORE_PATH.*|CORE_PATH=$scriptpath/$drtitle/mangos|" $scriptpath/$drtitle/db/InstallFullDB.config
          read -p "Start the population [y or n] ? " bool
