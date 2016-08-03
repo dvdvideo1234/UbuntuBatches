@@ -14,7 +14,7 @@ deamonPID=""
 deamonNAM="minidlnad"
 deamonLOC="/usr/local/sbin/$deamonNAM"
 deamonSRV="minidlna"
-deamoncnf="/home/test/Documents/TEST/.minidlna/minidlna.conf"
+deamonCNF="/srv/UbuntuBatches/MiniDLNA/.minidlna/minidlna.conf"
 
 case "$1" in
   "start")

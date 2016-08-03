@@ -71,37 +71,47 @@ case "$action" in
       echo "Proxy set to [$proxysv] !"
     fi
 
-    # Download and compile the source
-    rm -fr $config
-    mkdir $config
-    cd $config
+    read -p "Do you wish to download the sources now [y or n] ? " bool
+    if test "$bool" == "y"
+    then
+      rm -fr $config
+      mkdir $config
+      cd $config
 
-    git clone http://git.code.sf.net/p/minidlna/git $projdir
+      git clone http://git.code.sf.net/p/minidlna/git $projdir
+    fi
 
-    cd $projdir
-    ./autogen.sh
-    ./configure
-    make
-    checkinstall
-    cp $scriptpath/$config/$projdir/minidlna.conf $scriptpath/$config/minidlna.conf
+    read -p "Do you want to build the source now [y or n] ? " bool
+    if test "$bool" == "y"
+    then
+      cd $projdir
+      ./autogen.sh
+      ./configure
+      make
+      checkinstall
+      cp $scriptpath/$config/$projdir/minidlna.conf $scriptpath/$config/minidlna.conf
+    fi
 
-    # Create autostart configuration file
-    rm -f $scriptpath/$srvname
-    chmod 666 $scriptpath/autostart_header.txt
-    chmod 666 $scriptpath/autostart_source.txt
-    cat $scriptpath/autostart_header.txt > $scriptpath/$srvname
-    echo "" >> $scriptpath/$srvname
-    echo "deamonSRV=\"minidlna\"" >> $scriptpath/$srvname
-    echo "deamonCNF=\"$scriptpath/$config/minidlna.conf\"" >> $scriptpath/$srvname
-    echo "" >> $scriptpath/$srvname
-    cat $scriptpath/autostart_source.txt >> $scriptpath/$srvname
-    echo "" >> $scriptpath/$srvname
-
-    # Install autostart server configuration
-    cp $scriptpath/$srvname /etc/init.d/$srvname
-    chmod +x /etc/init.d/$srvname
-    update-rc.d $srvname defaults
-
+    read -p "Do you want to create autostart script [y or n] ? " bool
+    if test "$bool" == "y"
+    then
+      # Create the file
+      rm -f $scriptpath/$srvname
+      chmod 666 $scriptpath/autostart_header.txt
+      chmod 666 $scriptpath/autostart_source.txt
+      cat $scriptpath/autostart_header.txt > $scriptpath/$srvname
+      echo "" >> $scriptpath/$srvname
+      echo "deamonSRV=\"minidlna\"" >> $scriptpath/$srvname
+      echo "deamonCNF=\"$scriptpath/$config/minidlna.conf\"" >> $scriptpath/$srvname
+      echo "" >> $scriptpath/$srvname
+      cat $scriptpath/autostart_source.txt >> $scriptpath/$srvname
+      echo "" >> $scriptpath/$srvname
+      
+      # Install autostart server configuration
+      cp $scriptpath/$srvname /etc/init.d/$srvname
+      chmod +x /etc/init.d/$srvname
+      update-rc.d $srvname defaults
+    fi
   ;;
   "remove")
     echo "Removing package ..."
