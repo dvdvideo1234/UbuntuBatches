@@ -9,6 +9,7 @@ idtitle=""
 nmtitle=""
 drtitle=""
 proxysv=""
+mysqlpa=""
 
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
@@ -92,6 +93,8 @@ case "$action" in
       apt-get install libboost-all-dev
     fi
 
+    read -p "What password did you set for the mysql root user ? " mysqlpa
+
     read -p "Are you using a proxy [n or <proxy:port>] ? " proxysv
     if test "$proxysv" == "n"
     then
@@ -155,20 +158,26 @@ case "$action" in
        make install
     fi
 
-    echo "Installing configuation files. Default is located in $scriptpath/$drtitle/run/etc !"
+    read -p "Do you want to renew the configuration [y or n] ? " bool
+    if test "$bool" == "y"
+    then
+      rm -f $scriptpath/$drtitle/run/mangosd.conf
+      rm -f $scriptpath/$drtitle/run/realmd.conf
+      rm -f $scriptpath/$drtitle/run/ahbot.conf
       cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
       cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
       cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
+    fi
 
     read -p "Execute database command [n or create/drop] ? " bool
     if test "$bool" != "n"
     then
       case "$bool" in
       "create")
-        mysql -uroot -p < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
+        mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
       ;;
       "drop")
-        mysql -uroot -p < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
+        mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
       ;;
       esac
     fi
@@ -176,9 +185,9 @@ case "$action" in
     read -p "Do you want to initialize databases [y or n] ? " bool
     if test "$bool" == "y"
     then
-      mysql -uroot -p mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
-      mysql -uroot -p characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
-      mysql -uroot -p realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
+      mysql -f -uroot -p$mysqlpa mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
+      mysql -f -uroot -p$mysqlpa characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
+      mysql -f -uroot -p$mysqlpa realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
     fi
 
     read -p "Do you want to populate the database [y or n] ? " bool
@@ -208,7 +217,8 @@ case "$action" in
 
   ;;
   "purgemysql")
-    echo "This will purge the mysql package like it was just installed"
+    echo "This will purge the mysql package like it was never installed"
+    echo "All the data will be deleted !!!"
     read -p "Do you want to continue with this process [y or n] ? " bool
     if test "$bool" == "y"
     then
