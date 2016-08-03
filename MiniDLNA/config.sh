@@ -60,9 +60,9 @@ case "$action" in
     fi
 
     # Set the proxy if any
-    echo "Are you using a proxy [no or <proxy:port>]  ?"
+    echo "Are you using a proxy [n or <proxy:port>]  ?"
     read -r proxysv
-    if test "$proxysv" == "no"
+    if test "$proxysv" == "n"
     then
       git config --global -l
       git config --global --unset http.proxy
