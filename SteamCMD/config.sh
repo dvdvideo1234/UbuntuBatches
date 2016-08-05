@@ -23,6 +23,24 @@ function getInput()
   eval "$3=$rez"
 }
 
+function getAppModID()
+{
+  local rid=""
+  local rmd=""
+
+  echo "$1"
+
+  getInput "Enter an appid to install" "appid" rid
+
+  if test "$rid" == "90"
+  then # https://developer.valvesoftware.com/wiki/Dedicated_Servers_List (4020)
+    getInput "Select a mod for HL1 / CS1.6 [n or <mod_name>]" "a mod" rmd
+  fi
+
+  eval "$2=$rmd"
+  eval "$3=$rid"
+}
+
 echo "This script manages SteamCMD dedicated server"
 
 case "$action" in
@@ -48,7 +66,7 @@ case "$action" in
     cd $scriptpath
     mkdir steamcmd
     cd steamcmd
-    rm -f $scriptpath/steamcmd/steamcmd*.*
+    rm -f steamcmd*.*
 
     echo "Downloading steam ..."
     wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
@@ -62,12 +80,11 @@ case "$action" in
       exit 0
     fi
 
-    tar -xvzf $scriptpath/steamcmd/steamcmd_linux.tar.gz
+    tar -xvzf steamcmd_linux.tar.gz
 
-    # Make it executable
-    chmod +x $scriptpath/steamcmd/steamcmd.sh
+    chmod +x steamcmd.sh
 
-    read -p "Do you log-in now ? [y or n] " bool
+    read -p "Do you wish to login now ? [y or n] " bool
     if test "$bool" == "y"
     then
       getInput "Enter a user for steam, or login as anonymous" "user name" user
@@ -77,15 +94,10 @@ case "$action" in
       exit 0
     fi
 
+    getAppModID "Select desired server application to be installed" appmod appid
+
     if test "$user" == "anonymous"
     then
-      getInput "Enter an appid to install" "appid" appid
-
-      if test "$appid" == "90"
-      then # https://developer.valvesoftware.com/wiki/Dedicated_Servers_List (4020)
-        getInput "Select a mod for HL1 / CS1.6 [n or <mod_name>]" "a mod" appmod
-      fi
-
       if test "$appmod" == "n"
       then
         ./steamcmd.sh +login $user +app_update $appid validate +quit
@@ -94,13 +106,6 @@ case "$action" in
       fi
     else
       getInput "Enter the password for user [$user]" "a password" pass
-      getInput "Enter an appid to install" "appid" appid
-
-      if test "$appid" == "90"
-      then # https://developer.valvesoftware.com/wiki/Dedicated_Servers_List (4020)
-        getInput "Select a mod for HL1 / CS1.6 [n or <mod_name>]" "a mod" appmod
-      fi
-
       if test "$appmod" == "n"
       then
         ./steamcmd.sh +login $user $pass +app_update $appid validate +quit
