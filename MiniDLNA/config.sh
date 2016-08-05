@@ -24,8 +24,7 @@ case "$action" in
   "install")
     echo "Installing package ..."
 
-    echo "Install dependancies [y or n] ?"
-    read -r bool
+    read -p "Install dependancies [y or n] ?" bool
     if test "$bool" == "y"
     then
       apt-get update
@@ -60,8 +59,7 @@ case "$action" in
     fi
 
     # Set the proxy if any
-    echo "Are you using a proxy [n or <proxy:port>]  ?"
-    read -r proxysv
+    read -p "Are you using a proxy [n or <proxy:port>] ?" proxysv
     if test "$proxysv" == "n"
     then
       git config --global -l
@@ -106,7 +104,7 @@ case "$action" in
       echo "" >> $scriptpath/$srvname
       cat $scriptpath/autostart_source.txt >> $scriptpath/$srvname
       echo "" >> $scriptpath/$srvname
-      
+
       # Install autostart server configuration
       cp $scriptpath/$srvname /etc/init.d/$srvname
       chmod +x /etc/init.d/$srvname

@@ -6,9 +6,9 @@
      echo ------ Please give an input ------
      read -r functions
  done
- if test "$functions" == "backup"  
- then 
- now=$(date +"%m-%d-%y")
+ if test "$functions" == "backup"
+ then
+ now=$(date +"%y-%m-%d_%H-%M-%S")
  if [ -z "$now" ]; then
    echo "an error occured while trying to retrieve the date, do it without a date? y or n"
    read -r dateerr
@@ -71,7 +71,7 @@
      fi
    fi
  fi
- if test "$functions" == "update" 
+ if test "$functions" == "update"
  then
   echo put the appid of the server
   read -r appid
@@ -88,7 +88,7 @@
   if test "$username" == "anonymous"
   then
    echo the script will log as anonymous
-  else 
+  else
    echo input your password
    read -r password
    while [ -z "$password" ]; do
@@ -102,7 +102,7 @@
   else
    echo "steamcmd does not exist do you wish to install steamcmd?y or n"
    read -r steamcm
-   while [ -z "$steamcm" ]; do 
+   while [ -z "$steamcm" ]; do
     echo please try again
     read -r steamcm
    done
@@ -118,5 +118,5 @@
   fi
   ./steamcmd.sh +login $username $password +app_update $appid +quit
  fi
- 
+
 exit 0
