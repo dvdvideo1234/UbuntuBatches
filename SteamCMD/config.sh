@@ -4,7 +4,6 @@ action="$1"
 
 user=""
 pass=""
-dir=""
 appid=""
 appmod=""
 bool=""
@@ -17,11 +16,9 @@ scriptpath=$(dirname "$scriptname")
 function getInput()
 {
   local rez=""
-  echo $1
-  read -r rez
+  read -p "$1: " rez
   while [ -z "$rez" ]; do
-    echo Please put $2
-    read -r rez
+    read -p "Please put $2: " rez
   done
   eval "$3=$rez"
 }
@@ -30,7 +27,7 @@ echo "This script manages SteamCMD dedicated server"
 
 case "$action" in
   "update")
-    read -p "Do you want to install dependencies ? [y or n]" bool
+    read -p "Do you want to install dependencies ? [y or n] " bool
     if test "$bool" = "y"
     then
       archit=$(uname -m)
@@ -46,13 +43,14 @@ case "$action" in
       fi
     fi
 
-    echo "Making directory /steamcmd at <$scriptpath>"
+    echo "Refreshing directory /steamcmd at <$scriptpath>"
 
-    mkdir $scriptpath/steamcmd
-    cd $scriptpath/steamcmd
+    cd $scriptpath
+    mkdir steamcmd
+    cd steamcmd
     rm -f $scriptpath/steamcmd/steamcmd*.*
 
-    echo "Downloading steam"
+    echo "Downloading steam ..."
     wget https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz
 
     chkhash=$(md5sum steamcmd_linux.tar.gz | cut -d' ' -f1)
@@ -69,47 +67,57 @@ case "$action" in
     # Make it executable
     chmod +x $scriptpath/steamcmd/steamcmd.sh
 
-    read -p "Do you log-in now ? [y or n]" bool
+    read -p "Do you log-in now ? [y or n] " bool
     if test "$bool" == "y"
     then
       getInput "Enter a user for steam, or login as anonymous" "user name" user
     else
       echo "Running steam update check"
-      ./$scriptpath/steamcmd/steamcmd.sh +quit
+      ./steamcmd.sh +quit
       exit 0
     fi
 
     if test "$user" == "anonymous"
     then
-      getInput "Which appid you wish to install ?" "appid" appid
+      getInput "Enter an appid to install" "appid" appid
+
       if test "$appid" == "90"
       then # https://developer.valvesoftware.com/wiki/Dedicated_Servers_List (4020)
-        getInput "Select a mod for HL1 / CS1.6 ? [n or <mod_name>]" "a mod" appmod
+        getInput "Select a mod for HL1 / CS1.6 [n or <mod_name>]" "a mod" appmod
       fi
 
       if test "$appmod" == "n"
       then
-        ./$scriptpath/steamcmd/steamcmd.sh +login $user +app_update $appid validate +quit
+        ./steamcmd.sh +login $user +app_update $appid validate +quit
       else
-        ./$scriptpath/steamcmd/steamcmd.sh +login $user +app_update $appid validate +app_set_config "90 mod $appmod" +quit
+        ./steamcmd.sh +login $user +app_update $appid validate +app_set_config "90 mod $appmod" +quit
       fi
     else
-      getInput "What is the password for the user [$user] ?" "password" pass
-      getInput "Which appid you wish to install ?" "appid" appid
+      getInput "Enter the password for user [$user]" "a password" pass
+      getInput "Enter an appid to install" "appid" appid
+
       if test "$appid" == "90"
       then # https://developer.valvesoftware.com/wiki/Dedicated_Servers_List (4020)
-        getInput "Do you need to install a mod for HL1 / CS1.6 ? [n or <mod_name>]" "a mod" appmod
+        getInput "Select a mod for HL1 / CS1.6 [n or <mod_name>]" "a mod" appmod
       fi
 
       if test "$appmod" == "n"
       then
-        ./$scriptpath/steamcmd/steamcmd.sh +login $user $pass +app_update $appid validate +quit
+        ./steamcmd.sh +login $user $pass +app_update $appid validate +quit
       else
-        ./$scriptpath/steamcmd/steamcmd.sh +login $user $pass +app_update $appid validate +app_set_config "90 mod $appmod" +quit
+        ./steamcmd.sh +login $user $pass +app_update $appid validate +app_set_config "90 mod $appmod" +quit
       fi
     fi
   ;;
   "backup")
+  ;;
+  "stats")
+    echo "Date: $datedt"
+    echo "Path: $scriptpath"
+    echo "Name: $scriptname"
+  ;;
+  *)
+    echo "Usage: $0 { update | backup | stats }"
   ;;
 esac
 

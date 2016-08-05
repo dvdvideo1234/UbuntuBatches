@@ -62,7 +62,7 @@ case "$action" in
     $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
   ;;
   "install")
-    getTitle "The dirctory in {} will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle
+    getTitle "The dirctory will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle
 
     echo "Installing package: <$nmtitle> in $scriptpath/$drtitle"
 
