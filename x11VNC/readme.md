@@ -4,7 +4,7 @@ The installation using this script is automatic and it's
 done by placing it in a folder of choice, then running it
 via "./config.sh" with one of the following parameters:
 
-Type "./config.sh" for options:
+Type "sudo ./config.sh" [option] which is one of the following:
   "install <port>" Installs x11vnc from apt-get
   "remove"         Removes the x11vnc package and auto-start 
   "config"         Opens the configuration located in /etc/init/x11vnc.conf

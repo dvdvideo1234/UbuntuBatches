@@ -22,39 +22,39 @@ function getInput()
 case "$action" in
   "install")
     echo "Installing package ... $srvname"
-    sudo apt-get update
-    sudo apt-get install $srvname
+    apt-get update
+    apt-get install $srvname
     
     rm -f $scriptpath/$srvname.conf
-    sudo echo "start on login-session-start" > $srvname.conf
-    sudo echo "" >> $srvname.conf
-    sudo echo "script" >> $srvname.conf
-    sudo echo "" >> $srvname.conf
-    sudo echo "sudo $scriptname start $param" >> $srvname.conf
-    sudo echo "" >> $srvname.conf
-    sudo echo "end script" >> $srvname.conf
-    sudo mv $scriptpath/$srvname.conf $configloc/$srvname.conf
+    echo "start on login-session-start" > $srvname.conf
+    echo "" >> $srvname.conf
+    echo "script" >> $srvname.conf
+    echo "" >> $srvname.conf
+    echo "sudo $scriptname start $param" >> $srvname.conf
+    echo "" >> $srvname.conf
+    echo "end script" >> $srvname.conf
+    mv $scriptpath/$srvname.conf $configloc/$srvname.conf
     
     getInput "What password do you wish to use ?" "a password" param
-    sudo $srvname -storepasswd $param $scriptpath/$srvname.pass
+    $srvname -storepasswd $param $scriptpath/$srvname.pass
   ;;
   "remove")
     echo "Removing package ..."
-    sudo /usr/bin/killall $srvname
-    sudo apt-get remove $srvname
-    sudo mv $configloc/$srvname.conf $scriptpath/$srvname.conf
-    sudo rm -f $configloc/$srvname.conf
-    sudo rm -f $scriptpath/$srvname.pass
+    /usr/bin/killall $srvname
+    apt-get remove $srvname
+    mv $configloc/$srvname.conf $scriptpath/$srvname.conf
+    rm -f $configloc/$srvname.conf
+    rm -f $scriptpath/$srvname.pass
   ;;
   "config")
     echo "Opening settings ..."
-    sudo gedit $configloc/$srvname.conf
+    gedit $configloc/$srvname.conf
   ;;
   "start")
-    sudo /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth /var/run/lightdm/root/:0 -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
+    /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth /var/run/lightdm/root/:0 -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
   ;;
   "stop")
-    sudo /usr/bin/killall $srvname
+    /usr/bin/killall $srvname
   ;;
   "stats")
     echo "Name: $srvname"
