@@ -141,12 +141,6 @@ case "$action" in
       esac
     fi
 
-    read -p "Do you want to intall a boost package [y or n] ? " bool
-    if test "$bool" == "y"
-    then
-      apt-get install libboost-all-dev
-    fi
-
     read -p "Do you want to build the source now [y or n] ? " bool
     if test "$bool" == "y"
     then
