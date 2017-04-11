@@ -54,7 +54,7 @@ function getTitle()
 
 case "$action" in
   "start")
-    getTitle "Select tiltle to start:" idtitle drtitle nmtitle
+    getTitle "Select title to start:" idtitle drtitle nmtitle
 
     echo "Starting package: $nmtitle ..."
 
@@ -66,7 +66,7 @@ case "$action" in
 
     echo "Installing package: <$nmtitle> in $scriptpath/$drtitle"
 
-    read -p "Install dependancies [y or n] ? " bool
+    read -p "Install dependancies [y/N] ? " bool
     if test "$bool" == "y"
     then
       apt-get update
@@ -105,7 +105,7 @@ case "$action" in
       echo "Proxy set to [$proxysv] !"
     fi
 
-    read -p "Do you wish to download the sources now [y or n] ? " bool
+    read -p "Do you wish to download the sources [y/N] ? " bool
     if test "$bool" == "y"
     then
       cd $scriptpath
@@ -120,18 +120,15 @@ case "$action" in
       case "$idtitle" in
       "0")
         git clone https://github.com/cmangos/mangos-classic.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/ACID-Scripts/Classic.git $scriptpath/$drtitle/acid
-        git clone https://github.com/classicdb/database.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/classic-db.git $scriptpath/$drtitle/db
       ;;
       "1")
         git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/ACID-Scripts/TBC.git $scriptpath/$drtitle/acid
-        git clone https://github.com/TBC-DB/Database.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/tbc-db.git $scriptpath/$drtitle/db
       ;;
       "2")
         git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/ACID-Scripts/WOTLK.git $scriptpath/$drtitle/acid
-        git clone https://github.com/unified-db/Database.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/wotlk-db.git $scriptpath/$drtitle/db
       ;;
       "3")
         git clone https://github.com/cmangos/mangos-cata.git $scriptpath/$drtitle/mangos
@@ -141,7 +138,7 @@ case "$action" in
       esac
     fi
 
-    read -p "Do you want to build the source now [y or n] ? " bool
+    read -p "Do you want to build the source [y/N] ? " bool
     if test "$bool" == "y"
     then
       rm -rf $scriptpath/$drtitle/build
@@ -152,7 +149,7 @@ case "$action" in
        make install
     fi
 
-    read -p "Do you want to renew the configuration [y or n] ? " bool
+    read -p "Do you want to renew the configuration [y/N] ? " bool
     if test "$bool" == "y"
     then
       rm -f $scriptpath/$drtitle/run/mangosd.conf
@@ -163,20 +160,14 @@ case "$action" in
       cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
     fi
 
-    read -p "Execute database command [n or create/drop] ? " bool
-    if test "$bool" != "n"
+    read -p "Do you want to create mangos databases [y/N] ? " bool
+    if test "$bool" == "y"
     then
-      case "$bool" in
-      "create")
-        mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
-      ;;
-      "drop")
-        mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
-      ;;
-      esac
+      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
+      mysql -uroot -p$mysqlpa -e "flush privileges;"
     fi
 
-    read -p "Do you want to initialize databases [y or n] ? " bool
+    read -p "Do you want to initialize the databases [y/N] ? " bool
     if test "$bool" == "y"
     then
       mysql -f -uroot -p$mysqlpa mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
@@ -184,7 +175,7 @@ case "$action" in
       mysql -f -uroot -p$mysqlpa realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
     fi
 
-    read -p "Do you want to populate the database [y or n] ? " bool
+    read -p "Do you want to populate the database [y/N] ? " bool
     if test "$bool" == "y"
     then
       case "$idtitle" in
@@ -197,8 +188,17 @@ case "$action" in
            rm -f $scriptpath/$drtitle/db/InstallFullDB.config
         chmod +x InstallFullDB.sh
            sh InstallFullDB.sh
-          sed -i "s|.*CORE_PATH.*|CORE_PATH=$scriptpath/$drtitle/mangos|" $scriptpath/$drtitle/db/InstallFullDB.config
-         read -p "Start the population [y or n] ? " bool
+         read -p "Apply CORE_PATH value [y/N] ? " bool
+           if test "$bool" == "y"
+           then
+          sed -i "s|.*CORE_PATH=.*|CORE_PATH=$scriptpath/$drtitle/mangos|" $scriptpath/$drtitle/db/InstallFullDB.config
+           fi
+         read -p "Apply ACID_PATH value [y/N] ? " bool
+           if test "$bool" == "y"
+           then
+          sed -i "s|.*ACID_PATH=.*|ACID_PATH=$scriptpath/$drtitle/db/ACID|" $scriptpath/$drtitle/db/InstallFullDB.config
+           fi
+         read -p "Start the population [y/N] ? " bool
            if test "$bool" == "y"
            then
             sh InstallFullDB.sh
@@ -210,10 +210,21 @@ case "$action" in
     fi
 
   ;;
+  "dropmangos")
+    echo "This will delete the mangos database from your SQL server !!!"
+    read -p "Do you want to continue with this process [y/N] ? " bool
+    if test "$bool" == "y"
+    then
+      getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
+      read -p "What password did you set for the mysql root user ? " mysqlpa
+      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
+      mysql -uroot -p$mysqlpa -e "flush privileges;"
+    fi
+  ;;
   "purgemysql")
     echo "This will purge the mysql package like it was never installed"
-    echo "All the data will be deleted !!!"
-    read -p "Do you want to continue with this process [y or n] ? " bool
+    echo "All the data will be deleted and SQL uninstalled!!!"
+    read -p "Do you want to continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
       apt-get purge mysql-server mysql-client mysql-common mysql-server-core-5.5 mysql-client-core-5.5
