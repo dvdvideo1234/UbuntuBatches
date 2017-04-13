@@ -24,7 +24,7 @@ case "$action" in
   "install")
     echo "Installing package ..."
 
-    read -p "Install dependancies [y or n] ?" bool
+    read -p "Install dependancies [y/N] ? " bool
     if test "$bool" == "y"
     then
       apt-get update
@@ -52,14 +52,14 @@ case "$action" in
       apt-get install automake
       apt-get install autopoint
       apt-get install make
-      # Installation tools
+      # Configuration tools
       apt-get install checkinstall
-      # Download the project
       apt-get install git
+      apt-get install gksu
     fi
 
     # Set the proxy if any
-    read -p "Are you using a proxy [n or <proxy:port>] ?" proxysv
+    read -p "Are you using a proxy [n or <proxy:port>] ? " proxysv
     if test "$proxysv" == "n"
     then
       git config --global -l
@@ -69,7 +69,7 @@ case "$action" in
       echo "Proxy set to [$proxysv] !"
     fi
 
-    read -p "Do you wish to download the sources now [y or n] ? " bool
+    read -p "Do you wish to download the sources now [y/N] ? " bool
     if test "$bool" == "y"
     then
       rm -fr $config
@@ -79,7 +79,7 @@ case "$action" in
       git clone http://git.code.sf.net/p/minidlna/git $projdir
     fi
 
-    read -p "Do you want to build the source now [y or n] ? " bool
+    read -p "Do you want to build the source now [y/N] ? " bool
     if test "$bool" == "y"
     then
       cd $projdir
@@ -90,7 +90,7 @@ case "$action" in
       cp $scriptpath/$config/$projdir/minidlna.conf $scriptpath/$config/minidlna.conf
     fi
 
-    read -p "Do you want to create autostart script [y or n] ? " bool
+    read -p "Do you want to create autostart script [y/N] ? " bool
     if test "$bool" == "y"
     then
       # Create the file
@@ -120,7 +120,8 @@ case "$action" in
   ;;
   "config")
     echo "Opening settings ..."
-    gedit $scriptpath/$config/minidlna.conf
+    echo "Change what you like then save and close the editor."
+    gksu gedit $scriptpath/$config/minidlna.conf
   ;;
   "stats")
     echo "Home: $HOME"

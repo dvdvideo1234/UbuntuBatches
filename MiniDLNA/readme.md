@@ -10,12 +10,13 @@ via "./config.sh" with one of the following parameters:
 Type "./config.sh" for options:
   "install" Installs miniDLNA after compiling it from the source
   "update"  Updates the miniDLNA installation
-  "remove"  Removes the miniDLNA package and auto-start 
+  "remove"  Removes the miniDLNA package and auto-start
   "config"  Opens the configuration located in /.minidlna
   "stats"   Views the common script variable paths
-  
+
 ( For example "sudo ./config.sh install" starts the installation)
-  
+
+Please do not put "sudo" when changing the server configuration via "config"
 The user can chose whenever to install the dependencies needed by
 answering a question [y or n]. Then it asks for a proxy ( if needed ),
 automatically creates a hidden ".minidlna" installation configuration folder,
@@ -24,7 +25,7 @@ Later on if configures, the sources for compilation, creates a configuration fil
 
 Auto-start deamon control script is automatically generated inside the file
 "minidlna" and copied inside /etc/init.d/minidlna
-  
+
 Controlling the DLNA is done via the following commands:
 
 sudo service minidlna start
