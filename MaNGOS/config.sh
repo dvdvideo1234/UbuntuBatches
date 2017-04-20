@@ -109,13 +109,10 @@ case "$action" in
     if test "$bool" == "y"
     then
       cd $scriptpath
-
-      rm -rf $drtitle
       mkdir $drtitle
       cd $scriptpath/$drtitle
 
       rm -rf mangos
-      rm -rf acid
       rm -rf db
       case "$idtitle" in
       "0")
@@ -132,8 +129,7 @@ case "$action" in
       ;;
       "3")
         git clone https://github.com/cmangos/mangos-cata.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/ACID-Scripts/CATA.git $scriptpath/$drtitle/acid
-        git clone https://github.com/UDB-434/Database.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/cata-db.git $scriptpath/$drtitle/db
       ;;
       esac
     fi
@@ -184,25 +180,30 @@ case "$action" in
       "1")
       ;;
       "2")
-           cd $scriptpath/$drtitle/db/
-           rm -f $scriptpath/$drtitle/db/InstallFullDB.config
+        cd $scriptpath/$drtitle/db/
+        rm -f InstallFullDB.config
         chmod +x InstallFullDB.sh
-           sh InstallFullDB.sh
-         read -p "Apply CORE_PATH value [y/N] ? " bool
-           if test "$bool" == "y"
-           then
-          sed -i "s|.*CORE_PATH=.*|CORE_PATH=$scriptpath/$drtitle/mangos|" $scriptpath/$drtitle/db/InstallFullDB.config
-           fi
-         read -p "Apply ACID_PATH value [y/N] ? " bool
-           if test "$bool" == "y"
-           then
-          sed -i "s|.*ACID_PATH=.*|ACID_PATH=$scriptpath/$drtitle/db/ACID|" $scriptpath/$drtitle/db/InstallFullDB.config
-           fi
-         read -p "Start the population [y/N] ? " bool
-           if test "$bool" == "y"
-           then
-            sh InstallFullDB.sh
-           fi
+        ./InstallFullDB.sh
+        read -p "Apply CORE_PATH value [y/N] ? " bool
+        if test "$bool" == "y"
+        then
+          sed -i "s@.*CORE_PATH=.*@CORE_PATH=\"$scriptpath/$drtitle/mangos\"@" InstallFullDB.config
+        fi
+        read -p "Apply ACID_PATH value [y/N] ? " bool
+        if test "$bool" == "y"
+        then
+          sed -i "s@.*ACID_PATH=.*@ACID_PATH=\"$scriptpath/$drtitle/db/ACID\"@" InstallFullDB.config
+        fi
+        read -p "Enable DEV_UPDATES [y/N] ? " bool
+        if test "$bool" == "y"
+        then
+          sed -i "s@.*DEV_UPDATES=.*@DEV_UPDATES=\"YES\"@" InstallFullDB.config
+        fi
+        read -p "Start the population [y/N] ? " bool
+        if test "$bool" == "y"
+        then
+          ./InstallFullDB.sh
+        fi
       ;;
       "3")
       ;;
