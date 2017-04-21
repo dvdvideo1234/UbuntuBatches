@@ -134,15 +134,20 @@ case "$action" in
       esac
     fi
 
-    read -p "Do you want to build the source [y/N] ? " bool
+    read -p "Do you want to rebuild the sources [y/N] ? " bool
     if test "$bool" == "y"
     then
       rm -rf $scriptpath/$drtitle/build
       mkdir  $scriptpath/$drtitle/build
          cd  $scriptpath/$drtitle/build
-      cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DPCH=1 -DDEBUG=0
-       make
-       make install
+      read -p "Compile included map extraction tools ? [y/N] ? " bool
+      if test "$bool" == "y"
+        cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DBUILD_EXTRACTOR=ON -DBUILD_VMAP_EXTRACTOR=ON -DBUILD_MMAP_EXTRACTOR=ON -DPCH=1 -DDEBUG=0
+      else
+        cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DPCH=1 -DDEBUG=0
+      fi
+      make
+      make install
     fi
 
     read -p "Do you want to renew the configuration [y/N] ? " bool
