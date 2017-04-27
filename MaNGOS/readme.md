@@ -1,17 +1,25 @@
 This file represents a bash script ( Yes, in nix* the extension is just cosmetic )
-that can install a "World of Worcraft:Wrath of The Lich King" game server in the folder chosen.
-The script is designed to install the WoW server on a fresh Ubuntu system ( Tested on virtualBOX 14.04 LTS OK )
-To use this you must put it in a folder of choise and make it executable using
+that can install a "World of Worcraft" game server in the folder chosen.
+The script is designed to install the WoW server on a fresh Ubuntu
+system ( Tested on virtualBOX 14.04 LTS OK ). To use this you must put it in a
+folder of choise and make it executable using
 
 ``` sudo chmod +x config.sh ```
 
-Then run it in the terminal to install it by typing:
+Here are example commands currently available:
 
-``` sudo ./config.sh install ```
+```
+  ./config.sh start              --> Starts the instaled server
+  ./config.sh install            --> Installs the sever in the folder chosen
+  ./config.sh drop-mangos        --> Removes the mangos database from the SQL server
+  ./config.sh purge-mysql-server --> Completely removes the SQL server installed in dependancies
+  ./config.sh config             --> Not developed currently. It edits the server configuration
+  ./config.sh stats              --> Displays the private server paths used by the installation
+```
 
 It will ask you series of questions in the process for proxy, dependancies and so on.
 The script is designed to be automatic, so there is no need to change anything manually !!!
-After the instalation finishes, it will say "Enjoy your UDB". Then you must extract the
+After the instalation finishes, it will say "Enjoy your DB". Then you must extract the
 client maps and vmaps as it is shown here: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 After you are done with that process ( Which takes very long, so grab you

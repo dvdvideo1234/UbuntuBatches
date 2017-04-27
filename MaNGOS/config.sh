@@ -182,9 +182,7 @@ case "$action" in
       case "$idtitle" in
       "0")
       ;;
-      "1")
-      ;;
-      "2")
+      [12])
         cd $scriptpath/$drtitle/db/
         rm -f InstallFullDB.config
         chmod +x InstallFullDB.sh
@@ -216,7 +214,7 @@ case "$action" in
     fi
 
   ;;
-  "dropmangos")
+  "drop-mangos")
     echo "This will delete the mangos database from your SQL server !!!"
     read -p "Do you want to continue with this process [y/N] ? " bool
     if test "$bool" == "y"
@@ -227,7 +225,7 @@ case "$action" in
       mysql -uroot -p$mysqlpa -e "flush privileges;"
     fi
   ;;
-  "purgemysql")
+  "purge-mysql-server")
     echo "This will purge the mysql package like it was never installed"
     echo "All the data will be deleted and SQL uninstalled!!!"
     read -p "Do you want to continue with this process [y/N] ? " bool
