@@ -28,7 +28,7 @@ favorite movie and some popcorn ) you can start it like so:
 ``` sudo ./config.sh start ```
 
 I made it universal, because I prefer my servers to be in ``` /srv/.. ``` , but you might
-not prefer them there. Currently only the WoTLK server is done, the others are just options
-that must be available in the future
+not prefer them there. Currently only the WoTLK and TBC servers are done, the others are
+just options that must be available in the future
 
 Have fun with my installation script ;)
