@@ -1,12 +1,12 @@
 # UbuntuBatches
 
-Some Ubuntu batnes I use currently
+Some Ubuntu batches I use currently
 
-These scripts are used to preform various tasks
-and fix varios problems. The content is devided by
-folders in which every manager perssts:
+These scripts are used to perform various tasks
+and fix various problems. The content is divided on
+folders in which every manager persists:
 ```
-  General      --> Contrains a installation procedure for fresh file ubuntu server
+  General      --> Contains an installation procedure for fresh file ubuntu server
   KillAppsWEB  --> Removes the web apps from an Ubuntu OS
   MaNGOS       --> Configures mangos WoW server on the local network
   MiniDLNA     --> Installs MiniDLNA server when compiling it from source
