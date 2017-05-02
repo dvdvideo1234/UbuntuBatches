@@ -142,6 +142,7 @@ case "$action" in
          cd  $scriptpath/$drtitle/build
       read -p "Compile included map extraction tools ? [y/N] ? " bool
       if test "$bool" == "y"
+      then
         cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DBUILD_EXTRACTOR=ON -DBUILD_VMAP_EXTRACTOR=ON -DBUILD_MMAP_EXTRACTOR=ON -DPCH=1 -DDEBUG=0
       else
         cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DPCH=1 -DDEBUG=0
@@ -180,9 +181,7 @@ case "$action" in
     if test "$bool" == "y"
     then
       case "$idtitle" in
-      "0")
-      ;;
-      [12])
+      [012])
         cd $scriptpath/$drtitle/db/
         rm -f InstallFullDB.config
         chmod +x InstallFullDB.sh
