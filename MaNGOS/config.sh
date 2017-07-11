@@ -34,7 +34,7 @@ function getTitle()
   do
     echo "$i >> $(sed -e 's/.*\[\([^]]*\)\].*/\1/g' <<< ${info[$i]})"
   done
-  read -p "Enter tiltle ID: " res1
+  read -p "Enter title ID: " res1
 
   if [[ -z "${info[$res1]}" ]]
   then
@@ -62,15 +62,15 @@ case "$action" in
     $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
   ;;
   "install")
-    getTitle "The dirctory will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle
+    getTitle "The directory will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle
 
     echo "Installing package: <$nmtitle> in $scriptpath/$drtitle"
 
-    read -p "Install dependancies [y/N] ? " bool
+    read -p "Install dependencies [y/N] ? " bool
     if test "$bool" == "y"
     then
       apt-get update
-      # Dependancies
+      # Dependencies
       apt-get install build-essential
       apt-get install gcc
       apt-get install g++
@@ -181,7 +181,7 @@ case "$action" in
     if test "$bool" == "y"
     then
       case "$idtitle" in
-      [012])
+      0|1|2)
         cd $scriptpath/$drtitle/db/
         rm -f InstallFullDB.config
         chmod +x InstallFullDB.sh
