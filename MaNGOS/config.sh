@@ -115,21 +115,25 @@ case "$action" in
       rm -rf mangos
       rm -rf db
       case "$idtitle" in
-      "0")
+      0)
         git clone https://github.com/cmangos/mangos-classic.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/classic-db.git $scriptpath/$drtitle/db
       ;;
-      "1")
+      1)
         git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/tbc-db.git $scriptpath/$drtitle/db
       ;;
-      "2")
+      2)
         git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/wotlk-db.git $scriptpath/$drtitle/db
       ;;
-      "3")
+      3)
         git clone https://github.com/cmangos/mangos-cata.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/cata-db.git $scriptpath/$drtitle/db
+      ;;
+      *)
+        echo "$nmtitle package not matched to git [$idtitle] !"
+        exit 0
       ;;
       esac
     fi
@@ -207,7 +211,11 @@ case "$action" in
           ./InstallFullDB.sh
         fi
       ;;
-      "3")
+      3)
+        echo "$nmtitle package DB installation not matched to git [$idtitle] !"
+      ;;
+      *)
+        echo "$nmtitle package DB installation not defined to git [$idtitle] !"
       ;;
       esac
     fi
