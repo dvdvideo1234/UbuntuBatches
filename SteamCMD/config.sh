@@ -56,8 +56,10 @@ case "$SCMDACTION" in
         apt-get update
         apt-get install lib32gcc1
         apt-get install lib32stdc++6
+        apt-get install lib32tinfo5
       else
         apt-get install lib32gcc1
+        apt-get install lib32tinfo5
       fi
     fi
 
@@ -87,7 +89,7 @@ case "$SCMDACTION" in
     read -p "Do you wish to login now [y/N] ? " SCMDBOOL
     if test "$SCMDBOOL" == "y"
     then
-      read -p "Write a steam user, or press [Enter] for anonymous" SCMDUSER
+      read -p "Write a steam user, or press [Enter] for anonymous: " SCMDUSER
       if [ -z "$SCMDUSER" ]
       then
         SCMDUSER="anonymous"
@@ -129,25 +131,40 @@ case "$SCMDACTION" in
   ;;
   "run")
     SCMDARCHIT=$(uname -m)
-    getAppModID "Select the server you wish to start" SCMDAPPMOD SCMDAPPID
-    if test "$SCMDAPPID" == "90"
+    if [ -z "$3" ]
     then
-      if [ -z "$SCMDAPPMOD" ]
-      then
-        echo "Please select a game to start for HLDS !"
-        exit 0
-      fi
-      # /home/deyan/.steam/sdk32/steamclient.so
-      # with error:
-      # /home/deyan/.steam/sdk32/steamclient.so: cannot open shared object file: No such
-      # Clien fix (root): sudo cp ../../steamclient.so_32 steamclient.so
-      # Clien fix (root): sudo cp ../../steamclient.so_90_64 steamclient.so
-      # netstat -antuwp | egrep "(^[^t])|(*LISTEN)"
-      cd $SCMDPRGPATH/$SCMDAPPID
-      ./hlds_run -game $SCMDAPPMOD +maxplayers $2 +map $3 +port $4
-    else
-      ./srcds_run -game $SCMDAPPMOD +maxplayers $2 +map $3 +port $4
+      echo "Please provide starting APPID."
     fi
+    if [ -z "$4" ]
+    then
+      echo "Please provide starting MAP."
+    fi
+    if [ -z "$5" ]
+    then
+      echo "Please provide starting PLAYERS."
+    fi
+    if [ -z "$5" ]
+    then
+      echo "Please provide starting PORT."
+    fi
+    cd $SCMDPRGPATH/$3
+    case "$2" in
+    "hl")
+      ./$2ds_run -game $4 +maxplayers $5 +map $6 +port $7 +exec server.cfg -autoupdate
+    ;;
+    "src") # ./config.sh run src 4020 garrysmod 4 gm_flatgrass 27015
+      ./$2ds_run -game $4 +maxplayers $5 +map $6 +port $7 +exec server.cfg -autoupdate
+    ;;
+    *)
+      if [ -z "$2" ]
+      then
+        echo "Please provide starting mode."
+      else
+        echo "Server <$2> not supported yet."
+      fi
+      exit 0
+    ;;  
+    esac
   ;;
   *)
     echo "Usage: $0 { update | run | backup | stats }"
