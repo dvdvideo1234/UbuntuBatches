@@ -55,20 +55,20 @@ read -p "Install custon GFX [$vergfx] [y/N]" bool
 if test "$bool" == "y"
 then
   cd $scriptpath/OpenTTD/bin/baseset
-  wget http://binaries.openttd.org/extra/opengfx/{$vergfx}/opengfx-{$vergfx}-all.zip
+  wget http://binaries.openttd.org/extra/opengfx/$vergfx/opengfx-$vergfx-all.zip
 fi
 
 read -p "Install custon SFX [$versfx] [y/N]" bool
 if test "$bool" == "y"
 then
   cd $scriptpath/OpenTTD/bin/baseset
-  wget http://binaries.openttd.org/extra/opengfx/{$versfx}/opengfx-{$versfx}-all.zip
+  wget http://binaries.openttd.org/extra/opengfx/$versfx/opengfx-$versfx-all.zip
 fi
 
 read -p "Install custon MFX [$vermsx] [y/N]" bool
 if test "$bool" == "y"
 then
   cd $scriptpath/OpenTTD/bin/baseset
-  wget http://binaries.openttd.org/extra/opengfx/{$vermsx}/opengfx-{$vermsx}-all.zip
+  wget http://binaries.openttd.org/extra/opengfx/$vermsx/opengfx-$vermsx-all.zip
 fi
 
