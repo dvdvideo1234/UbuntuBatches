@@ -10,7 +10,6 @@ if (( $EUID != 0 )); then
 fi
 
 read -p "Proceed with killing web apps [y/n] ? " bool
-
 if test "$bool" = "y"
 then
   apt-get purge unity-lens-shopping

@@ -11,7 +11,6 @@ if (( $EUID != 0 )); then
 fi
 
 read -p "Proceed fixing gksu on the selcted display [y/n] ? " bool
-
 if test "$bool" = "y"
 then
   rm -f ~/.Xauthority
