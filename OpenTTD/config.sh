@@ -23,6 +23,7 @@ then
   sudo apt-get install liblzma-dev
   sudo apt-get install libfontconfig-dev
   sudo apt-get install libicu-dev
+  sudo apt-get install unzip
 fi
 
 read -p "Reftresh install folder [y/N]" bool
@@ -56,6 +57,7 @@ if test "$bool" == "y"
 then
   cd $scriptpath/OpenTTD/bin/baseset
   wget http://binaries.openttd.org/extra/opengfx/$vergfx/opengfx-$vergfx-all.zip
+  unzip opengfx-$vergfx-all.zip
 fi
 
 read -p "Install custon SFX [$versfx] [y/N]" bool
@@ -63,6 +65,7 @@ if test "$bool" == "y"
 then
   cd $scriptpath/OpenTTD/bin/baseset
   wget http://binaries.openttd.org/extra/opengfx/$versfx/opengfx-$versfx-all.zip
+  unzip opengfx-$versfx-all.zip
 fi
 
 read -p "Install custon MFX [$vermsx] [y/N]" bool
@@ -70,5 +73,6 @@ if test "$bool" == "y"
 then
   cd $scriptpath/OpenTTD/bin/baseset
   wget http://binaries.openttd.org/extra/opengfx/$vermsx/opengfx-$vermsx-all.zip
+  unzip opengfx-$vermsx-all.zip
 fi
 
