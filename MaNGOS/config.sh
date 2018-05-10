@@ -8,6 +8,7 @@ nmtitle=""
 drtitle=""
 proxysv=""
 mysqlpa=""
+makecmd=""
 
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
@@ -23,7 +24,7 @@ function getTitle()
   local info[1]="[The burning crusade (TBC)] {tbc}"
   local info[2]="[Wrath of the lich king (WoTLK)] {wotlk}"
   local info[3]="[Cataclysm] {cataclysm}"
-  local info[4]="[Mysts of Pandaria (MoP)] {pandaria}"
+  local info[4]="[Mists of Pandaria (MoP)] {pandaria}"
   local info[5]="[Legion] {legion}"
 
   echo -e $1
@@ -150,13 +151,61 @@ case "$action" in
       rm -rf $scriptpath/$drtitle/build
       mkdir  $scriptpath/$drtitle/build
          cd  $scriptpath/$drtitle/build
+
+      makecmd="cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run"
+
+      read -p "Enable Postgre SQL ? [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DPOSTGRESQL=ON"
+      else
+        makecmd="$makecmd -DPOSTGRESQL=OFF"
+      fi
+
+      read -p "Show warnings during compilation ? [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DWARNINGS=ON"
+      else
+        makecmd="$makecmd -DWARNINGS=OFF"
+      fi
+
+      read -p "Enable compilation debug mode ? [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DDEBUG=1"
+      else
+        makecmd="$makecmd -DDEBUG=0"
+      fi
+
       read -p "Compile included map extraction tools ? [y/N] ? " bool
       if test "$bool" == "y"
       then
-        cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DBUILD_EXTRACTOR=ON -DBUILD_VMAP_EXTRACTOR=ON -DBUILD_MMAP_EXTRACTOR=ON -DPCH=1 -DDEBUG=0
+        makecmd="$makecmd -DBUILD_EXTRACTORS=ON"
       else
-        cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run -DPCH=1 -DDEBUG=0
+        makecmd="$makecmd -DBUILD_EXTRACTORS=OFF"
       fi
+
+      read -p "Enable precomputed headers ? [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DPCH=1"
+      else
+        makecmd="$makecmd -DPCH=0"
+      fi
+
+      read -p "Enable building scriptdev ? [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_SCRIPTDEV=ON "
+      else
+        makecmd="$makecmd -DBUILD_SCRIPTDEV=OFF "
+      fi
+
+      echo Command: $makecmd
+      makecmd=$(makecmd)
+      echo Status: $makecmd
+
       make
       make install
     fi
