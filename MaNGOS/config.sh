@@ -1,7 +1,5 @@
 #!/bin/bash
 
-# Based on https://github.com/cmangos/issues/wiki/Installation-Instructions
-
 action="$1"
 
 bool=""
@@ -51,6 +49,14 @@ function getTitle()
   eval "$3='$res2'"
   eval "$4='$res3'"
 }
+
+if (( $EUID != 0 )); then
+  echo "You must run the script as ROOT to proceed!"
+  echo "Try: sudo ./config <command>"
+  exit 0
+fi
+
+echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
   "start")
@@ -166,7 +172,7 @@ case "$action" in
       cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
     fi
 
-    read -p "Do you want to create mangos databases [y/N] ? " bool
+    read -p "Do you want to create MaNGOS databases [y/N] ? " bool
     if test "$bool" == "y"
     then
       mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
@@ -220,9 +226,12 @@ case "$action" in
       esac
     fi
 
+    echo For extracting the files from the client you can follow the link below:
+    echo https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client
+
   ;;
   "drop-mangos")
-    echo "This will delete the mangos database from your SQL server !!!"
+    echo "This will delete the MaNGOS database from your SQL server !!!"
     read -p "Do you want to continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
@@ -238,7 +247,11 @@ case "$action" in
     read -p "Do you want to continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
-      apt-get purge mysql-server mysql-client mysql-common mysql-server-core-5.5 mysql-client-core-5.5
+      apt-get purge mysql-server
+      apt-get purge mysql-client
+      apt-get purge mysql-common
+      apt-get purge mysql-server-core-5.5
+      apt-get purge mysql-client-core-5.5
       rm -rf /etc/mysql /var/lib/mysql
       apt-get autoremove
       apt-get autoclean
