@@ -100,7 +100,7 @@ case "$action" in
       apt-get install libboost-all-dev
     fi
 
-    read -p "What password did you set for the mysql root user ? " mysqlpa
+    read -sp "What password did you set for the mysql root user ? " mysqlpa
 
     read -p "Are you using a proxy [n or <proxy:port>] ? " proxysv
     if test "$proxysv" == "n"
@@ -292,7 +292,7 @@ case "$action" in
     if test "$bool" == "y"
     then
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
-      read -p "What password did you set for the mysql root user ? " mysqlpa
+      read -sp "What password did you set for the mysql root user ? " mysqlpa
       mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
       mysql -uroot -p$mysqlpa -e "flush privileges;"
     fi
