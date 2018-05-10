@@ -154,23 +154,7 @@ case "$action" in
 
       makecmd="cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run"
 
-      read -p "Enable Postgre SQL ? [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DPOSTGRESQL=ON"
-      else
-        makecmd="$makecmd -DPOSTGRESQL=OFF"
-      fi
-
-      read -p "Show warnings during compilation ? [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DWARNINGS=ON"
-      else
-        makecmd="$makecmd -DWARNINGS=OFF"
-      fi
-
-      read -p "Enable compilation debug mode ? [y/N] ? " bool
+      read -p "Enable compilation debug mode [y/N] ? " bool
       if test "$bool" == "y"
       then
         makecmd="$makecmd -DDEBUG=1"
@@ -178,15 +162,7 @@ case "$action" in
         makecmd="$makecmd -DDEBUG=0"
       fi
 
-      read -p "Compile included map extraction tools ? [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_EXTRACTORS=ON"
-      else
-        makecmd="$makecmd -DBUILD_EXTRACTORS=OFF"
-      fi
-
-      read -p "Enable precomputed headers ? [y/N] ? " bool
+      read -p "Enable precomputed headers [y/N] ? " bool
       if test "$bool" == "y"
       then
         makecmd="$makecmd -DPCH=1"
@@ -194,18 +170,49 @@ case "$action" in
         makecmd="$makecmd -DPCH=0"
       fi
 
-      read -p "Enable building scriptdev ? [y/N] ? " bool
+      read -p "Show warnings during compilation [y/N] ? " bool
       if test "$bool" == "y"
       then
-        makecmd="$makecmd -DBUILD_SCRIPTDEV=ON "
+        makecmd="$makecmd -DWARNINGS=ON"
       else
-        makecmd="$makecmd -DBUILD_SCRIPTDEV=OFF "
+        makecmd="$makecmd -DWARNINGS=OFF"
+      fi
+
+      read -p "Enable Postgre SQL [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DPOSTGRESQL=ON"
+      else
+        makecmd="$makecmd -DPOSTGRESQL=OFF"
+      fi
+
+      read -p "Compile included map extraction tools [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_EXTRACTORS=ON"
+      else
+        makecmd="$makecmd -DBUILD_EXTRACTORS=OFF"
+      fi
+
+      read -p "Enable building scriptdev [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_SCRIPTDEV=ON"
+      else
+        makecmd="$makecmd -DBUILD_SCRIPTDEV=OFF"
+      fi
+
+      read -p "Enable building player bot mod [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_PLAYERBOT=ON"
+      else
+        makecmd="$makecmd -DBUILD_PLAYERBOT=OFF"
       fi
 
       echo Command: $makecmd
-      makecmd=$(makecmd)
-      echo Status: $makecmd
 
+      eval "$makecmd"
       make
       make install
     fi
