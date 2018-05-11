@@ -9,6 +9,8 @@ drtitle=""
 proxysv=""
 mysqlpa=""
 makecmd=""
+proxymc=""
+proxyrg="([0-9]{1,3}\.){3}[0-9]{1,3}\:[0-9]{1,5}"
 
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
@@ -102,14 +104,15 @@ case "$action" in
 
     read -sp "What password did you set for the mysql root user ? " mysqlpa
 
-    read -p "Are you using a proxy [n or <proxy:port>] ? " proxysv
-    if test "$proxysv" == "n"
+    read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
+    proxymc=$(grep -oE $proxyrg <<< $proxysv)
+    if test "$proxysv" == "$proxymc"
     then
+      echo "Proxy set to [$proxysv] !"
+      git config --global http.proxy "$proxysv"
+    else
       git config --global -l
       git config --global --unset http.proxy
-    else
-      git config --global http.proxy "$proxysv"
-      echo "Proxy set to [$proxysv] !"
     fi
 
     read -p "Do you wish to download the sources [y/N] ? " bool

@@ -15,6 +15,6 @@ then
   apt-get purge unity-lens-shopping
   apt-get purge unity-webapps-common
 else
-  echo "Cave Jhonson: We are done here !"
+  echo "Cave Johnson: We are done here !"
 fi
 
