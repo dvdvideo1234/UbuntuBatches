@@ -53,12 +53,6 @@ function getTitle()
   eval "$4='$res3'"
 }
 
-if (( $EUID != 0 )); then
-  echo "You must run the script as ROOT to proceed!"
-  echo "Try: sudo ./config <command>"
-  exit 0
-fi
-
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -270,7 +264,7 @@ case "$action" in
         then
           sed -i "s@.*DEV_UPDATES=.*@DEV_UPDATES=\"YES\"@" InstallFullDB.config
         fi
-        read -p "Start the population [y/N] ? " bool
+        read -p "Start the database population  [y/N] ? " bool
         if test "$bool" == "y"
         then
           ./InstallFullDB.sh
@@ -296,6 +290,7 @@ case "$action" in
     then
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
       read -sp "What password did you set for the mysql root user ? " mysqlpa
+      echo -e ""
       mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
       mysql -uroot -p$mysqlpa -e "flush privileges;"
     fi
@@ -317,6 +312,10 @@ case "$action" in
     fi
   ;;
   "config")
+    getTitle "Select a title for the configuration:" idtitle drtitle nmtitle
+    gksu gedit $scriptpath/$drtitle/run/mangosd.conf
+    gksu gedit $scriptpath/$drtitle/run/realmd.conf
+    gksu gedit $scriptpath/$drtitle/run/ahbot.conf
   ;;
   "stats")
     echo "Home: $HOME"
