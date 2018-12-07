@@ -301,11 +301,11 @@ case "$action" in
     read -p "Do you want to continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
-      apt-get purge mysql-server
-      apt-get purge mysql-client
-      apt-get purge mysql-common
-      apt-get purge mysql-server-core-5.5
-      apt-get purge mysql-client-core-5.5
+      apt-get --purge remove mysql-server
+      apt-get --purge remove mysql-client
+      apt-get --purge remove mysql-common
+      apt-get --purge remove mysql-server-core
+      apt-get --purge remove mysql-client-core
       rm -rf /etc/mysql /var/lib/mysql
       apt-get autoremove
       apt-get autoclean
