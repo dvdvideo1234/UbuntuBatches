@@ -11,6 +11,7 @@ mysqlpa=""
 makecmd=""
 proxymc=""
 proxyrg="([0-9]{1,3}\.){3}[0-9]{1,3}\:[0-9]{1,5}"
+dummy=""
 
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
@@ -97,6 +98,29 @@ case "$action" in
     fi
 
     read -sp "What password did you set for the mysql root user ? " mysqlpa
+    echo ""
+    read -p "Do you wish to change SQL root password [y/N] ? " bool
+    if test "$bool" == "y"
+    then
+      read -sp "What password did you wish for the mysql root user ? " mysqlpa
+      # Stop deamon
+      /etc/init.d/mysql stop
+      # Invalid runtime socket fix
+      mkdir -p /var/run/mysqld
+      chown mysql:mysql /var/run/mysqld
+      # Start MySQL without a password
+      mysqld_safe --skip-grant-tables &
+      # Apply the new password
+      mysql -uroot -e "use mysql;"
+      mysql -uroot -e "update user set password=PASSWORD('$mysqlpa') where User='root';"
+      mysql -uroot -e "flush privileges;"
+      mysql -uroot -e "quit"
+      # Restart the deamon
+      /etc/init.d/mysql stop
+      /etc/init.d/mysql start
+    else
+      echo "The root password is unchanged !"
+    fi
 
     read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
     proxymc=$(grep -oE $proxyrg <<< $proxysv)
