@@ -13,10 +13,10 @@ then
   then
     apt-get update
     apt-get install linux-headers-$(uname -r)
-    apt-get install build-essential
-    apt-get install virtualbox-ose-guest-x11
+    apt-get install build-essential dkms
     apt-get install linux-virtual
-    apt-get install linux-lowlatency
+    apt-get install virtualbox-ose-guest-x11
+    apt-get install virtualbox-guest-dkms 
     apt-get install linux-signed-generic
   fi
   read -p "Do you want to run force-update [y/n]? : " bool
