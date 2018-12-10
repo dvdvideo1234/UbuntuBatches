@@ -54,6 +54,72 @@ function getTitle()
   eval "$4='$res3'"
 }
 
+function getPassSQL()
+{
+  local res=""
+
+  read -sp "What password has mysql root user ? " res   
+  echo ""
+  
+  eval "$1='$res'"  
+}
+
+function cmdPassSQL()
+{
+  local res="$1"
+  
+  if test -z "$res"
+  then
+    # Root user does not have password
+    res=""
+  else
+    # Store the password commend if the
+    res=" -p$res"
+  fi
+  
+  eval "$2='$res'"  
+}
+
+function setPassSQL()
+{
+  local res1=""
+  local res2=""
+  
+  read -p "Do you wish to change SQL root password [y/N] ? " res1
+  if test "$res1" == "y"
+  then
+    read -sp "What password did you wish for the mysql root user ? " res2
+    echo ""
+    if test -z "$res2"
+    then
+	    # Remove password from mysql root user
+      res2=""
+    else
+      # Change password for the SQL user
+      # Stop daemon
+      /etc/init.d/mysql stop
+      # Invalid runtime socket fix
+      mkdir -p /var/run/mysqld
+      chown mysql:mysql /var/run/mysqld
+      # Start MySQL without a password
+      mysqld_safe --skip-grant-tables &
+      # Apply the new password
+      mysql -uroot -e "use mysql;"
+      mysql -uroot -e "update user set password=PASSWORD('$res2') where User='root';"
+      mysql -uroot -e "flush privileges;"
+      mysql -uroot -e "quit"
+      # Restart the daemon
+      /etc/init.d/mysql stop
+      /etc/init.d/mysql start
+    fi
+  else
+    echo "The root password is unchanged !"
+  fi
+  
+  eval "$2='$res2'"  
+}
+
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -97,31 +163,10 @@ case "$action" in
       apt-get install libboost-all-dev
     fi
 
-    read -sp "What password did you set for the mysql root user ? " mysqlpa
-    echo ""
-    read -p "Do you wish to change SQL root password [y/N] ? " bool
-    if test "$bool" == "y"
-    then
-      read -sp "What password did you wish for the mysql root user ? " mysqlpa
-      # Stop deamon
-      /etc/init.d/mysql stop
-      # Invalid runtime socket fix
-      mkdir -p /var/run/mysqld
-      chown mysql:mysql /var/run/mysqld
-      # Start MySQL without a password
-      mysqld_safe --skip-grant-tables &
-      # Apply the new password
-      mysql -uroot -e "use mysql;"
-      mysql -uroot -e "update user set password=PASSWORD('$mysqlpa') where User='root';"
-      mysql -uroot -e "flush privileges;"
-      mysql -uroot -e "quit"
-      # Restart the deamon
-      /etc/init.d/mysql stop
-      /etc/init.d/mysql start
-    else
-      echo "The root password is unchanged !"
-    fi
-
+    getPassSQL mysqlpa
+    setPassSQL "$mysqlpa" mysqlpa
+    cmdPassSQL "$mysqlpa" mysqlpa
+    
     read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
     proxymc=$(grep -oE $proxyrg <<< $proxysv)
     if test "$proxysv" == "$proxymc"
@@ -252,16 +297,16 @@ case "$action" in
     read -p "Do you want to create MaNGOS databases [y/N] ? " bool
     if test "$bool" == "y"
     then
-      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
-      mysql -uroot -p$mysqlpa -e "flush privileges;"
+      mysql -f -uroot $mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
+      mysql -uroot $mysqlpa -e "flush privileges;"
     fi
 
     read -p "Do you want to initialize the databases [y/N] ? " bool
     if test "$bool" == "y"
     then
-      mysql -f -uroot -p$mysqlpa mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
-      mysql -f -uroot -p$mysqlpa characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
-      mysql -f -uroot -p$mysqlpa realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
+      mysql -f -uroot $mysqlpa mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
+      mysql -f -uroot $mysqlpa characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
+      mysql -f -uroot $mysqlpa realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
     fi
 
     read -p "Do you want to populate the database [y/N] ? " bool
@@ -313,10 +358,12 @@ case "$action" in
     if test "$bool" == "y"
     then
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
-      read -sp "What password did you set for the mysql root user ? " mysqlpa
-      echo -e ""
-      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
-      mysql -uroot -p$mysqlpa -e "flush privileges;"
+      
+      getPassSQL mysqlpa
+      cmdPassSQL "$mysqlpa" mysqlpa
+      
+      mysql -f -uroot $mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
+      mysql -uroot $mysqlpa -e "flush privileges;"
     fi
   ;;
   "purge-mysql-server")
