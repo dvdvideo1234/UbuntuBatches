@@ -23,10 +23,10 @@ function getTitle()
   local res3=""
 
   # Title names
-  local info[0]="[Vanilla] {vanilla}"
+  local info[0]="[Vanilla] {classic}"
   local info[1]="[The burning crusade (TBC)] {tbc}"
   local info[2]="[Wrath of the lich king (WoTLK)] {wotlk}"
-  local info[3]="[Cataclysm] {cataclysm}"
+  local info[3]="[Cataclysm] {cata}"
   local info[4]="[Mists of Pandaria (MoP)] {pandaria}"
   local info[5]="[Legion] {legion}"
 
@@ -85,7 +85,7 @@ function setPassSQL()
   local res1=""
   local res2=""
   
-  read -p "Do you wish to change SQL root password [y/N] ? " res1
+  read -p "Change SQL root password [y/N] ? " res1
   if test "$res1" == "y"
   then
     read -sp "What password did you wish for the mysql root user ? " res2
@@ -178,7 +178,7 @@ case "$action" in
       git config --global --unset http.proxy
     fi
 
-    read -p "Do you wish to download the sources [y/N] ? " bool
+    read -p "Download the sources [y/N] ? " bool
     if test "$bool" == "y"
     then
       cd $scriptpath
@@ -189,20 +189,20 @@ case "$action" in
       rm -rf db
       case "$idtitle" in
       0)
-        git clone https://github.com/cmangos/mangos-classic.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/classic-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
       ;;
       1)
-        git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/tbc-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
       ;;
       2)
-        git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/wotlk-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
       ;;
       3)
-        git clone https://github.com/cmangos/mangos-cata.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/cata-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
       ;;
       *)
         echo "$nmtitle package not matched to git [$idtitle] !"
@@ -211,7 +211,7 @@ case "$action" in
       esac
     fi
 
-    read -p "Do you want to rebuild the sources [y/N] ? " bool
+    read -p "Rebuild the sources [y/N] ? " bool
     if test "$bool" == "y"
     then
       rm -rf $scriptpath/$drtitle/build
@@ -283,7 +283,7 @@ case "$action" in
       make install
     fi
 
-    read -p "Do you want to renew the configuration [y/N] ? " bool
+    read -p "Renew the configuration [y/N] ? " bool
     if test "$bool" == "y"
     then
       rm -f $scriptpath/$drtitle/run/mangosd.conf
@@ -294,22 +294,22 @@ case "$action" in
       cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
     fi
 
-    read -p "Do you want to create MaNGOS databases [y/N] ? " bool
+    read -p "Create MaNGOS databases [y/N] ? " bool
     if test "$bool" == "y"
     then
       mysql -f -uroot $mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
       mysql -uroot $mysqlpa -e "flush privileges;"
     fi
 
-    read -p "Do you want to initialize the databases [y/N] ? " bool
+    read -p "Initialize the databases [y/N] ? " bool
     if test "$bool" == "y"
     then
-      mysql -f -uroot $mysqlpa mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
-      mysql -f -uroot $mysqlpa characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
-      mysql -f -uroot $mysqlpa realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
+      mysql -f -umangos -pmangos "$drtitle"mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
+      mysql -f -umangos -pmangos "$drtitle"characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
+      mysql -f -umangos -pmangos "$drtitle"realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
     fi
 
-    read -p "Do you want to populate the database [y/N] ? " bool
+    read -p "Populate the database [y/N] ? " bool
     if test "$bool" == "y"
     then
       case "$idtitle" in
@@ -354,7 +354,7 @@ case "$action" in
   ;;
   "drop-mangos")
     echo "This will delete the MaNGOS database from your SQL server !!!"
-    read -p "Do you want to continue with this process [y/N] ? " bool
+    read -p "Continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
@@ -369,7 +369,7 @@ case "$action" in
   "purge-mysql-server")
     echo "This will purge the mysql package like it was never installed"
     echo "All the data will be deleted and SQL uninstalled!!!"
-    read -p "Do you want to continue with this process [y/N] ? " bool
+    read -p "Continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
       apt-get --purge remove mysql-server
