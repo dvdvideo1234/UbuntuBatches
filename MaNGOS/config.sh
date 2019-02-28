@@ -54,72 +54,6 @@ function getTitle()
   eval "$4='$res3'"
 }
 
-function getPassSQL()
-{
-  local res=""
-
-  read -sp "What password has mysql root user ? " res   
-  echo ""
-  
-  eval "$1='$res'"  
-}
-
-function cmdPassSQL()
-{
-  local res="$1"
-  
-  if test -z "$res"
-  then
-    # Root user does not have password
-    res=""
-  else
-    # Store the password commend if the
-    res=" -p$res"
-  fi
-  
-  eval "$2='$res'"  
-}
-
-function setPassSQL()
-{
-  local res1=""
-  local res2=""
-  
-  read -p "Change SQL root password [y/N] ? " res1
-  if test "$res1" == "y"
-  then
-    read -sp "What password did you wish for the mysql root user ? " res2
-    echo ""
-    if test -z "$res2"
-    then
-	    # Remove password from mysql root user
-      res2=""
-    else
-      # Change password for the SQL user
-      # Stop daemon
-      /etc/init.d/mysql stop
-      # Invalid runtime socket fix
-      mkdir -p /var/run/mysqld
-      chown mysql:mysql /var/run/mysqld
-      # Start MySQL without a password
-      mysqld_safe --skip-grant-tables &
-      # Apply the new password
-      mysql -uroot -e "use mysql;"
-      mysql -uroot -e "update user set password=PASSWORD('$res2') where User='root';"
-      mysql -uroot -e "flush privileges;"
-      mysql -uroot -e "quit"
-      # Restart the daemon
-      /etc/init.d/mysql stop
-      /etc/init.d/mysql start
-    fi
-  else
-    echo "The root password is unchanged !"
-  fi
-  
-  eval "$2='$res2'"  
-}
-
-
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -162,11 +96,32 @@ case "$action" in
       apt-get install subversion
       apt-get install libboost-all-dev
     fi
-
-    getPassSQL mysqlpa
-    setPassSQL "$mysqlpa" mysqlpa
-    cmdPassSQL "$mysqlpa" mysqlpa
     
+    read -sp "What password does the mysql root user have ? " mysqlpa
+    if test "$mysqlpa" == ""
+    then
+      echo -e "\nVersion: $(mysql --version)"
+      echo "To change password for MySQL root user follow the steps below."
+      echo "1. sudo pkill mysql"
+      echo "2. sudo mkdir -p /var/run/mysqld"
+      echo "3. sudo chown mysql /var/run/mysqld"
+      echo "4. sudo mysqld_safe --skip-grant-tables &"
+      echo "5. mysql -uroot" 
+      echo "Use the root safe login to change your password."
+      echo "Replace the value of <new_password> with your new password."
+      echo "1. use mysql;"
+      echo "2. update user set plugin='mysql_native_password' where User='root';"
+      echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
+      echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
+      echo "5. flush privileges;"
+      echo "6. commit;"
+      echo "7. exit;"
+      echo "8. sudo /etc/init.d/mysql stop"
+      echo "9. sudo /etc/init.d/mysql start"
+      echo "Now start the installation again but this time give the password you set."
+      exit 0
+    fi
+        
     read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
     proxymc=$(grep -oE $proxyrg <<< $proxysv)
     if test "$proxysv" == "$proxymc"
@@ -297,8 +252,8 @@ case "$action" in
     read -p "Create MaNGOS databases [y/N] ? " bool
     if test "$bool" == "y"
     then
-      mysql -f -uroot $mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
-      mysql -uroot $mysqlpa -e "flush privileges;"
+      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
+      mysql -uroot -p$mysqlpa -e "flush privileges;"
     fi
 
     read -p "Initialize the databases [y/N] ? " bool
@@ -358,12 +313,8 @@ case "$action" in
     if test "$bool" == "y"
     then
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
-      
-      getPassSQL mysqlpa
-      cmdPassSQL "$mysqlpa" mysqlpa
-      
-      mysql -f -uroot $mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
-      mysql -uroot $mysqlpa -e "flush privileges;"
+      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
+      mysql -uroot -p$mysqlpa -e "flush privileges;"
     fi
   ;;
   "purge-mysql-server")
