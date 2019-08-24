@@ -73,28 +73,7 @@ case "$action" in
     read -p "Install dependencies [y/N] ? " bool
     if test "$bool" == "y"
     then
-      apt-get update
-      # Dependencies
-      apt-get install build-essential
-      apt-get install gcc
-      apt-get install g++
-      apt-get install automake
-      apt-get install git-core
-      apt-get install autoconf
-      apt-get install make
-      apt-get install patch
-      apt-get install libmysql++-dev
-      apt-get install mysql-server
-      apt-get install libtool
-      apt-get install libssl-dev
-      apt-get install grep
-      apt-get install binutils
-      apt-get install zlibc
-      apt-get install libc6
-      apt-get install libbz2-dev
-      apt-get install cmake
-      apt-get install subversion
-      apt-get install libboost-all-dev
+      yes y | ./dependencies.sh
     fi
     
     read -sp "What password does the mysql root user have ? " mysqlpa
@@ -102,17 +81,20 @@ case "$action" in
     then
       echo -e "\nVersion: $(mysql --version)"
       echo "To change password for MySQL root user follow the steps below."
-      echo "1. sudo pkill mysql"
-      echo "2. sudo mkdir -p /var/run/mysqld"
-      echo "3. sudo chown mysql /var/run/mysqld"
-      echo "4. sudo mysqld_safe --skip-grant-tables &"
-      echo "5. mysql -uroot" 
+      echo "1. sudo /etc/init.d/mysql stop"
+      echo "2. sudo pkill mysql"
+      echo "3. sudo mkdir -p /var/run/mysqld"
+      echo "4. sudo chown mysql /var/run/mysqld"
+      echo "5. sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &"
+      echo "6. mysql -uroot"
+      echo "7. flush privileges;"
       echo "Use the root safe login to change your password."
       echo "Replace the value of <new_password> with your new password."
       echo "1. use mysql;"
       echo "2. update user set plugin='mysql_native_password' where User='root';"
       echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
       echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
+      echo "5. If the password conversion function does not work use: SET CREDENTIALS FOR 'root' TO '<new_password>';"
       echo "5. flush privileges;"
       echo "6. commit;"
       echo "7. exit;"
