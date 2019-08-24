@@ -91,7 +91,7 @@ case "$action" in
       echo "Use the root safe login to change your password."
       echo "Replace the value of <new_password> with your new password."
       echo "1. use mysql;"
-      echo "2. update user set plugin='mysql_native_password' where User='root';"
+      echo "2. update user set plugin='mysql_native_password' where user='root';"
       echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
       echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
       echo "5. If the password conversion function does not work use: SET CREDENTIALS FOR 'root' TO '<new_password>';"
@@ -100,6 +100,7 @@ case "$action" in
       echo "7. exit;"
       echo "8. sudo /etc/init.d/mysql stop"
       echo "9. sudo /etc/init.d/mysql start"
+      echo "10. If starting the service fails, just restart the system."
       echo "Now start the installation again but this time give the password you set."
       exit 0
     fi
