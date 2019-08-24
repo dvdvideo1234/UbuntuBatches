@@ -17,4 +17,7 @@ folders in which every manager persists:
   x11VNC         --> Configures x11VNC server on the port specified.
   OpenTTD        --> Install the game Open TTD in a folder of choice
 ```
+
+When answering `y` to all installations is needed use: `yes y | sudo ./config.sh`.
+
 The discussion [topic you can find here](https://forum.cmangos.net/t/how-to-use-a-script-to-install-mangos-server-under-ubuntu/49). 
