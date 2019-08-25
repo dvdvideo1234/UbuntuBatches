@@ -33,4 +33,6 @@ I made it universal, because I prefer my servers to be in ``` etc/var/srv/.. ```
 not prefer them there. Currently only the Vanilla, TBC and WoTLK servers are done, the others are
 just options that can available in the future
 
+The discussion [topic you can find here](https://forum.cmangos.net/t/how-to-use-a-script-to-install-mangos-server-under-ubuntu/49). 
+
 Have fun with my installation script ;)
