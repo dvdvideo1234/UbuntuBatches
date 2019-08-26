@@ -1,7 +1,7 @@
 #!/bin/bash
 
 action="$1"
-
+option="$2"
 bool=""
 idtitle=""
 nmtitle=""
@@ -326,9 +326,14 @@ case "$action" in
   ;;
   "config")
     getTitle "Select a title for the configuration:" idtitle drtitle nmtitle
-    vim $scriptpath/$drtitle/run/mangosd.conf
-    vim $scriptpath/$drtitle/run/realmd.conf
-    vim $scriptpath/$drtitle/run/ahbot.conf
+    case "$option" in
+    mangosd|realmd|ahbot)
+      vim $scriptpath/$drtitle/run/$option.conf
+    ;;
+    *)
+      echo "Wrong configuration name [$option]!"
+    ;;
+    esac
   ;;
   "stats")
     echo "Home: $HOME"
