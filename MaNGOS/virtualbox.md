@@ -15,7 +15,7 @@ The thing we will need:
  Depending on your host. I am gonna install it for Windows my `HOST OS`
 
 3. Oracle VB additions: `VirtualBox #VERSION# Oracle VM VirtualBox Extension Pack`
-( Click on the link that says this in [`[2]`][ref-2] )
+( Search the link in [`[2]`][ref-2] )
 
 First download all the stuff above and save it to folder of choice ( I am gonna call it `INSTALL` ).
 Go to your `INSTALL` folder and open the virtual box to install it. This is pretty straight forward,
@@ -25,7 +25,9 @@ in `F:\VirtualMachines`.
 
 Now we need to install the extensions. Go to `File -> Preferences -> [Left list] Extensions ->`
 `Extension packages -> The little arrow-down button`. It will prompt you to browse for your extension.
-Give it the file downloaded file in point [`[3]`][ref-3].
+Give it the file downloaded file in point [`[3]`][ref-3], which matches the version of the application
+you've downloaded in [`[2]`][ref-2]. It is bad to use outdated extensions on a newer VB application or
+the other way around.
 
 We are now done, so go ahead and create a virtual machine.
 Name it whatever you like but keep it consistent ( I used `Ubuntu 16.04 WoW x64` ). The type must be
@@ -37,8 +39,9 @@ Press ( Ctrl + Shift + Esc ) to open the task manager and view how much RAM do y
 You can use the half of it. I had 16GB free, so I went for 8GB.
 
 ```[Hard disk]```  
-Please use at least 10GB as there are dependencies and additional software needed
-for installing MaNGOS.
+Please use at least `15GB` as there are dependencies and additional software needed
+for installing MaNGOS. Fully working and configured application tops at `13.5GB` with all
+the dependencies, extensions, scrips and tables !
 
 ```[Hard disk file type]```
 Make sure you always `*.VDI`, if you want to extend the virtual HDD in the future.
