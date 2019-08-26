@@ -226,12 +226,20 @@ case "$action" in
     read -p "Renew the configuration [y/N] ? " bool
     if test "$bool" == "y"
     then
+      [ ! -d "$scriptpath/$drtitle/run" ] && mkdir -p "$scriptpath/$drtitle/run"
+
       rm -f $scriptpath/$drtitle/run/mangosd.conf
       rm -f $scriptpath/$drtitle/run/realmd.conf
       rm -f $scriptpath/$drtitle/run/ahbot.conf
-      cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
-      cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
-      cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
+      
+      if [ -d "$scriptpath/$drtitle/mangos/src" ]; then
+        cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
+        cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
+        cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
+      else
+        echo "Configuration unavailable. Download sources !"
+        exit 0
+      fi
     fi
 
     read -p "Create MaNGOS databases [y/N] ? " bool
