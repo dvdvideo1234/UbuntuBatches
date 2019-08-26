@@ -43,13 +43,13 @@ Please use at least `15GB` as there are dependencies and additional software nee
 for installing MaNGOS. Fully working and configured application tops at `13.5GB` with all
 the dependencies, extensions, scrips and tables !
 
-```[Hard disk file type]```
+```[Hard disk file type]```  
 Make sure you always `*.VDI`, if you want to extend the virtual HDD in the future.
 ```[Storage of physical hard disk]```
 If you use `Dynamically allocated` the virtual HDD grows in size as you install sutff in the `GUEST`
 ( In our case the Ubuntu ). The `Fixed size` will allocate the whole HDD on creation.
 
-```[File location and size]```
+```[File location and size]```  
 This tells Oracle VB where to store your virtual HDD. It must be a valid file name.
 I personally use the name, which I create my VMs with ( "Ubuntu 16.04 WoW x64" )
 and the limit which the virtual HDD should never exceed.
@@ -57,40 +57,40 @@ and the limit which the virtual HDD should never exceed.
 Right click on the created machine and select `Settings` ( Ctrl+S )
   1. We are now going to configure the general settings, so click on `General`.
     * Tab `Advanced`
-       > `Shared clipboard`: `Bidirectional`  
-       > `Drag'n'drop`: `Bidirectional`  
+       * `Shared clipboard`: `Bidirectional`  
+       * `Drag'n'drop`: `Bidirectional`  
   2. We are now going to configure the system, so click on `System`.
     * Tab `Motherboard`
-       > Boot order: 1) `Optical`, 2) `HDD`  
-       > Chipset: PIIX3  
-       > Pointing device: USB tablet  
-       > Extended features: Check only `I/O APIC`, `Hardware Clock in UTC Time`  
+       * Boot order: 1) `Optical`, 2) `HDD`  
+       * Chipset: PIIX3  
+       * Pointing device: USB tablet  
+       * Extended features: Check only `I/O APIC`, `Hardware Clock in UTC Time`  
     * Tab `Processor`
-       > `Processor`: Give it all CPUs available  
-       > `Execution cap`: Never go all the way up to 100. I keep it at 70%  
-       > Enable `PAE/NX` checked  
-       > Enable `Nexted VT-x/AMD-V` checked if you have CPU virtualization acceleration  
+       * `Processor`: Give it all CPUs available  
+       * `Execution cap`: Never go all the way up to 100. I keep it at 70%  
+       * Enable `PAE/NX` checked  
+       * Enable `Nexted VT-x/AMD-V` checked if you have CPU virtualization acceleration  
     * Tab `Acceleration`: Check all the check-boxes and set interface to default.
   3. Configuring the `Display`
     * Tab `Screen`
-       > Video memory: `128` or `64` `MB` is quite good  
-       > Monitor count: How many monitors is it displayed in. I use one of my two.  
-       > Do not mess with the other tabs :D
+       * Video memory: `128` or `64` `MB` is quite good  
+       * Monitor count: How many monitors is it displayed in. I use one of my two.  
+       * Do not mess with the other tabs :D
   4. Configuring the `Storage`.
-       > Here you will have a storage tree with `IDE` and `SATA`.
-       > Go ahead and delete the IDE controller `Right-click->Delete` or `Del`, then add a `CD`
-       > drive to the `SATA` controller by clicking the `CD` icon with the green plus sign.
-       > A prompt will appear for media selection. Click "Chose Disk" and insert the ISO
-       > downloaded in [`[1]`][ref-1].
+       * Here you will have a storage tree with `IDE` and `SATA`.
+       * Go ahead and delete the IDE controller `Right-click->Delete` or `Del`, then add a `CD`
+       * drive to the `SATA` controller by clicking the `CD` icon with the green plus sign.
+       * A prompt will appear for media selection. Click "Chose Disk" and insert the ISO
+       * downloaded in [`[1]`][ref-1].
   5. Configuring the `Network`.
-       > Set adapter one of the network tab to bridged if you have a second network
-       > card and you want your server to run on it or NAT if you don't. I am gonna use
-       > `Intel Pro 1000 MT Desktop (82540EM)` as the Ubuntu takes it without any drivers.
+       * Set adapter one of the network tab to bridged if you have a second network
+       * card and you want your server to run on it or NAT if you don't. I am gonna use
+       * `Intel Pro 1000 MT Desktop (82540EM)` as the Ubuntu takes it without any drivers.
   6. Configuring the `Shared Folders`.
-       > Click on the buttin with the `folder +` sign.  
-       > An `Add Share` dialog will appear.  
-       > In `Folder Path` drop down menu select `Other...`
-       > Give it the location of your client. This becomes handy later.  
+       * Click on the buttin with the `folder +` sign.  
+       * An `Add Share` dialog will appear.  
+       * In `Folder Path` drop down menu select `Other...`
+       * Give it the location of your client. This becomes handy later.  
 
 Now Click `OK` on the settings window to apply your changes to the Ubuntu VM.
 Start it and follow the Ubuntu installation. until you install the Ubuntu OS
