@@ -57,12 +57,14 @@ function getTitle()
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
-  "start")
+  "startm")
     getTitle "Select title to start:" idtitle drtitle nmtitle
-
     echo "Starting package: $nmtitle ..."
-
     $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
+  ;;
+  "startr")
+    getTitle "Select title to start:" idtitle drtitle nmtitle
+    echo "Starting package: $nmtitle ..."
     $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
   ;;
   "install")
@@ -76,7 +78,7 @@ case "$action" in
       yes y | ./dependencies.sh
     fi
     
-    read -sp "What password does the mysql root user have ? " mysqlpa
+    read -sp "What password does the root user have ? " mysqlpa
     if test "$mysqlpa" == ""
     then
       echo -e "\nVersion: $(mysql --version)"
@@ -295,12 +297,18 @@ case "$action" in
     read -p "Continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
+      read -sp "What password does the root user have ? " mysqlpa
+      if test "$mysqlpa" == ""
+      then
+        echo "Please provide mysql root pasword first !"
+        exit 0
+      fi
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
       mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
       mysql -uroot -p$mysqlpa -e "flush privileges;"
     fi
   ;;
-  "purge-mysql-server")
+  "purge-mysql")
     echo "This will purge the mysql package like it was never installed"
     echo "All the data will be deleted and SQL uninstalled!!!"
     read -p "Continue with this process [y/N] ? " bool
@@ -318,9 +326,9 @@ case "$action" in
   ;;
   "config")
     getTitle "Select a title for the configuration:" idtitle drtitle nmtitle
-    gksu gedit $scriptpath/$drtitle/run/mangosd.conf
-    gksu gedit $scriptpath/$drtitle/run/realmd.conf
-    gksu gedit $scriptpath/$drtitle/run/ahbot.conf
+    vim $scriptpath/$drtitle/run/mangosd.conf
+    vim $scriptpath/$drtitle/run/realmd.conf
+    vim $scriptpath/$drtitle/run/ahbot.conf
   ;;
   "stats")
     echo "Home: $HOME"

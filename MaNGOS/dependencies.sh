@@ -3,6 +3,7 @@
 apt-get update
 # Dependencies
 
+apt-get install vim
 apt-get install build-essential
 apt-get install gcc
 apt-get install g++
