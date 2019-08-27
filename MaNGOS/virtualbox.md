@@ -60,10 +60,10 @@ Make sure you always `*.VDI`, if you want to extend the virtual HDD in the futur
 If you use `Dynamically allocated` the virtual HDD grows in size as you install sutff in the `GUEST`
 ( In our case the Ubuntu ). The `Fixed size` will allocate the whole HDD on creation.
 
-#### [File location and size]
- > This tells Oracle VB where to store your virtual HDD. It must be a valid file name.
- > I personally use the name, which I create my VMs with ( "Ubuntu WoW x64" )
- > and the limit which the virtual HDD should never exceed.
+#### `[File location and size]`
+This tells Oracle VB where to store your virtual HDD. It must be a valid file name.
+I personally use the name, which I create my VMs with ( "Ubuntu WoW x64" )
+and the limit which the virtual HDD should never exceed.
 
 #### Configure VM settings
 Right click on the created machine and select [`Settings`][ref-settings] ( Ctrl+S )
@@ -97,10 +97,11 @@ Right click on the created machine and select [`Settings`][ref-settings] ( Ctrl+
     downloaded in [`[1]`][ref-1].
  5. Configuring the `Network`.
   * Set adapter one of the network tab to bridged if you have a second network
-    card and you want your server to run on it or NAT if you don't. I am gonna use
-    `Intel Pro 1000 MT Desktop (82540EM)` as the Ubuntu takes it without any drivers.  
+    card and you want your server to run on it or NAT if you don't. Click on the little
+    blue triangle that sais `Advanced` and change `Adapter Type` to `Intel Pro 1000 MT Desktop (82540EM)`
+    as the Ubuntu takes it without any drivers.  
  6. Configuring the `Shared Folders`.
-  * Click on the buttin with the `folder +` sign.  
+  * Click on the button with the blue folder `+` sign.  
     An `Add Share` dialog will appear.  
     In `Folder Path` drop down menu select `Other...`
     Give it the location of your client. This becomes handy later.  
@@ -140,11 +141,11 @@ the continued MaNGOS project maps [installation procedure here][ref-maps].
 #### Extractiong client data
 For the sake of the totorial I will use the `nix*` extraction procedre, but with a bit of trickery.
 The script for extracting the maps is called `ExtractResources.sh` and it will probably fail in
-`GitBash` and `Cygwin` if you compiler the included map extraction tools under Ubuntu.
+`GitBash` and `Cygwin` if you compile the included map extraction tools under Ubuntu.
 That's why I created a [`shared folder`][ref-sharef] with the client as separate drive for the Ubuntu to 
 access when I configured the [`Shared Folders`][ref-sharef] option in the VM settings.
 Now open a root GUI explorer via `suto nautilus` in the terminal. This will open the nautilus explorer
-with root privileves as the `VM` shared folder drive is owned by the root user. Now copy the map
+with root privileges as the `VM` shared folder drive is owned by the root user. Now copy the map
 extracting tools in the root folder of of thle client where `WoW.exe` is located and start
 `./ExtractResources.sh`. This will create a bunch of folders like `maps`, `vmaps`, `mmaps`, `dbc`,
 `Cameras`, `Buildings`. Beware that `mmaps` and `vmaps` take very long to extract.
