@@ -340,6 +340,7 @@ case "$action" in
     ;;
     *)
       echo "Wrong configuration name [$option]!"
+      echo "Options: { mangosd | realmd | ahbot }"
     ;;
     esac
   ;;
@@ -350,7 +351,7 @@ case "$action" in
     echo "Path: $scriptpath"
   ;;
   *)
-    echo "Usage: $0 { update | install | remove | config | stats }"
+    echo "Usage: $0 { startm | startr | install | drop-mangos | purge-mysql | config | stats }"
   ;;
 esac
 

@@ -162,7 +162,7 @@ I make, because the onboard LAN is more vulnerable to PoE fails in Bulgaria and 
 If you are using `NAT`, just skip this step, otherwise if you bridged the network
 card like above, install the package `net-tools` using `sudo apt-get install net-tools`
 and run `ifconfig` in the terminal. It will show you the IP address of your bridged card
-assigned by your router `inet 10.0.2.15`. You must set the ralmlist IP to that IP, where
+assigned by your router. For example this is mine `inet 10.0.2.15`. You must set the ralmlist IP to that IP, where
 the `TITLE` value is located in front of the data table. After you are done, restart the server.
 ```
 mysql> show databases;
@@ -201,7 +201,8 @@ I am only gonna change the IP address of the server for the tutorial's sake.
 
 #### Connecting to the server
 Go to the root of your clent where `WoW.exe` is located and then go
-to [`Data/enUS/realmlist.wtf`][ref-realm] and change it to `10.0.2.15` or whatever.
+to [`Data/enUS/realmlist.wtf`][ref-realm] and change it to whatever you
+updated [in the previous step][ref-db-rlm-upd] ( ex. `10.0.2.15` ).
 Start the client from `WoW.exe`, not `Laucher.exe` !
 
 [ref-1]: https://www.ubuntu.com/download/desktop
@@ -216,3 +217,4 @@ Start the client from `WoW.exe`, not `Laucher.exe` !
 [ref-LAN]: https://www.intel.com/content/www/us/en/products/network-io/ethernet/gigabit-adapters/ct-desktop.html
 [ref-MB]: https://www.asrock.com/mb/AMD/970%20Extreme4/
 [ref-realm]: https://www.wikihow.com/Set-a-Realmlist-for-World-of-Warcraft
+[ref-db-rlm-upd]: https://github.com/dvdvideo1234/UbuntuBatches/wiki/MaNGOS#realmlist-setup-in-the-database
