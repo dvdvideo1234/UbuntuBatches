@@ -18,12 +18,17 @@ machine, so everything can become easy as pie when you mes it up :D
 ( Search the link in [`[2]`][ref-2] )
 
 #### Supported versions are found in the list below with the dedicated title ID.
-1. ID `0` [Vanilla](https://en.wikipedia.org/wiki/World_of_Warcraft) with repo [found here](https://github.com/cmangos/mangos-classic) and [database here](https://github.com/cmangos/classic-db)
-2. ID `1` [TBC](https://en.wikipedia.org/wiki/World_of_Warcraft:_The_Burning_Crusade) with repo [found here](https://github.com/cmangos/mangos-tbc) and [database here](https://github.com/cmangos/tbc-db)
-3. ID `2` [WotLK](https://en.wikipedia.org/wiki/World_of_Warcraft:_Wrath_of_the_Lich_King) with repo [found here](https://github.com/cmangos/mangos-wotlk) and [database here](https://github.com/cmangos/wotlk-db)
-4. ID `3` [Cataclism](https://en.wikipedia.org/wiki/World_of_Warcraft:_Cataclysm) with repo [found here](https://github.com/cmangos/mangos-cata) and [database here](https://github.com/cmangos/cata-db)
+1. ID `0` [`Vanilla`](https://en.wikipedia.org/wiki/World_of_Warcraft) with repo [found here](https://github.com/cmangos/mangos-classic) and [database here](https://github.com/cmangos/classic-db)
+2. ID `1` [`TBC`](https://en.wikipedia.org/wiki/World_of_Warcraft:_The_Burning_Crusade) with repo [found here](https://github.com/cmangos/mangos-tbc) and [database here](https://github.com/cmangos/tbc-db)
+3. ID `2` [`WotLK`](https://en.wikipedia.org/wiki/World_of_Warcraft:_Wrath_of_the_Lich_King) with repo [found here](https://github.com/cmangos/mangos-wotlk) and [database here](https://github.com/cmangos/wotlk-db)
+4. ID `3` [`Cataclism`](https://en.wikipedia.org/wiki/World_of_Warcraft:_Cataclysm) with repo [found here](https://github.com/cmangos/mangos-cata) and [database here](https://github.com/cmangos/cata-db)
+5. ID `4` [`Mists of Pandaria`](https://en.wikipedia.org/wiki/World_of_Warcraft:_Mists_of_Pandaria) with repo [found here](https://github.com/cmangos/mangos-mop) and [database here](https://github.com/cmangos/mop-db)
+6. ID `5` [`Legion`](https://en.wikipedia.org/wiki/World_of_Warcraft:_Legion) with repo [found here](https://github.com/cmangos/mangos-legion) and [database here](https://github.com/cmangos/legion-db)
 
-#### Cataclism is not yet suported because it does not have database in the repo!
+#### Unavailable optoions
+1. `Cataclism` is not yet supported because it does not have database in the repo.
+2. `Mists of Pandaria` does not have dedicated repositories and database.
+3. `Legion` does not have dedicated repositories and database.
 
 #### Prepare the software list
 First download all the stuff above and save it to folder of choice ( I am gonna call it `INSTALL` ).
