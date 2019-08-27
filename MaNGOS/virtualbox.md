@@ -199,11 +199,16 @@ I am only gonna change the IP address of the server for the tutorial's sake.
 3. `update realmlist set address = '10.0.2.15' where id = 1;`
 4. `commit;`
 
+#### Starting the server
+Start the server by using `./config start <option>`, where the <option>
+parameter may be either `mangos` or `realm`. Run these in separate terminal
+windows, but `NEVER` as root ! 
+
 #### Connecting to the server
-Go to the root of your clent where `WoW.exe` is located and then go
+Go to the root of your client where `WoW.exe` is located and then go
 to [`Data/enUS/realmlist.wtf`][ref-realm] and change it to whatever you
 updated [in the previous step][ref-db-rlm-upd] ( ex. `10.0.2.15` ).
-Start the client from `WoW.exe`, not `Laucher.exe` !
+Start the client from `WoW.exe`, not `Launcher.exe` !
 
 [ref-1]: https://www.ubuntu.com/download/desktop
 [ref-2]: https://www.virtualbox.org/wiki/Downloads

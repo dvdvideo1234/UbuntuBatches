@@ -57,15 +57,20 @@ function getTitle()
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
-  "startm")
+  "start")
     getTitle "Select title to start:" idtitle drtitle nmtitle
-    echo "Starting package: $nmtitle ..."
-    $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
-  ;;
-  "startr")
-    getTitle "Select title to start:" idtitle drtitle nmtitle
-    echo "Starting package: $nmtitle ..."
-    $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
+    case "$option" in
+    mangos)
+      $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
+    ;;
+    realm)
+      $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
+    ;;
+    *)
+      echo "Wrong configuration name [$option]!"./
+      echo "Options: { mangos | realm }"
+    ;;
+    esac
   ;;
   "install")
     getTitle "The directory will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle

@@ -7,8 +7,7 @@ folder of choice and make it executable using `sudo chmod +x config.sh`.
 Here are example commands currently available:
 
 ```
-  ./config.sh startm             --> Starts the installed mangos server
-  ./config.sh startr             --> Starts the installed realm server
+  ./config.sh start <option>     --> Starts the installed mangos/realm server
   ./config.sh install            --> Installs the sever in the folder chosen
   ./config.sh drop-mangos        --> Removes the mangos database from the SQL server
   ./config.sh purge-mysql        --> Completely removes the SQL server installed in dependencies
