@@ -25,7 +25,7 @@ machine, so everything can become easy as pie when you mes it up :D
 5. ID `4` [`Mists of Pandaria`](https://en.wikipedia.org/wiki/World_of_Warcraft:_Mists_of_Pandaria) with repo [found here](https://github.com/cmangos/mangos-mop) and [database here](https://github.com/cmangos/mop-db)
 6. ID `5` [`Legion`](https://en.wikipedia.org/wiki/World_of_Warcraft:_Legion) with repo [found here](https://github.com/cmangos/mangos-legion) and [database here](https://github.com/cmangos/legion-db)
 
-#### Unavailable optoions
+#### Unavailable options
 1. `Cataclism` is not yet supported because it does not have database in the repo.
 2. `Mists of Pandaria` does not have dedicated repositories and database.
 3. `Legion` does not have dedicated repositories and database.
