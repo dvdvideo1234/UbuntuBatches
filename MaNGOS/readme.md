@@ -37,15 +37,15 @@ in a fresh Ubuntu VirtualBox machine. Also, if you are searching for the markdow
 topic, [just look here][ref-vboxtut].
 
 ### Video tutorials
-[![](http://img.youtube.com/vi/cmcnGXcxGAA/1.jpg)](http://www.youtube.com/watch?v=cmcnGXcxGAA "")
-[![](http://img.youtube.com/vi/UbcHAtT80o4/2.jpg)](http://www.youtube.com/watch?v=UbcHAtT80o4 "")
-[![](http://img.youtube.com/vi/X_W1LDx31AU/3.jpg)](http://www.youtube.com/watch?v=X_W1LDx31AU "")  
-[![](http://img.youtube.com/vi/GiV5k3zrGYI/1.jpg)](http://www.youtube.com/watch?v=GiV5k3zrGYI "")
-[![](http://img.youtube.com/vi/dHBljqAbxsQ/1.jpg)](http://www.youtube.com/watch?v=dHBljqAbxsQ "")
-[![](http://img.youtube.com/vi/SGtRNFr1T3k/3.jpg)](http://www.youtube.com/watch?v=SGtRNFr1T3k "")  
-[![](http://img.youtube.com/vi/FGVUdKDeMNk/3.jpg)](http://www.youtube.com/watch?v=FGVUdKDeMNk "")
-[![](http://img.youtube.com/vi/O70R5csq2gg/3.jpg)](http://www.youtube.com/watch?v=O70R5csq2gg "")
-[![](http://img.youtube.com/vi/-1iAuZVTiyk/3.jpg)](http://www.youtube.com/watch?v=-1iAuZVTiyk "")  
+[![](https://img.youtube.com/vi/cmcnGXcxGAA/1.jpg)](http://www.youtube.com/watch?v=cmcnGXcxGAA "")
+[![](https://img.youtube.com/vi/UbcHAtT80o4/2.jpg)](http://www.youtube.com/watch?v=UbcHAtT80o4 "")
+[![](https://img.youtube.com/vi/X_W1LDx31AU/3.jpg)](http://www.youtube.com/watch?v=X_W1LDx31AU "")  
+[![](https://img.youtube.com/vi/GiV5k3zrGYI/1.jpg)](http://www.youtube.com/watch?v=GiV5k3zrGYI "")
+[![](https://img.youtube.com/vi/dHBljqAbxsQ/1.jpg)](http://www.youtube.com/watch?v=dHBljqAbxsQ "")
+[![](https://img.youtube.com/vi/SGtRNFr1T3k/3.jpg)](http://www.youtube.com/watch?v=SGtRNFr1T3k "")  
+[![](https://img.youtube.com/vi/FGVUdKDeMNk/3.jpg)](http://www.youtube.com/watch?v=FGVUdKDeMNk "")
+[![](https://img.youtube.com/vi/O70R5csq2gg/3.jpg)](http://www.youtube.com/watch?v=O70R5csq2gg "")
+[![](https://img.youtube.com/vi/-1iAuZVTiyk/3.jpg)](http://www.youtube.com/watch?v=-1iAuZVTiyk "")  
 
 Have fun with my installation script ;)
 
