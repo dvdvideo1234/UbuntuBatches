@@ -18,12 +18,12 @@ Here are example commands currently available:
 It will ask you series of questions in the process for proxy, dependencies and so on.
 The script is designed to be automatic, so there is no need to change anything manually !!!
 After the installation finishes, it will say `Enjoy your DB`. Then you must extract the
-client maps and vmaps as it's [shown here][ref-install] ( search for /maps,vmaps/ on the page )
+client maps and vmaps as it's [shown here][ref-install] ( search for `maps`, `vmaps` on the page )
 
 After you are done with that process ( Which takes very long, so grab you
 favorite movie and some popcorn ) you can start it like so:
 
-``` sudo ./config.sh start<deamon> ```
+``` sudo ./config.sh start <option> ```
 
 I made it universal, because I prefer my servers to be in `etc/var/srv/...` , but you might
 not prefer them there. Currently only the Vanilla, TBC and WoTLK servers are done, the others are
