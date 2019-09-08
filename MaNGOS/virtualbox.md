@@ -144,7 +144,7 @@ and you must extract and install the maps and vmaps yourself, so please follow
 the continued MaNGOS project maps [installation procedure here][ref-maps].
 
 #### Extractiong client data
-For the sake of the totorial I will use the `nix*` extraction procedre, but with a bit of trickery.
+For the sake of the totorial I will use the `nix*` extraction procedure, but with a bit of trickery.
 The script for extracting the maps is called `ExtractResources.sh` and it will probably fail in
 `GitBash` and `Cygwin` if you compile the included map extraction tools under Ubuntu.
 That's why I created a [`shared folder`][ref-sharef] with the client as separate drive for the Ubuntu to 
@@ -157,11 +157,35 @@ extracting tools in the root folder of of thle client where `WoW.exe` is located
 Copy these to `TITLE/run` when they are done extracting.
 
 #### Assigning a network card (If available)
-If you nave additional network card like I do, go to your [VM settings][ref-settings] and change the
+If you have additional network card like I do, go to your [VM settings][ref-settings] and change the
 network type `Attached to` from `NAT` to `Bridged adapter`. This will expose your other network
 card to the VM internally. For example I have two cards `Realtek RTL8111E` [integeated in the MB][ref-MB] and
 [`Intel CT Desktop 1Gb PCIE x1`][ref-LAN]. The intel is my daily driver and the realtek I bridbe to the VMs
 I make, because the onboard LAN is more vulnerable to PoE fails in Bulgaria and may fry the [MB][ref-MB].
+
+#### Open application dedicated ports
+If you have a router, you have to open the ports in its `Application virtual server` function somewhere in the settings.
+I have two routers sequentially attached to each other, so you need to open the ports in both of them. The executable
+`WoW.exe` need the following ports provided below. You need to open the `TCP` and `UTP` routes:
+```
+    TCP: 1119-1120,3724,4000,6112-6114
+    UDP: 1119-1120,3724,4000,6112-6114
+```
+
+#### Configure for `NAT`
+If you are using a `NAT`, it is just like another router layer between the `GUEST` and the `HOST`. In virtual box, you
+can find the option in the VM [`settings`][ref-settings], where the network setup options are located being `Settings -> Network ->
+Adapter#` ( Usually `Adapter 1` to `Adapter 4`). In the dedicated adapter number, I am using `Adapter 1` for my VM wired connection.
+In the adapter dedicated settings Change `Attached to:` to `NAT`. Click on the blue triangle `Advanced` to expand it. In the drop-down
+menu `Adapter Type:` select `Intel Pro 1000 MT Desktop (82540EM)` ( The one we used when we created the VM ). Click on the
+`Port Forwarding` button. It will open a window where you must enter your port list. Be aware that there is no option for port range
+so you must enter a port two times both for `TCP` and `UTP`. The columns are described below what they do:
+  * `Name      :` This is the application you will use the port for. I'll put `WoW`.
+  * `Protocol  :` This is the application protocol. I will put one for `UTP` and one for `TCP`.
+  * `Host IP   :` This is the IP of the `HOST` which runs the VM. Leave it blank.
+  * `Horst port:` This is the port on the `HOST` which runs the VM.
+  * `Guest IP  :` This is the IP of the `GUEST` machine which runs the server. Leave it blank.
+  * `Guest port:` This is the `GUEST` application internal port.
 
 #### Realmlist setup in the database
 If you are using `NAT`, just skip this step, otherwise if you bridged the network
