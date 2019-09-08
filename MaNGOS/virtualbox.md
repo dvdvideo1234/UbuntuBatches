@@ -188,11 +188,11 @@ so you must enter a port two times both for `TCP` and `UTP`. The columns are des
   * `Guest port:` This is the `GUEST` application internal port.
 
 #### Realmlist setup in the database
-If you are using `NAT`, just skip this step, otherwise if you bridged the network
-card like above, install the package `net-tools` using `sudo apt-get install net-tools`
+If you bridged the network card like above, install the package `net-tools` using `sudo apt-get install net-tools`
 and run `ifconfig` in the terminal. It will show you the IP address of your bridged card
 assigned by your router. For example this is mine `inet 10.0.2.15`. You must set the ralmlist IP to that IP, where
 the `TITLE` value is located in front of the data table. After you are done, restart the server.
+If you have a [public IP address][ref-public] provided by your [ISP][ref-isp], you can directly store it in the database.
 ```
 mysql> show databases;
 +--------------------+
@@ -239,6 +239,8 @@ to [`Data/enUS/realmlist.wtf`][ref-realm] and change it to whatever you
 updated [in the previous step][ref-db-rlm-upd] ( ex. `10.0.2.15` ).
 Start the client from `WoW.exe`, not `Launcher.exe` !
 
+[ref-isp]: https://en.wikipedia.org/wiki/Internet_service_provider
+[ref-public]: https://www.showmyipaddress.eu/
 [ref-1]: https://www.ubuntu.com/download/desktop
 [ref-2]: https://www.virtualbox.org/wiki/Downloads
 [ref-3]: https://www.virtualbox.org/wiki/Downloads
