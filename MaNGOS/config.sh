@@ -12,6 +12,7 @@ makecmd=""
 proxymc=""
 proxyrg="([0-9]{1,3}\.){3}[0-9]{1,3}\:[0-9]{1,5}"
 dummy=""
+result=0
 
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
@@ -61,10 +62,18 @@ case "$action" in
     getTitle "Select title to start:" idtitle drtitle nmtitle
     case "$option" in
     mangos)
-      $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
+      result=1
+      while [ $result -ne 0 ]; do
+        $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
+        result=$?
+      done
     ;;
     realm)
-      $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
+      result=1
+      while [ $result -ne 0 ]; do
+        $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
+        result=$?
+      done
     ;;
     *)
       echo "Wrong configuration name [$option]!"./
