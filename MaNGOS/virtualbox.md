@@ -143,15 +143,15 @@ After the installation is done. It will compile and install the `CMaNGOS` WoW se
 and you must extract and install the maps and vmaps yourself, so please follow
 the continued MaNGOS project maps [installation procedure here][ref-maps].
 
-#### Extractiong client data
+#### Extracting client data
 For the sake of the totorial I will use the `nix*` extraction procedure, but with a bit of trickery.
 The script for extracting the maps is called `ExtractResources.sh` and it will probably fail in
-`GitBash` and `Cygwin` if you compile the included map extraction tools under Ubuntu.
+[`GitBash`][ref-git-bash] and [`Cygwin`][ref-cygwin] if you compile the included map extraction tools under Ubuntu.
 That's why I created a [`shared folder`][ref-sharef] with the client as separate drive for the Ubuntu to 
 access when I configured the [`Shared Folders`][ref-sharef] option in the VM settings.
-Now open a root GUI explorer via `suto nautilus` in the terminal. This will open the nautilus explorer
+Now open a root GUI explorer via `suto nautilus` in the terminal. This will open the `nautilus` explorer
 with root privileges as the `VM` shared folder drive is owned by the root user. Now copy the map
-extracting tools in the root folder of of thle client where `WoW.exe` is located and start
+extracting tools in the root folder of the client where `WoW.exe` is located and then start
 `./ExtractResources.sh`. This will create a bunch of folders like `maps`, `vmaps`, `mmaps`, `dbc`,
 `Cameras`, `Buildings`. Beware that `mmaps` and `vmaps` take very long to extract.
 Copy these to `TITLE/run` when they are done extracting.
@@ -164,9 +164,11 @@ card to the VM internally. For example I have two cards `Realtek RTL8111E` [inte
 I make, because the onboard LAN is more vulnerable to PoE fails in Bulgaria and may fry the [MB][ref-MB].
 
 #### Open application dedicated ports
-If you have a router, you have to open the ports in its `Application virtual server` function somewhere in the settings.
-I have two routers sequentially attached to each other, so you need to open the ports in both of them. The executable
-`WoW.exe` need the following ports provided below. You need to open the `TCP` and `UTP` routes:
+If you [have a router][ref-router], you have to open the ports in its [`application virtual server`][ref-vir-srv]
+function somewhere in the settings. I have two routers sequentially attached to each other, so you need to open
+the ports in these that are not configured in [DMZ][ref-dmz]. The executable `WoW.exe` need the following ports
+provided below. You need to open the
+`TCP` and `UTP` routes:
 ```
     TCP: 1119-1120,3724,4000,6112-6114
     UDP: 1119-1120,3724,4000,6112-6114
@@ -186,6 +188,15 @@ so you must enter a port two times both for `TCP` and `UTP`. The columns are des
   * `Horst port:` This is the port on the `HOST` which runs the VM.
   * `Guest IP  :` This is the IP of the `GUEST` machine which runs the server. Leave it blank.
   * `Guest port:` This is the `GUEST` application internal port.
+
+Now you are ready to configure the `NAT` port forwarding, so give it [the ports listed above][ref-port-list].
+You can see how to configure the `NAT` forwarding in the table below for port `3724` which is used
+for gameplay. Do the same thing for [all ports][ref-port-list].
+
+| Name |Protocol|Host IP|Host port|Guest IP|Guest port|
+|------|--------|-------|---------|--------|----------|
+| WoW  |TCP     |       |3724     |        |3724      |
+| WoW  |UDP     |       |3724     |        |3724      |
 
 #### Realmlist setup in the database
 If you bridged the network card like above, install the package `net-tools` using `sudo apt-get install net-tools`
@@ -254,3 +265,9 @@ Start the client from `WoW.exe`, not `Launcher.exe` !
 [ref-MB]: https://www.asrock.com/mb/AMD/970%20Extreme4/
 [ref-realm]: https://www.wikihow.com/Set-a-Realmlist-for-World-of-Warcraft
 [ref-db-rlm-upd]: https://github.com/dvdvideo1234/UbuntuBatches/wiki/MaNGOS#realmlist-setup-in-the-database
+[ref-git-bash]: https://git-scm.com/downloads
+[ref-cygwin]: https://www.cygwin.com/
+[ref-router]: https://www.tp-link.com/us/business-networking/vpn-router/tl-r600vpn/
+[ref-vir-srv]: http://screenshots.portforward.com/routers/TP-Link/TL-R600VPN/Virtual_Servers.htm
+[ref-dmz]: https://en.wikipedia.org/wiki/DMZ_(computing)
+[ref-port-list]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/MaNGOS/virtualbox.md#open-application-dedicated-ports
