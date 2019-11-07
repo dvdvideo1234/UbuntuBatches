@@ -76,7 +76,7 @@ case "$action" in
       done
     ;;
     *)
-      echo "Wrong configuration name [$option]!"./
+      echo "Wrong configuration name [$option]!"
       echo "Options: { mangos | realm }"
     ;;
     esac
@@ -358,14 +358,20 @@ case "$action" in
     ;;
     esac
   ;;
-  "stats")
+  "paths")
     echo "Home: $HOME"
     echo "PWDD: $PWD"
     echo "Name: $scriptname"
     echo "Path: $scriptpath"
   ;;
   *)
-    echo "Usage: $0 { startm | startr | install | drop-mangos | purge-mysql | config | stats }"
+    echo "Please use some of the options in the list below for [./config.sh]."
+    echo "start <option>  --> Starts the server according to the option [mangos][realm] provided."
+    echo "install         --> Installs the sever in the folder chosen. Uses the script location."
+    echo "drop-mangos     --> Removes the mangos database from the SQL server. Done by project colaborators."
+    echo "purge-mysql     --> Completely removes the SQL server installed in dependencies."
+    echo "config <option> --> Edits the server configuration according to the option [mangos][realm] provided."
+    echo "paths           --> Displays the private server paths used by the installation."
   ;;
 esac
 

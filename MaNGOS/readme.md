@@ -13,7 +13,7 @@ folder of choice and make it executable using `sudo chmod +x config.sh`.
   ./config.sh drop-mangos        --> Removes the mangos database from the SQL server
   ./config.sh purge-mysql        --> Completely removes the SQL server installed in dependencies
   ./config.sh config <option>    --> Edits the server configuration according to the option provided
-  ./config.sh stats              --> Displays the private server paths used by the installation
+  ./config.sh paths              --> Displays the private server paths used by the installation
 ```
 ### How the script works
 It will ask you series of questions in the process for proxy, dependencies and so on.
@@ -25,7 +25,7 @@ client maps and vmaps as it's [shown here][ref-install] ( search for `maps`, `vm
 After you are done with that process ( Which takes very long, so grab you
 favorite movie and some popcorn ) you can start it like so:
 
-``` sudo ./config.sh start <option> ```
+``` ./config.sh start <option> ```
 
 ### Links and discussions
 I made it universal, because I prefer my servers to be in `etc/var/srv/...` , but you might
