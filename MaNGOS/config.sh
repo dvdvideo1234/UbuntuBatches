@@ -55,6 +55,20 @@ function getTitle()
   eval "$4='$res3'"
 }
 
+function shCreateDesktop()
+{
+  local key=$1
+  echo "#!/bin/bash" > $key.sh
+  chmod +x $key.sh
+  echo -e "" >> $key.sh
+  echo "xtitle \"${key^^}\"" >> $key.sh
+  echo -e "" >> $key.sh
+  echo "cd $PWD" >> $key.sh
+  echo "./config.sh start $key" >> $key.sh
+
+  mv $PWD/$key.sh $HOME/Desktop/$key.sh
+}
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -363,6 +377,10 @@ case "$action" in
     echo "PWDD: $PWD"
     echo "Name: $scriptname"
     echo "Path: $scriptpath"
+  ;;
+  "desktop-sh")
+    shCreateDesktop "realm"
+    shCreateDesktop "mangos"
   ;;
   *)
     echo "Please use some of the options in the list below for [./config.sh]."
