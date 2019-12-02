@@ -13,8 +13,10 @@ folder of choice and make it executable using `sudo chmod +x config.sh`.
   ./config.sh drop-mangos        --> Removes the mangos database from the SQL server
   ./config.sh purge-mysql        --> Completely removes the SQL server installed in dependencies
   ./config.sh config <option>    --> Edits the server configuration according to the option provided
+  ./config.sh desktop-sh         --> Creates titled terninals startup scripts on the desktop
   ./config.sh paths              --> Displays the private server paths used by the installation
 ```
+
 ### How the script works
 It will ask you series of questions in the process for proxy, dependencies and so on.
 The script is designed to be automatic, so there is no need to change anything manually !!!
