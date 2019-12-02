@@ -1,6 +1,7 @@
 #!/bin/bash
 
 apt-get update
+
 # Dependencies
 
 apt-get install vim
@@ -24,6 +25,7 @@ apt-get install libbz2-dev
 apt-get install cmake
 apt-get install subversion
 apt-get install libboost-all-dev
-apt get install xtitle
+apt-get install xtitle
 
 exit 0
+
