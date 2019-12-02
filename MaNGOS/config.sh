@@ -389,6 +389,7 @@ case "$action" in
     echo "drop-mangos     --> Removes the mangos database from the SQL server. Done by project colaborators."
     echo "purge-mysql     --> Completely removes the SQL server installed in dependencies."
     echo "config <option> --> Edits the server configuration according to the option [mangos][realm] provided."
+    echo "desktop-sh      --> Creates titled terninals startup scripts on the desktop for both server processes."
     echo "paths           --> Displays the private server paths used by the installation."
   ;;
 esac
