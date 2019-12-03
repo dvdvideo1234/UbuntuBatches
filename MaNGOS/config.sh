@@ -6,9 +6,9 @@ bool=""
 idtitle=""
 nmtitle=""
 drtitle=""
-proxysv=""
 mysqlpa=""
 makecmd=""
+proxysv=""
 proxymc=""
 proxyrg="([0-9]{1,3}\.){3}[0-9]{1,3}\:[0-9]{1,5}"
 dummy=""
@@ -157,23 +157,23 @@ case "$action" in
       rm -rf db
       case "$idtitle" in
       0)
-        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-classic.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/classic-db.git $scriptpath/$drtitle/db
       ;;
       1)
-        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/tbc-db.git $scriptpath/$drtitle/db
       ;;
       2)
-        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/wotlk-db.git $scriptpath/$drtitle/db
       ;;
       3)
-        git clone https://github.com/cmangos/mangos-$drtitle.git $scriptpath/$drtitle/mangos
-        git clone https://github.com/cmangos/$drtitle-db.git $scriptpath/$drtitle/db
+        git clone https://github.com/cmangos/mangos-cata.git $scriptpath/$drtitle/mangos
+        git clone https://github.com/cmangos/cata-db.git $scriptpath/$drtitle/db
       ;;
       *)
-        echo "$nmtitle package not matched to git [$idtitle] !"
+        echo "$nmtitle package not matched to git [$idtitle][$drtitle] !"
         exit 0
       ;;
       esac
