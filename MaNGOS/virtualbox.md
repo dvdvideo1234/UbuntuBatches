@@ -138,9 +138,9 @@ I have a script [dedicated to this here][ref-repo] ( View the readme.md for furt
 Download [the script][ref-repo] to your folder of choice ( I will call it `SEVER` ), mark it as
 executable `sudo chmod +x config.sh` and run it. The title `TITLE` that you chose will be installed
 in the `SERVER/TITLE`. directory. Now follow the console prompt and anwer the questions seen.
-If you are not using a proxy, answer `Are you using a proxy [n or <proxy:port>] ?` with `n`
-After the installation is done. It will compile and install the `CMaNGOS` WoW server.
-and you must extract and install the maps and vmaps yourself, so please follow
+If you are not using a proxy, answer `Are you using a proxy [n or <proxy:port>] ?` with `n`.
+After the installation is done, it will compile and install the `CMaNGOS` WoW server.
+The next thing needed is extracting and installing the maps and vmaps yourself, so please follow
 the continued MaNGOS project maps [installation procedure here][ref-maps].
 
 #### Extracting client data
