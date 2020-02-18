@@ -105,7 +105,7 @@ case "$action" in
     then
       yes y | ./dependencies.sh
     fi
-    
+
     read -sp "What password does the root user have ? " mysqlpa
     if test "$mysqlpa" == ""
     then
@@ -125,16 +125,16 @@ case "$action" in
       echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
       echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
       echo "5. If the password conversion function does not work use: SET CREDENTIALS FOR 'root' TO '<new_password>';"
-      echo "5. flush privileges;"
-      echo "6. commit;"
-      echo "7. exit;"
-      echo "8. sudo /etc/init.d/mysql stop"
-      echo "9. sudo /etc/init.d/mysql start"
-      echo "10. If starting the service fails, just restart the system."
+      echo "6. flush privileges;"
+      echo "7. commit;"
+      echo "8. exit;"
+      echo "9. sudo /etc/init.d/mysql stop"
+      echo "10. sudo /etc/init.d/mysql start"
+      echo "11. If starting the service fails, just restart the system."
       echo "Now start the installation again but this time give the password you set."
       exit 0
     fi
-        
+
     read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
     proxymc=$(grep -oE $proxyrg <<< $proxysv)
     if test "$proxysv" == "$proxymc"
@@ -259,7 +259,7 @@ case "$action" in
       rm -f $scriptpath/$drtitle/run/mangosd.conf
       rm -f $scriptpath/$drtitle/run/realmd.conf
       rm -f $scriptpath/$drtitle/run/ahbot.conf
-      
+
       if [ -d "$scriptpath/$drtitle/mangos/src" ]; then
         cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
         cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
@@ -345,8 +345,8 @@ case "$action" in
     fi
   ;;
   "purge-mysql")
-    echo "This will purge the mysql package like it was never installed"
-    echo "All the data will be deleted and SQL uninstalled!!!"
+    echo "This will purge the mysql package like it was never installed !"
+    echo "All the data will be deleted and SQL uninstalled !!!"
     read -p "Continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
