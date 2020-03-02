@@ -50,7 +50,7 @@ Name it whatever you like but keep it consistent ( I used `Ubuntu WoW x64` ). Th
 `Linux` and the version `Ubuntu x32 or x64` depending on point [`[1]`][ref-1] ). Click `Next`
 
 #### `[Memory]`
-Press ( Ctrl + Shift + Esc ) to open the task manager and view how much RAM do you have free.
+Press ( `Ctrl + Shift + Esc` ) to open the task manager and view how much RAM do you have free.
 You can use the half of it. I had 16GB free, so I went for 8GB.
 
 #### `[Hard disk]`
@@ -67,11 +67,11 @@ If you use `Dynamically allocated` the virtual HDD grows in size as you install 
 
 #### `[File location and size]`
 This tells Oracle VB where to store your virtual HDD. It must be a valid file name.
-I personally use the name, which I create my VMs with ( "Ubuntu WoW x64" )
+I personally use the name, which I create my VMs with ( `Ubuntu WoW x64` )
 and the limit which the virtual HDD should never exceed.
 
 #### Configure VM settings
-Right click on the created machine and select [`Settings`][ref-settings] ( Ctrl+S )
+Right click on the created machine and select [`Settings`][ref-settings] ( `Ctrl+S` )
  1. We are now going to configure the general settings, so click on `General`.
     1. **Tab `Advanced`**
       * `Shared clipboard`: `Bidirectional`  
@@ -83,27 +83,28 @@ Right click on the created machine and select [`Settings`][ref-settings] ( Ctrl+
       * Pointing device: USB tablet  
       * Extended features: Check only `I/O APIC`, `Hardware Clock in UTC Time`  
     2. **Tab `Processor`**
-      * `Processor`: Give it all CPUs available  
-      * `Execution cap`: Never go all the way up to 100. I keep it at 70%  
-      * Enable `PAE/NX` checked  
-      * Enable `Nexted VT-x/AMD-V` checked if you have CPU virtualization acceleration  
+      * `Processor(s)`: Give it CPU cores as many as power of two, but less than total ( I have `6` cores on my [`Phenom 1090T`][ref-phenom], so I went with `4` for the VM )
+      * `Execution cap`: Keep the execution cap at `100%`. It always works better with less than the actual cores and topped execution cap.
+      * Enable `PAE/NX` checked, to expose the PAE address to the VM.  
     3. **Tab `Acceleration`**
-      * Check all the check-boxes and set interface to default.
+      * `Paravirtualization interface` Drop down, select `KVM` ( Kernel based VM )  
+      * Enable `Nested VT-x/AMD-V` checked, if you have CPU VM acceleration ( I do have `AMD-V` )  
+      * Enable `Nested paging` checked, if you have CPU VM acceleration ( I do have `AMD-V` )  
  3. Configuring the `Display`
     1. **Tab `Screen`**
-      * Video memory: `128` or `64` `MB` is quite good  
+      * Video memory: `128` or `64` `MB` is quite good as we are making a server after all . 
       * Monitor count: How many monitors is it displayed in. I use one of my two.  
       * Do not mess with the other tabs :D
  4. Configuring the `Storage`.
   * Here you will have a storage tree with `IDE` and `SATA`.
     Go ahead and delete the IDE controller `Right-click->Delete` or `Del`, then add a `CD`
     drive to the `SATA` controller by clicking the `CD` icon with the green plus sign.
-    A prompt will appear for media selection. Click "Chose Disk" and insert the ISO
+    A prompt will appear for media selection. Click `Chose Disk` and insert the `ISO`
     downloaded in [`[1]`][ref-1].
  5. Configuring the `Network`.
   * Set adapter one of the network tab to bridged if you have a second network
     card and you want your server to run on it or NAT if you don't. Click on the little
-    blue triangle that sais `Advanced` and change `Adapter Type` to `Intel Pro 1000 MT Desktop (82540EM)`
+    blue triangle that says `Advanced` and change `Adapter Type` to `Intel Pro 1000 MT Desktop (82540EM)`
     as the Ubuntu takes it without any drivers.  
  6. Configuring the `Shared Folders`.
   * Click on the button with the blue folder `+` sign.  
@@ -149,7 +150,7 @@ The script for extracting the maps is called `ExtractResources.sh` and it will p
 [`GitBash`][ref-git-bash] and [`Cygwin`][ref-cygwin] if you compile the included map extraction tools under Ubuntu.
 That's why I created a [`shared folder`][ref-sharef] with the client as separate drive for the Ubuntu to 
 access when I configured the [`Shared Folders`][ref-sharef] option in the VM settings.
-Now open a root GUI explorer via `suto nautilus` in the terminal. This will open the `nautilus` explorer
+Now open a root GUI explorer via `sudo nautilus` in the terminal. This will open the `nautilus` explorer
 with root privileges as the `VM` shared folder drive is owned by the root user. Now copy the map
 extracting tools in the root folder of the client where `WoW.exe` is located and then start
 `./ExtractResources.sh`. This will create a bunch of folders like `maps`, `vmaps`, `mmaps`, `dbc`,
@@ -160,7 +161,7 @@ Copy these to `TITLE/run` when they are done extracting.
 If you have additional network card like I do, go to your [VM settings][ref-settings] and change the
 network type `Attached to` from `NAT` to `Bridged adapter`. This will expose your other network
 card to the VM internally. For example I have two cards `Realtek RTL8111E` [integeated in the MB][ref-MB] and
-[`Intel CT Desktop 1Gb PCIE x1`][ref-LAN]. The intel is my daily driver and the realtek I bridbe to the VMs
+[`Intel CT Desktop 1Gb PCIE x1`][ref-LAN]. The intel is my daily driver and the realtek I bridge to the VMs
 I make, because the onboard LAN is more vulnerable to PoE fails in Bulgaria and may fry the [MB][ref-MB].
 
 #### Open application dedicated ports
@@ -185,7 +186,7 @@ so you must enter a port two times both for `TCP` and `UTP`. The columns are des
   * `Name      :` This is the application you will use the port for. I'll put `WoW`.
   * `Protocol  :` This is the application protocol. I will put one for `UTP` and one for `TCP`.
   * `Host IP   :` This is the IP of the `HOST` which runs the VM. Leave it blank.
-  * `Horst port:` This is the port on the `HOST` which runs the VM.
+  * `Host port :` This is the port on the `HOST` which runs the VM.
   * `Guest IP  :` This is the IP of the `GUEST` machine which runs the server. Leave it blank.
   * `Guest port:` This is the `GUEST` application internal port.
 
@@ -201,7 +202,7 @@ for gameplay. Do the same thing for [all ports][ref-port-list].
 #### Realmlist setup in the database
 If you bridged the network card like above, install the package `net-tools` using `sudo apt-get install net-tools`
 and run `ifconfig` in the terminal. It will show you the IP address of your bridged card
-assigned by your router. For example this is mine `inet 10.0.2.15`. You must set the ralmlist IP to that IP, where
+assigned by your router. For example this is mine `inet 10.0.2.15`. You must set the `realmlist` `IP` to the one, where
 the `TITLE` value is located in front of the data table. After you are done, restart the server.
 If you have a [public IP address][ref-public] provided by your [ISP][ref-isp], you can directly store it in the database.
 ```
@@ -242,13 +243,13 @@ I am only gonna change the IP address of the server for the tutorial's sake.
 #### Starting the server
 Start the server by using `./config start <option>`, where the <option>
 parameter may be either `mangos` or `realm`. Run these in separate terminal
-windows, but `NEVER` as root ! 
+windows, but **_`NEVER`_** as root ! 
 
 #### Connecting to the server
 Go to the root of your client where `WoW.exe` is located and then go
 to [`Data/enUS/realmlist.wtf`][ref-realm] and change it to whatever you
 updated [in the previous step][ref-db-rlm-upd] ( ex. `10.0.2.15` ).
-Start the client from `WoW.exe`, not `Launcher.exe` !
+Start the client from `WoW.exe`, **_`NOT`_** `Launcher.exe` !
 
 [ref-isp]: https://en.wikipedia.org/wiki/Internet_service_provider
 [ref-public]: https://www.showmyipaddress.eu/
@@ -271,3 +272,4 @@ Start the client from `WoW.exe`, not `Launcher.exe` !
 [ref-vir-srv]: http://screenshots.portforward.com/routers/TP-Link/TL-R600VPN/Virtual_Servers.htm
 [ref-dmz]: https://en.wikipedia.org/wiki/DMZ_(computing)
 [ref-port-list]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/MaNGOS/virtualbox.md#open-application-dedicated-ports
+[ref-phenom]: http://www.cpu-world.com/CPUs/K10/AMD-Phenom%20II%20X6%201090T%20Black%20Edition%20-%20HDT90ZFBK6DGR%20(HDT90ZFBGRBOX).html
