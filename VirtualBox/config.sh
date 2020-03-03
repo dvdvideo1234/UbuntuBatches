@@ -1,10 +1,10 @@
 #!/bin/bash
 
 bool=""
+sisy=$(echo $(uname -a))
 
-echo "This script is designed to be run before"
-echo "inserting the Guest Addition CD in Ubuntu VirtualBox system."
-echo "Your system: ${uname -a}"
+echo "This script is designed to be run before inserting the Guest Addition CD in Ubuntu VirtualBox system."
+echo "Your system: $sisy"
 read -p "Do you want to install this software [y/N]? : " bool
 
 if test "$bool" == "y"
