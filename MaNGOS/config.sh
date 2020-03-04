@@ -12,6 +12,9 @@ proxysv=""
 proxymc=""
 proxyrg="([0-9]{1,3}\.){3}[0-9]{1,3}\:[0-9]{1,5}"
 dummy=""
+startpk=""
+endpk=""
+sqlstmt=""
 result=0
 
 scriptname=$(readlink -f "$0")
@@ -381,6 +384,23 @@ case "$action" in
   "desktop-sh")
     shCreateDesktop "realm"
     shCreateDesktop "mangos"
+  ;;
+  "dbc-export")
+    read -p "File: " dummy
+    dummy="${dummy,,}"
+    echo $dummy
+    sqlstmt=$(cat $scriptpath/settings/stmt/$dummy.txt)
+    echo $sqlstmt
+    getTitle "Select title to start:" idtitle drtitle nmtitle
+    read -sp "What password does the root user have ? " mysqlpa
+    read -p "Start: " startpk
+    read -p "End  : " endpk
+    
+    
+    
+    
+    mysql -uroot -p$mysqlpa > dbc-export.txt
+
   ;;
   *)
     echo "Please use some of the options in the list below for [./config.sh]."

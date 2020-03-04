@@ -1,0 +1,11 @@
+SELECT entry,
+       class,
+       subclass,
+       unk0,
+       material,
+       displayid,
+       inventorytype,
+       sheath
+  FROM ${TITLE}mangos.item_template
+ WHERE entry >= ${STARTPK}
+   AND entry <= ${ENDPK};
