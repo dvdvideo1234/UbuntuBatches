@@ -196,7 +196,7 @@ case "$action" in
         makecmd="$makecmd -DDEBUG=0"
       fi
 
-      read -p "Enable precomputed headers [y/N] ? " bool
+      read -p "Enable precompiled headers [y/N] ? " bool
       if test "$bool" == "y"
       then
         makecmd="$makecmd -DPCH=1"
@@ -212,7 +212,7 @@ case "$action" in
         makecmd="$makecmd -DWARNINGS=OFF"
       fi
 
-      read -p "Enable Postgre SQL [y/N] ? " bool
+      read -p "Enable PostgreSQL [y/N] ? " bool
       if test "$bool" == "y"
       then
         makecmd="$makecmd -DPOSTGRESQL=ON"
@@ -228,7 +228,7 @@ case "$action" in
         makecmd="$makecmd -DBUILD_EXTRACTORS=OFF"
       fi
 
-      read -p "Enable building scriptdev [y/N] ? " bool
+      read -p "Enable building script DEV [y/N] ? " bool
       if test "$bool" == "y"
       then
         makecmd="$makecmd -DBUILD_SCRIPTDEV=ON"
@@ -336,7 +336,7 @@ case "$action" in
       read -sp "What password does the root user have ? " mysqlpa
       if test "$mysqlpa" == ""
       then
-        echo "Please provide mysql root pasword first !"
+        echo "Please provide mysql root password first !"
         exit 0
       fi
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
@@ -360,7 +360,7 @@ case "$action" in
       apt-get autoclean
     fi
   ;;
-  "config")
+  "setup")
     getTitle "Select a title for the configuration:" idtitle drtitle nmtitle
     case "$option" in
     mangosd|realmd|ahbot)
@@ -386,10 +386,10 @@ case "$action" in
     echo "Please use some of the options in the list below for [./config.sh]."
     echo "start <option>  --> Starts the server according to the option [mangos][realm] provided."
     echo "install         --> Installs the sever in the folder chosen. Uses the script location."
-    echo "drop-mangos     --> Removes the mangos database from the SQL server. Done by project colaborators."
+    echo "drop-mangos     --> Removes the mangos database from the SQL server. Done by project collaborators."
     echo "purge-mysql     --> Completely removes the SQL server installed in dependencies."
-    echo "config <option> --> Edits the server configuration according to the option [mangos][realm] provided."
-    echo "desktop-sh      --> Creates titled terninals startup scripts on the desktop for both server processes."
+    echo "setup <option>  --> Edits the server configuration according to the option [mangos][realm][ahbot] provided."
+    echo "desktop-sh      --> Creates titled terminals startup scripts on the desktop for both server processes."
     echo "paths           --> Displays the private server paths used by the installation."
   ;;
 esac
