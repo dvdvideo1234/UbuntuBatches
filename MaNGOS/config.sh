@@ -386,21 +386,17 @@ case "$action" in
     shCreateDesktop "mangos"
   ;;
   "dbc-export")
-    read -p "File: " dummy
-    dummy="${dummy,,}"
-    echo $dummy
-    sqlstmt=$(cat $scriptpath/settings/stmt/$dummy.txt)
-    echo $sqlstmt
-    getTitle "Select title to start:" idtitle drtitle nmtitle
-    read -sp "What password does the root user have ? " mysqlpa
-    read -p "Start: " startpk
-    read -p "End  : " endpk
-    
-    
-    
-    
-    mysql -uroot -p$mysqlpa > dbc-export.txt
-
+    read -p "DBC file: " dummy
+    read -p "Start PK: " startpk
+    read -p "End   PK: " endpk
+    getTitle "Select a title for extraction:" idtitle drtitle nmtitle
+    sqlstmt=$(cat $scriptpath/settings/stmt/${dummy,,}.txt)
+    sqlstmt=$(echo ${sqlstmt/\{TITLE\}/$drtitle})
+    sqlstmt=$(echo ${sqlstmt/\{STARTPK\}/$startpk})
+    sqlstmt=$(echo ${sqlstmt/\{ENDPK\}/$endpk})
+    echo "STMT: $sqlstmt"
+    read -sp "What password does the root user have ? " mysqlpa    
+    mysql -uroot -p$mysqlpa -e "$sqlstmt" > dbc-export.txt
   ;;
   *)
     echo "Please use some of the options in the list below for [./config.sh]."
@@ -411,6 +407,7 @@ case "$action" in
     echo "setup <option>  --> Edits the server configuration according to the option [mangos][realm][ahbot] provided."
     echo "desktop-sh      --> Creates titled terminals startup scripts on the desktop for both server processes."
     echo "paths           --> Displays the private server paths used by the installation."
+    echo "dbc-export      --> Exports data from the database associated with a [*.dbc] file."
   ;;
 esac
 

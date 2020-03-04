@@ -6,6 +6,7 @@ SELECT entry,
        displayid,
        inventorytype,
        sheath
-  FROM ${TITLE}mangos.item_template
- WHERE entry >= ${STARTPK}
-   AND entry <= ${ENDPK};
+  FROM {TITLE}mangos.item_template
+ WHERE entry >= {STARTPK}
+   AND entry <= {ENDPK}
+  ORDER BY entry;
