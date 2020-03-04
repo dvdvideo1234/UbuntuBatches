@@ -58,6 +58,27 @@ SELECT entry,
   FROM item_template
  WHERE entry BETWEEN 80000 AND 100000;
 ```
+
+#### If you want to export range of items in `*.CSV`
+```sql
+SELECT entry,
+       CLASS,
+       subclass,
+       unk0,
+       material,
+       displayid,
+       inventorytype,
+       sheath
+  INTO OUTFILE 'cl_export_items.csv'
+  FIELDS TERMINATED BY ','
+  ENCLOSED BY '"'
+  ESCAPED BY '\'
+  LINES TERMINATED BY '\n'
+  FROM item_template
+ WHERE entry >= 100
+   AND entry <= 500;
+```
+
 Either method should result in you retrieving the Item(s) you added.
 
 ## What do I do next?
