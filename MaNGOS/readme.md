@@ -34,10 +34,23 @@ I made it universal, because I prefer my servers to be in `etc/var/srv/...` , bu
 not prefer them there. Currently only the Vanilla, TBC and WoTLK servers are done, the others are
 just options that can available in the future
 
-The discussion [topic you can find here][ref-script] about how the CMaNGOS server can be unstalled
+The discussion [topic you can find here][ref-script] about how the CMaNGOS server can be installed
 in a fresh Ubuntu VirtualBox machine. Also, if you are searching for the markdown version of the
 topic, [just look here][ref-vboxtut].
 
+### Setup cMaNGOS accounts ( Executable terminal for MANGOS )
+1. Create account `account create [username] [password]`
+2. Setup expansion `account set addon [username] [0 to 3]`
+ * [0] Classic ( No need to do anything )
+ * [1] TBC
+ * [2] WoTLK
+ * [3] Cataclysm
+3. Apply GM level `account set gmlevel [username] [0 to 3]`
+ * [0] Plater
+ * [1] Moderator
+ * [2] Game master
+ * [3] Administrator
+  
 ### Video tutorials
 [![](https://img.youtube.com/vi/cmcnGXcxGAA/1.jpg)](http://www.youtube.com/watch?v=cmcnGXcxGAA "")
 [![](https://img.youtube.com/vi/UbcHAtT80o4/2.jpg)](http://www.youtube.com/watch?v=UbcHAtT80o4 "")

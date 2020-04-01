@@ -28,8 +28,13 @@ apt-get install python-glade2
 apt-get install system-config-samba
 
 # Install Gnome tweak tool
+apt-add-repository ppa:webupd8team/gnome3
+apt-add-repository ppa:numix/ppa
+apt-get update
 apt-get install chrome-gnome-shell
+apt-get install gnome-shell-extensions
 apt-get install gnome-tweak-tool
+mkdir ~/.themes
 
 # Install Unity tweak tool
 apt-get install unity-webapps-common unity-tweak-tool
