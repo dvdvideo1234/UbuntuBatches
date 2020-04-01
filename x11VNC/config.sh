@@ -10,11 +10,9 @@ configloc="/etc/init"
 function getInput()
 {
   local rez=""
-  echo $1
-  read -sp rez
+  read -sp $1 rez
   while [ -z "$rez" ]; do
-    echo Enter $2
-    read -sp rez
+    read -sp $1 rez
   done
   eval "$3=$rez"
 }
@@ -35,7 +33,7 @@ case "$action" in
     echo "end script" >> $srvname.conf
     mv $scriptpath/$srvname.conf $configloc/$srvname.conf
     
-    getInput "Enter installation password: " "a password" param
+    getInput "Enter installation password: " param
     $srvname -storepasswd $param $scriptpath/$srvname.pass
   ;;
   "remove")
