@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bashsudo
 
 if (( $EUID != 0 )); then
   echo "The script must be run as root !"
@@ -28,12 +28,12 @@ apt-get install python-glade2
 apt-get install system-config-samba
 
 # Install Gnome tweak tool
-sudo apt install chrome-gnome-shell
-sudo apt-get install gnome-tweak-tool
+apt-get install chrome-gnome-shell
+apt-get install gnome-tweak-tool
 
 # Install Unity tweak tool
-sudo apt-get install unity-webapps-common unity-tweak-tool
-sudo apt-get install unity-tweak-tool
+apt-get install unity-webapps-common unity-tweak-tool
+apt-get install unity-tweak-tool
 
 exit 0
 
