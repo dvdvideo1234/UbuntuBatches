@@ -10,9 +10,9 @@ configloc="/etc/init"
 function getInput()
 {
   local rez=""
-  read -sp $1 rez
+  read -sp "$1" rez
   while [ -z "$rez" ]; do
-    read -sp $1 rez
+    read -sp "$1" rez
   done
   eval "$3=$rez"
 }
