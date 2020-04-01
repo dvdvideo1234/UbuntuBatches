@@ -14,7 +14,7 @@ function getInput()
   while [ -z "$rez" ]; do
     read -sp "$1" rez
   done
-  eval "$3=$rez"
+  eval "$2=$rez"
 }
 
 case "$action" in
