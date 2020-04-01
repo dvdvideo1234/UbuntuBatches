@@ -11,10 +11,10 @@ function getInput()
 {
   local rez=""
   echo $1
-  read -r rez
+  read -sp rez
   while [ -z "$rez" ]; do
-    echo Please put $2
-    read -r rez
+    echo Enter $2
+    read -sp rez
   done
   eval "$3=$rez"
 }
@@ -35,7 +35,7 @@ case "$action" in
     echo "end script" >> $srvname.conf
     mv $scriptpath/$srvname.conf $configloc/$srvname.conf
     
-    getInput "What password do you wish to use ?" "a password" param
+    getInput "Enter installation password: " "a password" param
     $srvname -storepasswd $param $scriptpath/$srvname.pass
   ;;
   "remove")
