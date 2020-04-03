@@ -157,6 +157,17 @@ extracting tools in the root folder of the client where `WoW.exe` is located and
 `Cameras`, `Buildings`. Beware that `mmaps` and `vmaps` take very long to extract.
 Copy these to `TITLE/run` when they are done extracting.
 
+### Applying data directory in the configuration
+
+After you copy the server content, you must not forget to update the [mangos configuration][ref-mangosd-conf]
+stored in in the `TITLE/run` under `mangosd.conf`. In this file you must search for `mangosd.conf/DataDir = "."`.
+Update the value with the full path to the `run` folder including. You can extract this information by executing
+`echo $PWD` inside the `run` folder in the terminal. When you obtain the path, you will have something similar
+to this as for the sake of the tutorial I installed the server in the `Documents` folder of the dedicated user:
+```
+  DataDir = "/home/mangos/Documents/UbuntuBatches/MaNGOS/classic/run"
+```
+
 #### Assigning a network card (If available)
 If you have additional network card like I do, go to your [VM settings][ref-settings] and change the
 network type `Attached to` from `NAT` to `Bridged adapter`. This will expose your other network

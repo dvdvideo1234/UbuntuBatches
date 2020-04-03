@@ -40,5 +40,9 @@ mkdir ~/.themes
 apt-get install unity-webapps-common unity-tweak-tool
 apt-get install unity-tweak-tool
 
+# Install SSH
+apt-get install ssh
+ufw allow ssh
+
 exit 0
 
