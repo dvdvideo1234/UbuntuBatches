@@ -167,12 +167,14 @@ I make, because the onboard LAN is more vulnerable to PoE fails in Bulgaria and 
 #### Open application dedicated ports
 If you [have a router][ref-router], you have to open the ports in its [`application virtual server`][ref-vir-srv]
 function somewhere in the settings. I have two routers sequentially attached to each other, so you need to open
-the ports in these that are not configured in [DMZ][ref-dmz]. The executable `WoW.exe` need the following ports
-provided below. You need to open the
-`TCP` and `UTP` routes:
+the ports in these that are not configured in [DMZ][ref-dmz]. Besides general port forwarding you also need to open
+dedicated port to the world itself . You can find such information in the [mangos world configuration file][ref-mangosd-conf].
+This value must correspond to the [realm `port`][ref-world-port] [stored in the database][ref-world] ( drf. `8085` ).
+The game play realm port can be found in the [dedicated realm configuration file][ref-realmd-conf] ( def. `3724` ).
+The executable `WoW.exe` needs the following ports provided below. You need to open the `TCP` and `UTP` routes:
 ```
-    TCP: 1119-1120,3724,4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
-    UDP: 1119-1120,3724,4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
+  TCP: 1119-1120,(realmd.conf/RealmServerPort:3724),4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
+  UDP: 1119-1120,(realmd.conf/RealmServerPort:3724),4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
 ```
 
 #### Configure for `NAT`
@@ -251,6 +253,10 @@ to [`Data/enUS/realmlist.wtf`][ref-realm] and change it to whatever you
 updated [in the previous step][ref-db-rlm-upd] ( ex. `10.0.2.15` ).
 Start the client from `WoW.exe`, **_`NOT`_** `Launcher.exe` !
 
+[ref-realmd-conf]: https://github.com/cmangos/mangos-wotlk/blob/master/src/realmd/realmd.conf.dist.in
+[ref-mangosd-conf]: https://github.com/cmangos/mangos-wotlk/blob/master/src/mangosd/mangosd.conf.dist.in
+[ref-world]: https://github.com/cmangos/issues/wiki/Realmlist#port
+[ref-world-port]: https://github.com/cmangos/issues/wiki/Realmlist#port
 [ref-isp]: https://en.wikipedia.org/wiki/Internet_service_provider
 [ref-public]: https://www.showmyipaddress.eu/
 [ref-1]: https://www.ubuntu.com/download/desktop
