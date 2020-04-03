@@ -171,8 +171,8 @@ the ports in these that are not configured in [DMZ][ref-dmz]. The executable `Wo
 provided below. You need to open the
 `TCP` and `UTP` routes:
 ```
-    TCP: 1119-1120,3724,4000,6112-6114
-    UDP: 1119-1120,3724,4000,6112-6114
+    TCP: 1119-1120,3724,4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
+    UDP: 1119-1120,3724,4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
 ```
 
 #### Configure for `NAT`
