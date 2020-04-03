@@ -169,7 +169,7 @@ If you [have a router][ref-router], you have to open the ports in its [`applicat
 function somewhere in the settings. I have two routers sequentially attached to each other, so you need to open
 the ports in these that are not configured in [DMZ][ref-dmz]. Besides general port forwarding you also need to open
 dedicated port to the world itself . You can find such information in the [mangos world configuration file][ref-mangosd-conf].
-This value must correspond to the [realm `port`][ref-world-port] [stored in the database][ref-world] ( drf. `8085` ).
+This value must correspond to the [realm `port`][ref-world-port] [stored in the database][ref-world] ( def. `8085` ).
 The game play realm port can be found in the [dedicated realm configuration file][ref-realmd-conf] ( def. `3724` ).
 The executable `WoW.exe` needs the following ports provided below. You need to open the `TCP` and `UTP` routes:
 ```
@@ -255,7 +255,7 @@ Start the client from `WoW.exe`, **_`NOT`_** `Launcher.exe` !
 
 [ref-realmd-conf]: https://github.com/cmangos/mangos-wotlk/blob/master/src/realmd/realmd.conf.dist.in
 [ref-mangosd-conf]: https://github.com/cmangos/mangos-wotlk/blob/master/src/mangosd/mangosd.conf.dist.in
-[ref-world]: https://github.com/cmangos/issues/wiki/Realmlist#port
+[ref-world]: https://github.com/cmangos/issues/wiki/Realmlist
 [ref-world-port]: https://github.com/cmangos/issues/wiki/Realmlist#port
 [ref-isp]: https://en.wikipedia.org/wiki/Internet_service_provider
 [ref-public]: https://www.showmyipaddress.eu/
