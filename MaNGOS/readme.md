@@ -46,7 +46,7 @@ topic, [just look here][ref-vboxtut].
  * [2] WoTLK
  * [3] Cataclysm
 3. Apply GM level `account set gmlevel [username] [0 to 3]`
- * [0] Plater
+ * [0] Player
  * [1] Moderator
  * [2] Game master
  * [3] Administrator
