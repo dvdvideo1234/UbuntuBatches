@@ -16,6 +16,7 @@ then
     apt-get install linux-headers-$(uname -r)
     apt-get install build-essential dkms
     apt-get install linux-virtual
+    apt-get install virtualbox-guest-x11
     apt-get install virtualbox-ose-guest-x11
     apt-get install virtualbox-guest-dkms 
     apt-get install linux-signed-generic
@@ -50,6 +51,17 @@ then
   fi
   
   echo "Proceed with installing Guest Additions CD .."
+else
+  read -p "Run auto cleanup [y/N]? : " bool
+  if test "$bool" == "y"
+    apt autoremove
+    apt autoclean
+  fi
+  
+  read -p "Restart clipboard [y/N]? : " bool
+  if test "$bool" == "y"
+    pkill 'VBoxClient --clipboard' -f & sleep 1 && VBoxClient --clipboard
+  fi
 fi
 
 exit 0
