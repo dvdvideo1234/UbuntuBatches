@@ -54,12 +54,14 @@ then
 else
   read -p "Run auto cleanup [y/N]? : " bool
   if test "$bool" == "y"
+  then
     apt autoremove
     apt autoclean
   fi
   
   read -p "Restart clipboard [y/N]? : " bool
   if test "$bool" == "y"
+  then
     pkill 'VBoxClient --clipboard' -f & sleep 1 && VBoxClient --clipboard
   fi
 fi
