@@ -40,18 +40,18 @@ function getTitle()
   do
     echo "$i >> $(sed -e 's/.*\[\([^]]*\)\].*/\1/g' <<< ${info[$i]})"
   done
-  read -p "Enter title ID: " res1
+  read -p "Enter ID: " res1
 
   if [[ -z "${info[$res1]}" ]]
   then
-    echo "Wrong title ID: $res1"
+    echo "Wrong ID: $res1"
     exit 0
   fi
 
   res3=$(sed -e 's/.*\[\([^]]*\)\].*/\1/g' <<< ${info[$res1]})
   res2=$(sed -e 's/[^{]*{\([^}]*\)}.*/\1/g' <<< ${info[$res1]})
 
-  echo "getTitle: [$res1] > $res3 > $res2"
+  echo "Chosen: [$res1] > $res3 > $res2"
 
   eval "$2='$res1'"
   eval "$3='$res2'"
@@ -64,10 +64,9 @@ function shCreateDesktop()
   echo "#!/bin/bash" > $key.sh
   chmod +x $key.sh
   echo -e "" >> $key.sh
-  echo "xtitle \"${key^^}\"" >> $key.sh
-  echo -e "" >> $key.sh
   echo "cd $PWD" >> $key.sh
   echo "./config.sh start $key" >> $key.sh
+  echo -e "" >> $key.sh
 
   mv $PWD/$key.sh $HOME/Desktop/$key.sh
 }
@@ -79,18 +78,28 @@ case "$action" in
     getTitle "Select title to start:" idtitle drtitle nmtitle
     case "$option" in
     mangos)
-      result=1
-      while [ $result -ne 0 ]; do
-        $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
-        result=$?
-      done
+      if test -f "$scriptpath/$drtitle/run/bin/mangosd"; then
+        xtitle "${option^^} [${drtitle^^}]"
+        result=1
+        while [ $result -ne 0 ]; do
+          $scriptpath/$drtitle/run/bin/mangosd -c $scriptpath/$drtitle/run/mangosd.conf -a $scriptpath/$drtitle/run/ahbot.conf
+          result=$?
+        done
+      else
+        echo "Executable ${option^^} missing for [${nmtitle}] !"
+      fi
     ;;
     realm)
-      result=1
-      while [ $result -ne 0 ]; do
-        $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
-        result=$?
-      done
+      if test -f "$scriptpath/$drtitle/run/bin/realmd"; then
+        xtitle "${option^^} [${drtitle^^}]"
+        result=1
+        while [ $result -ne 0 ]; do
+          $scriptpath/$drtitle/run/bin/realmd  -c $scriptpath/$drtitle/run/realmd.conf
+          result=$?
+        done
+      else
+        echo "Executable ${option^^} missing for [${nmtitle}] !"
+      fi
     ;;
     *)
       echo "Wrong configuration name [$option]!"
