@@ -17,8 +17,9 @@ then
     apt-get install build-essential dkms
     apt-get install linux-virtual
     apt-get install virtualbox-guest-x11
-    apt-get install virtualbox-ose-guest-x11
     apt-get install virtualbox-guest-dkms 
+    apt-get install virtualbox-guest-utils
+    apt-get install virtualbox-ose-guest-x11
     apt-get install linux-signed-generic
     
     read -p "Do you want to run package-update [y/N]? : " bool
@@ -55,8 +56,8 @@ else
   read -p "Run auto cleanup [y/N]? : " bool
   if test "$bool" == "y"
   then
-    apt autoremove
-    apt autoclean
+    apt-get autoremove
+    apt-get autoclean
   fi
   
   read -p "Restart clipboard [y/N]? : " bool
