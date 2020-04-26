@@ -157,8 +157,7 @@ extracting tools in the root folder of the client where `WoW.exe` is located and
 `Cameras`, `Buildings`. Beware that `mmaps` and `vmaps` take very long to extract.
 Copy these to `TITLE/run` when they are done extracting.
 
-### Applying data directory in the configuration
-
+#### Applying data directory in the configuration
 After you copy the server content, you must not forget to update the [mangos configuration][ref-mangosd-conf]
 stored in in the `TITLE/run` under `mangosd.conf`. In this file you must search for `mangosd.conf/DataDir = "."`.
 Update the value with the full path to the `run` folder including. You can extract this information by executing
@@ -182,11 +181,36 @@ the ports in these that are not configured in [DMZ][ref-dmz]. Besides general po
 dedicated port to the world itself . You can find such information in the [mangos world configuration file][ref-mangosd-conf].
 This value must correspond to the [realm `port`][ref-world-port] [stored in the database][ref-world] ( def. `8085` ).
 The game play realm port can be found in the [dedicated realm configuration file][ref-realmd-conf] ( def. `3724` ).
-The executable `WoW.exe` needs the following ports provided below. You need to open the `TCP` and `UTP` routes:
+The executable `WoW.exe` needs the following ports provided below. You need to open the `TCP` and `UDP` routes:
 ```
   TCP: 1119-1120,(realmd.conf/RealmServerPort:3724),4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
   UDP: 1119-1120,(realmd.conf/RealmServerPort:3724),4000,6112-6114,(mangosd.conf/WorldServerPort=realmd.realmlist.port:8085)
 ```
+#### Ubuntu firewall forwarding ( `ufw` Uncomplicated firewall )
+If you have enabled the integrated [Ubuntu firewall][ref-ufw] ( invoked with the command [`ufw`][ref-ufw] in the
+[terminal][ref-ubuntu-term] ), you must tell it to also pass the dedicated application ports for the `realm`
+and `world` server hosting. We will only need `allow` and `deny` for the tutorial. You will have something like this:
+```
+Ubuntu@Server:~$ sudo ufw status numbered
+Status: active
+
+     To                         Action      From
+     --                         ------      ----
+[18] 1119 (v6)                  ALLOW IN    Anywhere (v6)
+[19] 1120 (v6)                  ALLOW IN    Anywhere (v6)
+[20] 3724 (v6)                  ALLOW IN    Anywhere (v6)
+[21] 4000 (v6)                  ALLOW IN    Anywhere (v6)
+[22] 6112 (v6)                  ALLOW IN    Anywhere (v6)
+[23] 6113 (v6)                  ALLOW IN    Anywhere (v6)
+[24] 6114 (v6)                  ALLOW IN    Anywhere (v6)
+[25] 8085 (v6)                  ALLOW IN    Anywhere (v6)
+```
+Displaying all your software firewall rules in the list above with their dedicated numbers. Beware if you need to
+delete a rule, **you will need its number to delete one rule at a time, because the list order is sequential**!
+1. For deleting a rule you type `sudo ufw delete 22` to delete rule number `22` `[22] 6112 (v6)`
+2. For allow/deny a port you type `sudo ufw allow/deny 3724` to open or close `3724` on `TCP/UDP`
+3. For allow/deny a port range you type `sudo ufw allow/deny 3724:3726/tcp` both one for `TCP` and one for `UDP`
+4. If you need additional information for controlling your personal version of [`ufw`][ref-ufw] type `sudo ufw help`
 
 #### Configure for `NAT`
 If you are using a `NAT`, it is just like another router layer between the `GUEST` and the `HOST`. In virtual box, you
@@ -195,9 +219,9 @@ Adapter#` ( Usually `Adapter 1` to `Adapter 4`). In the dedicated adapter number
 In the adapter dedicated settings Change `Attached to:` to `NAT`. Click on the blue triangle `Advanced` to expand it. In the drop-down
 menu `Adapter Type:` select `Intel Pro 1000 MT Desktop (82540EM)` ( The one we used when we created the VM ). Click on the
 `Port Forwarding` button. It will open a window where you must enter your port list. Be aware that there is no option for port range
-so you must enter a port two times both for `TCP` and `UTP`. The columns are described below what they do:
+so you must enter a port two times both for `TCP` and `UDP`. The columns are described below what they do:
   * `Name      :` This is the application you will use the port for. I'll put `WoW`.
-  * `Protocol  :` This is the application protocol. I will put one for `UTP` and one for `TCP`.
+  * `Protocol  :` This is the application protocol. I will put one for `UDP` and one for `TCP`.
   * `Host IP   :` This is the IP of the `HOST` which runs the VM. Leave it blank.
   * `Host port :` This is the port on the `HOST` which runs the VM.
   * `Guest IP  :` This is the IP of the `GUEST` machine which runs the server. Leave it blank.
@@ -264,6 +288,8 @@ to [`Data/enUS/realmlist.wtf`][ref-realm] and change it to whatever you
 updated [in the previous step][ref-db-rlm-upd] ( ex. `10.0.2.15` ).
 Start the client from `WoW.exe`, **_`NOT`_** `Launcher.exe` !
 
+[ref-ubuntu-term]: https://ubuntu.com/tutorials/command-line-for-beginners#1-overview
+[ref-ufw]: https://wiki.ubuntu.com/UncomplicatedFirewall
 [ref-realmd-conf]: https://github.com/cmangos/mangos-wotlk/blob/master/src/realmd/realmd.conf.dist.in
 [ref-mangosd-conf]: https://github.com/cmangos/mangos-wotlk/blob/master/src/mangosd/mangosd.conf.dist.in
 [ref-world]: https://github.com/cmangos/issues/wiki/Realmlist
