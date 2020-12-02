@@ -2,8 +2,14 @@
 
 bool=""
 proxysv=""
-vergfx="0.5.2"
+
+# Version taken from: https://www.openttd.org/downloads/opengfx-releases/latest.html
+vergfx="0.6.0"
+
+# Version taken from: https://www.openttd.org/downloads/opensfx-releases/latest.html
 versfx="0.2.3"
+
+# Version taken from: https://www.openttd.org/downloads/openmsx-releases/latest.html
 vermsx="0.3.1"
 
 scriptname=$(readlink -f "$0")
