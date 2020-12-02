@@ -37,3 +37,5 @@ apt-get install make
 apt-get install checkinstall
 apt-get install git
 apt-get install gksu
+
+exit 0
