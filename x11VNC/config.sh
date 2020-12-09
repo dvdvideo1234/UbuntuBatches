@@ -20,10 +20,10 @@ function getInput()
 case "$action" in
   "install")
     echo "Installing package ... $srvname"
-    apt-get update
-    apt-get install $srvname
+    sudo apt-get update
+    sudo apt-get install $srvname
     
-    rm -f $scriptpath/$srvname.conf
+    sudo rm -f $scriptpath/$srvname.conf
     echo "start on login-session-start" > $srvname.conf
     echo "" >> $srvname.conf
     echo "script" >> $srvname.conf
@@ -31,17 +31,17 @@ case "$action" in
     echo "sudo $scriptname start $param" >> $srvname.conf
     echo "" >> $srvname.conf
     echo "end script" >> $srvname.conf
-    mv $scriptpath/$srvname.conf $configloc/$srvname.conf
+    sudo mv $scriptpath/$srvname.conf $configloc/$srvname.conf
     
     getInput "Enter installation password: " param
     $srvname -storepasswd $param $scriptpath/$srvname.pass
   ;;
   "remove")
     echo "Removing package ..."
-    /usr/bin/killall $srvname
-    apt-get remove $srvname
-    mv $configloc/$srvname.conf $scriptpath/$srvname.conf
-    rm -f $configloc/$srvname.conf
+    sudo /usr/bin/killall $srvname
+    sudo apt-get remove $srvname
+    sudo mv $configloc/$srvname.conf $scriptpath/$srvname.conf
+    sudo rm -f $configloc/$srvname.conf
     rm -f $scriptpath/$srvname.pass
   ;;
   "config")
@@ -49,10 +49,10 @@ case "$action" in
     gedit $configloc/$srvname.conf
   ;;
   "start")
-    /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth /var/run/lightdm/root/:0 -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
+    /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth guess -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
   ;;
   "stop")
-    /usr/bin/killall $srvname
+    sudo /usr/bin/killall $srvname
   ;;
   "stats")
     echo "Name: $srvname"
