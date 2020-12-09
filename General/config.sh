@@ -22,12 +22,15 @@ sensors-detect
 apt-get install psensor
 
 # Install samba
+# Note: Do not put `sudo` in front of the bash script!
 apt-get install samba
 apt-get install samba-common
 apt-get install python-glade2
 apt-get install system-config-samba
 
 # Install Gnome tweak tool
+# /etc/init.d/smbd restart
+# /etc/samba/smb.conf
 apt-add-repository ppa:webupd8team/gnome3
 apt-add-repository ppa:numix/ppa
 apt-get update
