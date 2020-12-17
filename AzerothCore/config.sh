@@ -57,7 +57,7 @@ case "$action" in
     read -p "Install dependencies [y/N] ? " bool
     if test "$bool" == "y"
     then
-      yes y | ./dependencies.sh
+      sudo yes y | ./dependencies.sh
     fi
         
     read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
@@ -65,10 +65,10 @@ case "$action" in
     if test "$proxysv" == "$proxymc"
     then
       echo "Proxy set to [$proxysv] !"
-      git config --global http.proxy "$proxysv"
+      sudo git config --global http.proxy "$proxysv"
     else
-      git config --global -l
-      git config --global --unset http.proxy
+      sudo git config --global -l
+      sudo git config --global --unset http.proxy
     fi
 
     verclang=$(clang --version | perl -pe 'if(($_)=/([0-9]+([.][0-9]+)+)/){$_.="\n"}')
@@ -76,7 +76,7 @@ case "$action" in
     
     cusclangpa=$(which clang)
     read -p "Installed CLang is version: [$verclang] > [6.0]! Continue [y/N] ? " bool
-    if test "$bool" != "y"
+    if test "${bool^^}" != "Y"
     then
       echo "CLang path: $cusclangpa"
       read -p "Custom CLang path: " cusclangpa
@@ -91,7 +91,7 @@ case "$action" in
     # https://www.osetc.com/en/how-to-install-the-latest-version-of-cmake-on-ubuntu-16-04-18-04-linux.html
     cuscmakepa=$(which cmake)
     read -p "Installed CMake is version: [$vercmake] > [3.8]! Continue [y/N] ? " bool
-    if test "$bool" != "y"
+    if test "${bool^^}" != "Y"
     then
       echo "CMake path: $cuscmakepa"
       read -p "Custom CMake path: " cuscmakepa
@@ -103,11 +103,15 @@ case "$action" in
       fi
     fi
     
-    git clone https://github.com/azerothcore/azerothcore-wotlk.git $scriptpath/$servernmae
+    read -p "Download the sources [y/N] ? " bool
+    if test "${bool^^}" == "Y"
+    then
+      git clone https://github.com/azerothcore/azerothcore-wotlk.git $scriptpath/$servernmae
+    fi
     
     getMode "Select general install mode:" modeinstall
     
-    case "$idtitle" in
+    case "$modeinstall" in
     0)
       # http://www.azerothcore.org/wiki/Install-with-Docker
     ;;
@@ -139,6 +143,94 @@ case "$action" in
         echo "11. If starting the service fails, just restart the system."
         echo "Now start the installation again but this time give the password you set."
         exit 0
+      else
+        read -p "Rebuild the sources [y/N] ? " bool
+        if test "${bool^^}" == "Y"
+        then
+          rm -rf $scriptpath/$servernmae/build
+          mkdir  $scriptpath/$servernmae/build
+             cd  $scriptpath/$servernmae/build
+
+          makecmd="cmake ../ -DCMAKE_INSTALL_PREFIX=$scriptpath/run"
+
+          read -sp "Path to CLANG to use : /usr/bin/clang" bool
+          if test "$bool" == ""
+          then
+            makecmd="$makecmd -DCMAKE_C_COMPILER=/usr/bin/clang"
+          else
+            makecmd="$makecmd -DCMAKE_C_COMPILER=$bool"
+          fi
+
+          read -sp "Path to CLANG++ to use : /usr/bin/clang++" bool
+          if test "$bool" == ""
+          then
+            makecmd="$makecmd -DCMAKE_CXX_COMPILER=/usr/bin/clang++"
+          else
+            makecmd="$makecmd -DCMAKE_CXX_COMPILER=$bool"
+          fi
+
+          read -sp "Enable WARNINGS ? " bool
+          if test "${bool^^}" == "Y"
+          then
+            makecmd="$makecmd -DWITH_WARNINGS=1"
+          else
+            makecmd="$makecmd -DWITH_WARNINGS=0"
+          fi
+
+          read -sp "Enable TOOLS ? " bool
+          if test "${bool^^}" == "Y"
+          then
+            makecmd="$makecmd -DTOOLS=1"
+          else
+            makecmd="$makecmd -DTOOLS=0"
+          fi
+
+          read -sp "Enable SCRIPTS ? " bool
+          if test "${bool^^}" == "Y"
+          then
+            makecmd="$makecmd -DSCRIPTS=1"
+          else
+            makecmd="$makecmd -DSCRIPTS=0"
+          fi
+
+          read -sp "Enable performance improvements ? " bool
+          if test "${bool^^}" == "Y"
+          then
+            makecmd="$makecmd -DENABLE_EXTRAS=1"
+          else
+            makecmd="$makecmd -DENABLE_EXTRAS=0"
+          fi
+
+          read -sp "Enable extra logs ? " bool
+          if test "${bool^^}" == "Y"
+          then
+            makecmd="$makecmd -DENABLE_EXTRA_LOGS=1"
+          else
+            makecmd="$makecmd -DENABLE_EXTRA_LOGS=0"
+          fi
+
+          read -sp "Enable core PCH ? " bool
+          if test "${bool^^}" == "Y"
+          then
+            makecmd="$makecmd -DUSE_COREPCH=1"
+          else
+            makecmd="$makecmd -DUSE_COREPCH=0"
+          fi
+
+          read -sp "Enable script PCH ? " bool
+          if test "${bool^^}" == "Y"
+          then
+            makecmd="$makecmd -DUSE_SCRIPTPCH=1"
+          else
+            makecmd="$makecmd -DUSE_SCRIPTPCH=0"
+          fi
+
+          echo Command: $makecmd
+
+          eval "$makecmd"
+          make -j 4
+          make install
+        fi
       fi
     ;;
   ;;
