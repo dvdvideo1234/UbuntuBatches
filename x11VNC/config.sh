@@ -21,17 +21,11 @@ case "$action" in
   "install")
     echo "Installing package ... $srvname"
     sudo apt-get update
+    
+    sudo apt-get install vim
     sudo apt-get install $srvname
     
-    sudo rm -f $scriptpath/$srvname.conf
-    echo "start on login-session-start" > $srvname.conf
-    echo "" >> $srvname.conf
-    echo "script" >> $srvname.conf
-    echo "" >> $srvname.conf
-    echo "sudo $scriptname start $param" >> $srvname.conf
-    echo "" >> $srvname.conf
-    echo "end script" >> $srvname.conf
-    sudo mv $scriptpath/$srvname.conf $configloc/$srvname.conf
+    # TODO: Utilize the information in the autostart folder
     
     getInput "Enter installation password: " param
     $srvname -storepasswd $param $scriptpath/$srvname.pass
@@ -46,7 +40,7 @@ case "$action" in
   ;;
   "config")
     echo "Opening settings ..."
-    gedit $configloc/$srvname.conf
+    sudo vim $configloc/$srvname.conf
   ;;
   "start")
     /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth guess -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
