@@ -32,6 +32,7 @@ case "$action" in
     echo "#!/bin/bash" > $scriptpath/run.sh
     echo "" >> $scriptpath/run.sh
     echo "$scriptpath/config.sh start $param" >> $scriptpath/run.sh
+    echo "" >> $scriptpath/run.sh
     sudo chmod +x run.sh
   ;;
   "remove")

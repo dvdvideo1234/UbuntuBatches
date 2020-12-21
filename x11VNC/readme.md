@@ -11,6 +11,7 @@ via `./config.sh` with one of the following parameters:
   * `start <port>`   Starts `x11vnc` using the port provided
   * `stop`           Stop `x11vnc` by killing the process
   * `stats`          Views the common script variable paths
+  * `run`            Creates a run script with the dedicated port
   
 **None: Type `./config.sh <option>` which is one of the following**  
 **Note: Do not put `sudo` in front of the bash script!**
