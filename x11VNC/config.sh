@@ -20,8 +20,7 @@ function getInput()
 case "$action" in
   "install")
     echo "Installing package ... $srvname"
-    sudo apt-get update
-    
+    sudo apt-get update 
     sudo apt-get install vim
     sudo apt-get install $srvname
     
@@ -31,14 +30,14 @@ case "$action" in
     $srvname -storepasswd $param $scriptpath/$srvname.pass
   ;;
   "run")
+    echo "Scripting package ... $srvname"
     echo "#!/bin/bash" > $scriptpath/run.sh
     echo "" >> $scriptpath/run.sh
     echo "$scriptpath/config.sh start $param" >> $scriptpath/run.sh
-    echo "" >> $scriptpath/run.sh
     sudo chmod +x run.sh
   ;;
   "remove")
-    echo "Removing package ..."
+    echo "Removing package ... $srvname"
     sudo /usr/bin/killall $srvname
     sudo apt-get remove $srvname
     sudo mv $configloc/$srvname.conf $scriptpath/$srvname.conf
@@ -46,16 +45,19 @@ case "$action" in
     rm -f $scriptpath/$srvname.pass
   ;;
   "config")
-    echo "Opening settings ..."
+    echo "Configuring package ... $srvname"
     sudo vim $configloc/$srvname.conf
   ;;
   "start")
+    echo "Starting package ... $srvname"
     /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth guess -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
   ;;
   "stop")
+    echo "Stopping package ... $srvname"
     sudo /usr/bin/killall $srvname
   ;;
   "stats")
+    echo "Stats package ... $srvname"
     echo "Name: $srvname"
     echo "Scrn: $scriptname"
     echo "Path: $scriptpath"
