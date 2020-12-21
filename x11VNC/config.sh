@@ -24,6 +24,8 @@ case "$action" in
     
     sudo apt-get install vim
     sudo apt-get install $srvname
+    
+    eval "$scriptname run $param"
         
     getInput "Enter installation password: " param
     $srvname -storepasswd $param $scriptpath/$srvname.pass
