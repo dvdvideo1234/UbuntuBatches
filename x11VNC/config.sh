@@ -24,11 +24,15 @@ case "$action" in
     
     sudo apt-get install vim
     sudo apt-get install $srvname
-    
-    # TODO: Utilize the information in the autostart folder
-    
+        
     getInput "Enter installation password: " param
     $srvname -storepasswd $param $scriptpath/$srvname.pass
+  ;;
+  "run")
+    echo "#!/bin/bash" > $scriptpath/run.sh
+    echo "" >> $scriptpath/run.sh
+    echo "$scriptpath/config.sh start $param" >> $scriptpath/run.sh
+    sudo chmod +x run.sh
   ;;
   "remove")
     echo "Removing package ..."
