@@ -29,8 +29,9 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
 3. In `Remote host` write `192.168.0.XXX:<PORT>`
   * The address `192.168.0.XXX` is the internal `<IP>` of the Lime2 board
   * The value of `<PORT>` is the port you have used to install x11VNC
-  * The password will be stared automatically by the installer as `<PASSWORD>`
-4. Provide to the `VNC autentication` window the `<IP>:<PORT>` and `<PASSWORD>` and click OK
+  * The password will be stored automatically by the installer as `<PASSWORD>`
+  * Dedicated `run` script will be automatically created for the specified `<PORT>`
+4. Provide to the `VNC autentication` window the `<IP>:<PORT>` and `<PASSWORD>` then click OK
 5. For connecting outside of the LAN area forward the `<PORT>` in your router to `<IP>` server
 6. Now you are connected to the VNC server
 
