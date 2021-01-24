@@ -216,7 +216,7 @@ delete a rule, **you will need its number to delete one rule at a time, because 
 If you are using a `NAT`, it is just like another router layer between the `GUEST` and the `HOST`. In virtual box, you
 can find the option in the VM [`settings`][ref-settings], where the network setup options are located being `Settings -> Network ->
 Adapter#` ( Usually `Adapter 1` to `Adapter 4` ). In the dedicated adapter number, I am using `Adapter 1` for my VM wired connection.
-In the adapter dedicated settings Change `Attached to:` to `NAT`. Click on the blue triangle `Advanced` to expand it. In the drop-down
+In the adapter dedicated settings change `Attached to:` to `NAT`. Click on the blue triangle `Advanced` to expand it. In the drop-down
 menu `Adapter Type:` select `Intel Pro 1000 MT Desktop (82540EM)` ( The one we used when we created the VM ). Click on the
 `Port Forwarding` button. It will open a window where you must enter your port list. Be aware that there is no option for port range
 so you must enter a port two times both for `TCP` and `UDP`. The columns are described below what they do:
