@@ -12,27 +12,27 @@ then
   read -p "Do you want to install dependencies [y/N]? : " bool
   if test "$bool" == "y"
   then
-    apt-get update
-    apt-get install linux-headers-$(uname -r)
-    apt-get install build-essential dkms
-    apt-get install linux-virtual
-    apt-get install virtualbox-guest-x11
-    apt-get install virtualbox-guest-dkms 
-    apt-get install virtualbox-guest-utils
-    apt-get install virtualbox-ose-guest-x11
-    apt-get install linux-signed-generic
+    sudo apt-get update
+    sudo apt-get install linux-headers-$(uname -r)
+    sudo apt-get install build-essential dkms
+    sudo apt-get install linux-virtual
+    sudo apt-get install virtualbox-guest-x11
+    sudo apt-get install virtualbox-guest-dkms 
+    sudo apt-get install virtualbox-guest-utils
+    sudo apt-get install virtualbox-ose-guest-x11
+    sudo apt-get install linux-signed-generic
     
     read -p "Do you want to run package-update [y/N]? : " bool
     if test "$bool" == "y"
     then
       echo "The following packages have upgrade option ..."
-      apt list --upgradable
+      sudo apt list --upgradable
       
       read -p "Start package upgrade [y/N]? : " bool
       if test "$bool" == "y"
       then
         echo "Upgrading package list ..."
-        apt upgrade
+        sudo apt upgrade
       fi  
       
       read -p "Reboot the system [y/N]? : " bool
@@ -47,7 +47,7 @@ then
   read -p "Do you want to run force-update [y/N]? : " bool
   if test "$bool" == "y"
   then
-    update-manager -d
+    sudo update-manager -d
     echo "Click the RESTART button in the update dialog box"
   fi
   
@@ -56,14 +56,14 @@ else
   read -p "Run auto cleanup [y/N]? : " bool
   if test "$bool" == "y"
   then
-    apt-get autoremove
-    apt-get autoclean
+    sudo apt-get autoremove
+    sudo apt-get autoclean
   fi
   
   read -p "Restart clipboard [y/N]? : " bool
   if test "$bool" == "y"
   then
-    pkill 'VBoxClient --clipboard' -f & sleep 1 && VBoxClient --clipboard
+    sudo pkill 'VBoxClient --clipboard' -f & sleep 1 && VBoxClient --clipboard
   fi
 fi
 
