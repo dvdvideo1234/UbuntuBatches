@@ -5,7 +5,7 @@ if (( $EUID != 0 )); then
   exit 0
 fi
 
-# Refresh PPAs
+# Clean PPAs
 apt-get autoremove
 apt-get autoclean
 
@@ -50,6 +50,10 @@ ufw allow ssh
 # exFAT support
 apt-get exfat-fuse
 apt-get exfat-utils
+
+# Clean PPAs
+apt-get autoremove
+apt-get autoclean
 
 exit 0
 
