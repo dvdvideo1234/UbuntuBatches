@@ -48,8 +48,11 @@ apt-get install ssh
 ufw allow ssh
 
 # exFAT support
-apt-get exfat-fuse
-apt-get exfat-utils
+apt-get install exfat-fuse
+apt-get install exfat-utils
+
+# Internet and network crap
+apt-get instal net-tools
 
 # Clean PPAs
 apt-get autoremove
