@@ -6,7 +6,8 @@ if (( $EUID != 0 )); then
 fi
 
 # Refresh PPAs
-sudo apt-get autoremove && sudo apt-get autoclean
+apt-get autoremove
+apt-get autoclean
 
 # Install GParted
 wget -q -O- http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
@@ -45,6 +46,10 @@ apt-get install unity-tweak-tool
 # Install SSH
 apt-get install ssh
 ufw allow ssh
+
+# exFAT support
+apt-get exfat-fuse
+apt-get exfat-utils
 
 exit 0
 
