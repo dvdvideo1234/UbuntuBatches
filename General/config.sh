@@ -1,4 +1,4 @@
-#!/bin/bashsudo
+#!/bin/bash
 
 if (( $EUID != 0 )); then
   echo "The script must be run as root !"
@@ -25,10 +25,12 @@ apt-get install psensor
 # Install samba
 # /etc/init.d/smbd restart
 # /etc/samba/smb.conf
-apt-get install samba
+apt-get install python3-samba
+apt-get install samba-common-bin
 apt-get install samba-common
-apt-get install python-glade2
-apt-get install system-config-samba
+apt-get install samba-libs
+apt-get install samba
+ufw allow samba
 
 # Install Gnome tweak tool
 apt-add-repository ppa:webupd8team/gnome3
