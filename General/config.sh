@@ -5,6 +5,11 @@ if (( $EUID != 0 )); then
   exit 0
 fi
 
+# Add the user to sudo group
+# usermod -aG sudo <user>
+# /etc/sudoers
+# cd /etc/sudoers.d
+
 # Clean PPAs
 apt-get autoremove
 apt-get autoclean
