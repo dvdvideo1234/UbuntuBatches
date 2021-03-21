@@ -23,14 +23,30 @@ sensors-detect
 apt-get install psensor
 
 # Install samba
-# /etc/init.d/smbd restart
-# /etc/samba/smb.conf
+# sudo service smbd restart
+# sudo /etc/init.d/smbd restart
+# sudo vim /etc/samba/smb.conf
+# sudo ufw allow samba
+# Flags: exec,user,rw,suid,nodev,nofail,x-gvfs-show
+# [Data]
+#    path           = /mnt/Data
+#    available      = yes
+#    read only      = no
+#    browsable      = yes
+#    public         = yes
+#    writable       = yes
+#    create mask    = 0777
+#    directory mask = 0777
+#    force user     = <user>
+#    valid users    = <user>
+#    guest ok       = yes
+apt-get install cifs-utils
 apt-get install python3-samba
 apt-get install samba-common-bin
 apt-get install samba-common
 apt-get install samba-libs
 apt-get install samba
-ufw allow samba
+
 
 # Install Gnome tweak tool
 apt-add-repository ppa:webupd8team/gnome3
