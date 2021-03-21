@@ -5,6 +5,15 @@ if (( $EUID != 0 )); then
   exit 0
 fi
 
+# Upgrading ASRock BMC
+# 0. Stop all extensions and addons
+# 1. Log in to BMC
+# 2. Open Chrome Dev Tools
+# 3. Switch to Application tab. Expand "Cookies" and click the appropriate domain name for your server.
+# 4. At the end of the existing cookie list, double click the empty spot. Enter "WebServer" under name.
+# 5. Should be good to go now.
+# 6. Enter update node and chose file
+
 # Add the user to sudo group
 # usermod -aG sudo <user>
 # /etc/sudoers
@@ -33,7 +42,10 @@ apt-get install psensor
 # sudo vim /etc/samba/smb.conf
 # sudo vim /etc/fstab
 # sudo ufw allow samba
-# Flags: exec,user,rw,suid,nodev,nofail,x-gvfs-show
+# For obtaining `<uid>` must be run
+# sudo grep ^"$USER" /etc/group
+# This outputs user setting <user>:x:<uid>:
+# Flags: rw,user,uid=<uid>,suid,nodev,nofail,exec,x-gvfs-show
 # [Data]
 #    path           = /mnt/Data
 #    available      = yes
@@ -52,7 +64,6 @@ apt-get install samba-common-bin
 apt-get install samba-common
 apt-get install samba-libs
 apt-get install samba
-
 
 # Install Gnome tweak tool
 apt-add-repository ppa:webupd8team/gnome3
