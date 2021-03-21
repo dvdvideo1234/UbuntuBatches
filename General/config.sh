@@ -26,6 +26,7 @@ apt-get install psensor
 # sudo service smbd restart
 # sudo /etc/init.d/smbd restart
 # sudo vim /etc/samba/smb.conf
+# sudo vim /etc/fstab
 # sudo ufw allow samba
 # Flags: exec,user,rw,suid,nodev,nofail,x-gvfs-show
 # [Data]
