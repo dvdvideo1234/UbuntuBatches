@@ -1,10 +1,5 @@
 #!/bin/bash
 
-if (( $EUID != 0 )); then
-  echo "The script must be run as root !"
-  exit 0
-fi
-
 # Upgrading ASRock BMC
 # 0. Stop all extensions and addons
 # 1. Log in to BMC
@@ -20,21 +15,21 @@ fi
 # cd /etc/sudoers.d
 
 # Clean PPAs
-apt-get autoremove
-apt-get autoclean
+sudo apt-get autoremove
+sudo apt-get autoclean
 
 # Install GParted
-wget -q -O- http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
-sh -c 'echo "deb http://archive.getdeb.net/ubuntu trusty-getdeb apps" >> /etc/apt/sources.list'
-apt-get update
-apt-get install gparted
+sudo wget -q -O- http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -
+sudo sh -c 'echo "deb http://archive.getdeb.net/ubuntu trusty-getdeb apps" >> /etc/apt/sources.list'
+sudo apt-get update
+sudo apt-get install gparted
 
 # Install Psensor
-apt-get install lm-sensors
-apt-get install hddtemp
-dpkg-reconfigure hddtemp
-sensors-detect
-apt-get install psensor
+sudo apt-get install lm-sensors
+sudo apt-get install hddtemp
+sudo dpkg-reconfigure hddtemp
+sudo sensors-detect
+sudo apt-get install psensor
 
 # Install samba
 # sudo service smbd restart
@@ -71,40 +66,46 @@ apt-get install psensor
 # Add the samva IP to hosts
 # cat /etc/hosts
 # 127.0.0.1       localhost
-apt-get install cifs-utils
-apt-get install python3-samba
-apt-get install samba-common-bin
-apt-get install samba-common
-apt-get install samba-libs
-apt-get install samba
+sudo apt-get install cifs-utils
+sudo apt-get install python3-samba
+sudo apt-get install samba-common-bin
+sudo apt-get install samba-common
+sudo apt-get install samba-libs
+sudo apt-get install samba
+
+# Hibernation status
+# Enable suspend and hibernation
+# sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
+# Disable suspend and hibernation
+sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+sudo systemctl status sleep.target suspend.target hibernate.target hybrid-sleep.target
 
 # Install Gnome tweak tool
-apt-add-repository ppa:webupd8team/gnome3
-apt-add-repository ppa:numix/ppa
-apt-get update
-apt-get install chrome-gnome-shell
-apt-get install gnome-shell-extensions
-apt-get install gnome-tweak-tool
-mkdir ~/.themes
+sudo apt-add-repository ppa:webupd8team/gnome3
+sudo apt-add-repository ppa:numix/ppa
+sudo apt-get update
+sudo apt-get install chrome-gnome-shell
+sudo apt-get install gnome-shell-extensions
+sudo apt-get install gnome-tweak-tool
+sudo mkdir ~/.themes
 
 # Install Unity tweak tool
-apt-get install unity-webapps-common unity-tweak-tool
-apt-get install unity-tweak-tool
+sudo apt-get install unity-webapps-common unity-tweak-tool
+sudo apt-get install unity-tweak-tool
 
 # Install SSH
-apt-get install ssh
-ufw allow ssh
+sudo apt-get install ssh
+sudo ufw allow ssh
 
 # exFAT support
-apt-get install exfat-fuse
-apt-get install exfat-utils
+sudo apt-get install exfat-fuse
+sudo apt-get install exfat-utils
 
 # Internet and network crap
-apt-get instal net-tools
+sudo apt-get instal net-tools
 
 # Clean PPAs
-apt-get autoremove
-apt-get autoclean
+sudo apt-get autoremove
+sudo apt-get autoclean
 
 exit 0
-
