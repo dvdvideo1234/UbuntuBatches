@@ -73,12 +73,14 @@ sudo apt-get install samba-common
 sudo apt-get install samba-libs
 sudo apt-get install samba
 
-# Hibernation status
 # Enable suspend and hibernation
 # sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
 # Disable suspend and hibernation
 sudo systemctl mask sleep.target suspend.target hibernate.target hybrid-sleep.target
+# Hibernation status
 sudo systemctl status sleep.target suspend.target hibernate.target hybrid-sleep.target
+# Apply changes
+sudo systemctl restart systemd-logind.service
 
 # Install Gnome tweak tool
 sudo apt-add-repository ppa:webupd8team/gnome3
