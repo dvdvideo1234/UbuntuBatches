@@ -1,0 +1,26 @@
+# Bonding is configured by declaring a bond
+# interface with a list of physical interfaces
+# and a bonding mode. Below is an example of
+# an active-backup bond that uses DHCP to
+# obtain an address:
+
+# mode=0 (balance-rr)
+# mode=1 (active-backup)
+# mode=2 (balance-xor)
+# mode=3 (broadcast)
+# mode=4 (802.3ad)
+# mode=5 (balance-tlb)
+# mode=6 (balance-alb)
+
+network:
+    version: 2
+    renderer: networkd
+    bonds:
+        bond0:
+            dhcp4: yes
+            interfaces:
+                - enp7s0
+                - enp8s0
+            parameters:
+                mode: balance-rr
+                primary: enp7s0
