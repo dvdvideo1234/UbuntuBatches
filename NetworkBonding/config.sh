@@ -41,12 +41,15 @@ case "$action" in
     sudo gnome-terminal --wait -x vim network-bonding-cp.yaml
 
     sudo cp network-bonding-cp.yaml /etc/netplan/network-bonding.yaml
+  ;;
   "remove")
     sudo rm -f /etc/netplan/network-bonding.yaml
     echo -e "Remove \033[4;33mbonding\033[0m from the config file!"
     sudo gnome-terminal --wait -x vim /etc/modules
+  ;;
   "setup")
     sudo vim /etc/netplan/network-bonding.yaml
+  ;;
   *)
     echo "Usage: $0 { install | remove | setup }"
   ;;
