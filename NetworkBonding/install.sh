@@ -17,11 +17,36 @@
 # mode=5 (balance-tlb)
 # mode=6 (balance-alb)
 
-sudo apt-get install vim
-sudo apt-get install ifenslave
+action="$1"
 
-echo Shove the "bonding" module in this file
+case "$action" in
+  "install")
+    sudo apt-get install vim
+    sudo apt-get install ifconfig
+    sudo apt-get install ifenslave
 
-sudo vim /etc/modules
+    echo "Edit the master and slave interfaces in the configuration!"
+    echo -e "Edit \033[4;33mnetwork-bonding.yaml\033[0m config file!"
+    echo -e "Chose nterface description master master and slave."
+    echo -e "Network interfaces available:\n"
+    ifconfig | grep -E "^[A-Za-z0-9]+:"
 
-sudo cp network-bonding.yaml /etc/netplan/network-bonding.yaml
+    echo -e "Write \033[4;33mbonding\033[0m inside the config file!"
+    sudo gnome-terminal --wait -x vim /etc/modules
+
+    echo -e "Chose network bonding from the specified below:\e"
+    cat bonding-mode.txt
+
+    sudo cp network-bonding.yaml network-bonding-cp.yaml
+    sudo gnome-terminal --wait -x vim network-bonding-cp.yaml
+
+    sudo cp network-bonding-cp.yaml /etc/netplan/network-bonding.yaml
+  "remove")
+    sudo rm -f /etc/netplan/network-bonding.yaml
+    echo -e "Remove \033[4;33mbonding\033[0m from the config file!"
+    sudo gnome-terminal --wait -x vim /etc/modules
+  "setup")
+  *)
+    echo "Usage: $0 { install | remove | setup }"
+  ;;
+esac

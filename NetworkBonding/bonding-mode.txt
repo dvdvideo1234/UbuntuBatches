@@ -1,0 +1,7 @@
+# mode=0 (balance-rr)
+# mode=1 (active-backup)
+# mode=2 (balance-xor)
+# mode=3 (broadcast)
+# mode=4 (802.3ad)
+# mode=5 (balance-tlb)
+# mode=6 (balance-alb)
