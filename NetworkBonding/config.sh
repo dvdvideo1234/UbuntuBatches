@@ -46,6 +46,7 @@ case "$action" in
     echo -e "Remove \033[4;33mbonding\033[0m from the config file!"
     sudo gnome-terminal --wait -x vim /etc/modules
   "setup")
+    sudo vim /etc/netplan/network-bonding.yaml
   *)
     echo "Usage: $0 { install | remove | setup }"
   ;;
