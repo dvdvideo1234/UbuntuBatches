@@ -29,7 +29,7 @@ case "$action" in
     echo -e "Edit \033[4;33mnetwork-bonding.yaml\033[0m config file!"
     echo -e "Chose nterface description master master and slave."
     echo -e "Network interfaces available:\n"
-    ifconfig | grep -E "^[A-Za-z0-9]+:"
+    echo ${ifconfig | grep -E "^[A-Za-z0-9]+:"}
 
     echo -e "Write \033[4;33mbonding\033[0m inside the config file!"
     sudo gnome-terminal --wait -x vim /etc/modules
