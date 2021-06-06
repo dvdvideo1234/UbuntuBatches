@@ -14,6 +14,11 @@
 # /etc/sudoers
 # cd /etc/sudoers.d
 
+sudo apt-get install curl
+sudo apt-get install vim
+sudo apt-get install git
+git config --global core.editor "vim"
+
 # Clean PPAs
 sudo apt-get autoremove
 sudo apt-get autoclean

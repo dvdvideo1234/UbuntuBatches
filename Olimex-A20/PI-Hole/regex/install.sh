@@ -2,17 +2,22 @@
 
 arGravity=()
 
-^ad([sxv]?[0-9]*|system)[_.-]([^.[:space:]]+\.){1,}|[_.-]ad([sxv]?[0-9]*|system)[_.-]
-^(.+[_.-])?adse?rv(er?|ice)?s?[0-9]*[_.-]
-^(.+[_.-])?telemetry[_.-]
-^adim(age|g)s?[0-9]*[_.-]
-^adtrack(er|ing)?[0-9]*[_.-]
-^advert(s|is(ing|ements?))?[0-9]*[_.-]
-^aff(iliat(es?|ion))?[_.-]
-^analytics?[_.-]
-^banners?[_.-]
-^beacons?[0-9]*[_.-]
-^count(ers?)?[0-9]*[_.-]
-^mads\.
-^pixels?[-.]
-^stat(s|istics)?[0-9]*[_.-]
+arGravity+=("^ad([sxv]?[0-9]*|system)[_.-]([^.[:space:]]+\.){1,}|[_.-]ad([sxv]?[0-9]*|system)[_.-]")
+arGravity+=("^(.+[_.-])?adse?rv(er?|ice)?s?[0-9]*[_.-]                                            ")
+arGravity+=("^(.+[_.-])?telemetry[_.-]                                                            ")
+arGravity+=("^adim(age|g)s?[0-9]*[_.-]                                                            ")
+arGravity+=("^adtrack(er|ing)?[0-9]*[_.-]                                                         ")
+arGravity+=("^advert(s|is(ing|ements?))?[0-9]*[_.-]                                               ")
+arGravity+=("^aff(iliat(es?|ion))?[_.-]                                                           ")
+arGravity+=("^analytics?[_.-]                                                                     ")
+arGravity+=("^banners?[_.-]                                                                       ")
+arGravity+=("^beacons?[0-9]*[_.-]                                                                 ")
+arGravity+=("^count(ers?)?[0-9]*[_.-]                                                             ")
+arGravity+=("^mads\.                                                                              ")
+arGravity+=("^pixels?[-.]                                                                         ")
+arGravity+=("^stat(s|istics)?[0-9]*[_.-]                                                          ")
+
+for url in ${arGravity[*]}; do
+  strTrim=$(echo -e "${url}" | tr -d '[:space:]')
+  echo "Test >>$strTrim<<"
+done
