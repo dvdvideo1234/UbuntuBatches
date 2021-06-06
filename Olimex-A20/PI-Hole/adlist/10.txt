@@ -1,0 +1,6 @@
+Prevent Spyware (https://filterlists.com/)
+
+https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardMobileSpyware.txt
+https://raw.githubusercontent.com/XionKzn/PiHole-Lists/master/PiHole_HOSTS_Spyware.txt
+https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/WindowsSpyBlocker81.txt
+https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/hosts/spy.txt

@@ -1,0 +1,12 @@
+# Suspicious Lists (https://firebog.net/)
+
+https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+https://v.firebog.net/hosts/static/w3kbl.txt
+https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt
+https://someonewhocares.org/hosts/zero/hosts
+https://raw.githubusercontent.com/VeleSila/yhosts/master/hosts
+https://winhelp2002.mvps.org/hosts.txt
+https://v.firebog.net/hosts/neohostsbasic.txt
+https://raw.githubusercontent.com/RooneyMcNibNug/pihole-stuff/master/SNAFU.txt
+https://paulgb.github.io/BarbBlock/blacklists/hosts-file.txt

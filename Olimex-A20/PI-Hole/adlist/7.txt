@@ -1,0 +1,19 @@
+# https://github.com/JavanXD/ya-pihole-list/blob/master/adlists.list.updater
+
+https://justdomains.github.io/blocklists/lists/easylist-justdomains.txt
+https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt
+https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt
+https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt
+https://raw.githubusercontent.com/dfederlein/dnsbl-dfed/master/spotifyads.txt
+https://raw.githubusercontent.com/hectorm/hmirror/master/data/spam404.com/list.txt
+https://raw.githubusercontent.com/hectorm/hmirror/master/data/adaway.org/list.txt
+https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
+https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/spam.mails
+https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/dnscrypt/spy.txt
+https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/MobileFilter/sections/adservers.txt
+https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
+https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
+https://urlhaus.abuse.ch/downloads/hostfile/
+https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt
+https://dbl.oisd.nl/

@@ -1,0 +1,8 @@
+# Prevent Coinmining network (https://filterlists.com/)
+
+https://gitlab.com/ZeroDot1/CoinBlockerLists/raw/master/list.txt
+https://gitlab.com/ZeroDot1/CoinBlockerLists/raw/master/list_browser.txt
+https://gitlab.com/ZeroDot1/CoinBlockerLists/raw/master/hosts
+https://gitlab.com/ZeroDot1/CoinBlockerLists/raw/master/hosts_optional
+https://raw.githubusercontent.com/anudeepND/blacklist/master/CoinMiner.txt
+https://raw.githubusercontent.com/austinheap/sophos-xg-block-lists/master/nocoin.txt
