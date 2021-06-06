@@ -16,10 +16,8 @@ for file in *.txt; do
     if test "${strdat}" != ""
     then
       strurl=${strdat}
+      echo "Adding: ${strcom} | ${strurl}"
+      pihole -a adlist add ${strurl} ${strcom}
     fi
-
-    echo "Adding: ${strcom} | ${strurl}"
-
-    pihole -a adlist add ${strurl} ${strcom}
   done <"$file"
 done
