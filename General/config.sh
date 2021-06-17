@@ -36,12 +36,18 @@ sudo dpkg-reconfigure hddtemp
 sudo sensors-detect
 sudo apt-get install psensor
 
+# Configure swapiness
+# Start swapping on <swappiness>% free RAM remaining
+# vm.swappiness = <swappiness>
+# sudo vim /etc/sysctl.conf
+# sysctl vm.swappiness
+sudo sysctl vm.swappiness=10
+
 # Install samba
 # sudo service smbd restart
 # sudo /etc/init.d/smbd restart
 # sudo vim /etc/samba/smb.conf
 # sudo vim /etc/fstab
-# sudo ufw allow samba
 # For obtaining `<uid>` must be run
 # sudo grep ^"$USER" /etc/group
 # This outputs user setting <user>:x:<uid>:
@@ -77,6 +83,7 @@ sudo apt-get install samba-common-bin
 sudo apt-get install samba-common
 sudo apt-get install samba-libs
 sudo apt-get install samba
+sudo ufw allow samba
 
 # Enable suspend and hibernation
 # sudo systemctl unmask sleep.target suspend.target hibernate.target hybrid-sleep.target
