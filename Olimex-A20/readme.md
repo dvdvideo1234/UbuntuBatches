@@ -1,11 +1,26 @@
 ### Hardware topology
 ![][ref-hw]
 
+### Fix for the internet not working
+0. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
+1. Edit: `sudo vim /etc/netplan/01-netcfg.yaml`
+```
+network:
+  version: 2
+  renderer: networkd
+  ethernets:
+    eth0: # The harware ETH device name stays here
+      dhcp4: true
+```
+2. Run `sudo netplan generate`
+3. Run `sudo netplan apply`
+4. Restart the system: `sutdown -r now`
+
 ### Installing samba and creating shared folder
 1. Navigate to `cd ~` and create folder `Share`
 2. Install the server: `yes y | sudo apt-get install samba`
 3. Apply the [configiration file][ref-smb-conf]: `/etc/samba/smb.conf`
-4. Restart the system: `sutdown -r now`
+4. Restart the system: `shutdown -r now`
 5. Controlling the server with these connand:
   * `sudo service smbd start`
   * `sudo service smbd stop`
@@ -35,7 +50,8 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
 5. For connecting outside of the LAN area forward the `<PORT>` in your router to `<IP>` server
 6. Now you are connected to the VNC server
 
-### When HDD or SSD is available dor automount
+### When HDD or SSD is available for automount
+0. Install gnome disk utility `sudo apt-get install -y gnome-disk-utility`
 1. List all drives `sudo fdisk -l`
 ```
     Disk /dev/sda: 596.18 GiB, 640135028736 bytes, 1250263728 sectors
@@ -55,8 +71,22 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
 6. Create directory: `/mnt/Disk` and edit mount options `sudo vim /etc/fstab`
   * Example `UUID=<UUID> /mnt/Disk ext4 rw,user,uid=1000,suid,nodev,nofail,exec,x-gvfs-show 0 0`
 
+### Move the heavy-read folders such as `home` and `var`
+1. Created data dolder with the same name somewhere else
+2. Copy all the contents to the new location
+3. Make symbolic link `ln -s /path/to/original /path/to/link`
+  * Example (/etc/var ) `ln -s /mnt/Disk/var  /etc/var`
+  * Example (/etc/home) `ln -s /mnt/Disk/home /etc/home`
+
+### Synchronizing the image clock
+0. Execute current directory [time.sh][ref-time] in the terminal.
+
 [ref-tight-vnc]: https://www.tightvnc.com/
 [ref-x11-vnc]: https://github.com/dvdvideo1234/UbuntuBatches/tree/master/x11VNC
-[ref-hw]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/hw.jpg
-[ref-smb-conf]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/smb.conf
-[ref-xorg-conf]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/xorg.conf
+[ref-hw]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Pics/hw.jpg
+[ref-smb-conf]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Conf/smb.conf
+[ref-xorg-conf]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Conf/xorg.conf
+[ref-eth]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Pics/eth.jpg
+[ref-ip4]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Pics/ip4.jpg
+[ref-time]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/time.sh
+

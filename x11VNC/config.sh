@@ -71,7 +71,7 @@ case "$action" in
   ;;
   "start")
     echo "Starting package ... $srvname"
-    /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth guess -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
+    sudo /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth guess -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
   ;;
   "stop")
     echo "Stopping package ... $srvname"
