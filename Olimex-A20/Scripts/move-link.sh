@@ -2,7 +2,7 @@
 
 # TEST_MOVE_DIR="/mnt/c/Users/ddobromirov/Documents/Lua-Projs/SVN/UbuntuBatches/Olimex-A20/TEST"
 # TEST_MOVE_TO="/mnt/c/Users/ddobromirov/Documents/Lua-Projs/SVN/UbuntuBatches/Olimex-A20/TEST/mnt"
-# ./move-link.sh $TEST_MOVE_DIR Stuff $TEST_MOVE_TO
+# ./Scripts/move-link.sh $TEST_MOVE_DIR Stuff $TEST_MOVE_TO
 
 runpath="$0"
 dirbase="$1"
