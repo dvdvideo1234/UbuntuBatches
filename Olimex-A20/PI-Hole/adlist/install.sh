@@ -11,6 +11,7 @@ for file in *.txt; do
     if test "${strdat:0:1}" == "#"
     then
       strcom=${strdat:1}
+      strcom=$(echo -e "${strcom}" | tr -d '[:space:]')
     fi
 
     if test "${strdat}" != ""

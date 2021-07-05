@@ -4,14 +4,21 @@ strurl=""
 strdat=""
 arGravity=()
 
+# Bulgarian domains
+arGravity+=("https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/PI-Hole/whitelist/1.txt")
+
 # Fix google translate fints looks cunky
 arGravity+=("https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/whitelist.txt")
-arGravity+=("https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/PI-Hole/blocklist/1.txt")
+arGravity+=("https://raw.githubusercontent.com/anudeepND/whitelist/master/domains/optional-list.txt")
+
 
 for url in ${arGravity[*]}; do
-  rm -f whitelist.txt
+  if [[ -f whitelist.txt ]]; then
+    sudo rm -f whitelist.txt
+  fi
+  
   strurl=$(echo -e "${url}" | tr -d '[:space:]')
-  winpty curl --insecure ${strurl} -o whitelist.txt
+  sudo curl --insecure ${strurl} -o whitelist.txt
 
   while IFS= read line
   do
@@ -29,5 +36,6 @@ for url in ${arGravity[*]}; do
   done <"whitelist.txt"
 done
 
-rm -f whitelist.txt
-
+if [[ -f whitelist.txt ]]; then
+  sudo rm -f whitelist.txt
+fi
