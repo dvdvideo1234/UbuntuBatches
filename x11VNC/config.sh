@@ -22,17 +22,17 @@ function getInput()
 case "$action" in
   "install")
     echo "Installing package ... $srvname"
-        
+
     # Install dependencies
-    sudo apt-get update 
+    sudo apt-get update
     sudo apt-get install vim
     sudo apt-get install xserver-xorg-video-dummy
     sudo apt-get install $srvname
     sudo cp xorg.conf $configxdp/xorg.conf
-    
+
     # Create runner configurator for the port provided
     eval "$scriptname run $param"
-    
+
     # Create password for the server must not be empty
     getInput "Enter installation password: " passw
     $srvname -storepasswd $passw $scriptpath/$srvname.pass
@@ -42,6 +42,7 @@ case "$action" in
     echo "#!/bin/bash" > $scriptpath/run.sh
     echo "" >> $scriptpath/run.sh
     echo "$scriptpath/config.sh start $param" >> $scriptpath/run.sh
+    echo "cat $scriptpath/x11vnc.log" >> $scriptpath/run.sh
     sudo chmod +x run.sh
   ;;
   "remove")
@@ -49,15 +50,15 @@ case "$action" in
     sudo /usr/bin/killall $srvname
     sudo apt-get remove $srvname
     sudo apt-get remove xserver-xorg-video-dummy
-    
+
     # Remove server configuration
     sudo mv $configloc/$srvname.conf $scriptpath/$srvname.conf.bak
     sudo rm -f $configloc/$srvname.conf
-    
+
     # Remove xdisplay configuration
     sudo mv $configxdp/xorg.conf $scriptpath/xorg.conf.bak
     sudo rm -f $configxdp/xorg.conf
-    
+
     # Remove password not needed anymore
     rm -f $scriptpath/$srvname.pass
   ;;
@@ -70,8 +71,12 @@ case "$action" in
     sudo vim $configxdp/xorg.conf
   ;;
   "start")
+    if [ -z "$DISPLAY" ]
+    then
+      export DISPLAY=:0
+    fi
     echo "Starting package ... $srvname"
-    sudo /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display :0 -auth guess -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
+    sudo /usr/bin/$srvname -xkb -noxrecord -noxfixes -noxdamage -forever -bg -rfbport $param -display $DISPLAY -auth guess -rfbauth $scriptpath/$srvname.pass -o $scriptpath/$srvname.log
   ;;
   "stop")
     echo "Stopping package ... $srvname"
