@@ -14,7 +14,8 @@ network:
 ```
 2. Run `sudo netplan generate`
 3. Run `sudo netplan apply`
-4. Restart the system: `sutdown -r now`
+4. Restart `sutdown -r now` or shutdown `shutdown -h now`
+
 
 ### Installing samba and creating shared folder
 1. Navigate to `cd ~` and create folder `Share`
@@ -64,15 +65,13 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
     Disklabel type: dos
     Disk identifier: 0x0bba294c
 ```
-3. Select storage disk and create NTFS partition: `sudo fdisk /dev/sda`
-4. Format the selected partition to NTFS: `sudo mkfs.ntfs -f -Q /dev/sda1`
+3. Select storage disk and create EXT4 partition: `sudo fdisk /dev/sda`
+4. Format the selected partition to EXT4: `sudo mkfs -t ext4 /dev/sda1`
 5. Identify UUID: `sudo blkid | grep UUID=` or `ls -l /dev/disk/by-uuid` or `sudo lsblk`
-  * Example `/dev/sda1: UUID="<UUID>" PTTYPE="dos" PARTUUID="..."`
-6. Obtain user ID: `sudo grep ^"$USER" /etc/group`
-  * Example `<USER>:x:1000:`
+  * Example `/dev/sda1: UUID="3aa73106-944c-4c66-809f-d2b99d9c863c" TYPE="ext4"`
 7. Create directory: `/mnt/Disk` and edit mount options `sudo vim /etc/fstab`
-  * Example `/dev/disk/by-uuid/689DAE640F0A2A91 /mnt/Disk auto rw,user,uid=1000,suid,nodev,nofail,exec,x-gvfs-show 0 0`
-8. Mount ( auto ) the drive: `sudo mount -t ntfs /dev/sda1 /mnt/Disk` or via `/etc/fstab` `sudo mount -a`
+  * Example `UUID=3aa73106-944c-4c66-809f-d2b99d9c863c /mnt/Disk ext4 auto,exec,nouser,rw,async,suid,nodev,nofail,x-gvfs-show 0 0`
+8. Mount the drive: `sudo mount -t ext4 /dev/sda1 /mnt/Disk` or via `/etc/fstab` `sudo mount -a`
 
 ### Move the heavy-read folders such as `home` and `var`
 This can be via the [`move-link.sh`][ref-mvsh] script.
@@ -81,7 +80,19 @@ This can be via the [`move-link.sh`][ref-mvsh] script.
 2. Create a backup copy if it fails
   * Example: `mv /var /var.old`
 3. Make symbolic link `ln -s /path/to/original /path/to/link`
-  * Example (/var ) `sudo ln -s /mnt/Disk/var  /var`
+  * Example ( `/var` ) `sudo ln -s /mnt/Disk/var  /var`
+4. Required commands for easire maintaining
+```
+sudo mv /var.old /var 
+sudo mv /var /var.old
+sudo rsync -va /var /mnt/Disk
+sudo ln -s /mnt/Disk/var  /var
+
+lrwxrwxrwx   1 root root      14 Jul  6 20:00 home -> /mnt/Disk/home
+lrwxrwxrwx   1 root root      13 Jul  6 19:59 tmp -> /mnt/Disk/tmp
+lrwxrwxrwx   1 root root      13 Jul  6 19:58 srv -> /mnt/Disk/srv
+lrwxrwxrwx   1 root root      13 Jul  6 19:53 var -> /mnt/Disk/var
+```
 
 ### Synchronizing the image clock
 0. Execute current directory [time.sh][ref-time] in the terminal.
