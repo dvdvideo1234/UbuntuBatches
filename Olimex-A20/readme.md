@@ -26,6 +26,8 @@ network:
   * `sudo service smbd stop`
   * `sudo service smbd restart`
 6. Now transfering files in the LAN area with Lime2 is possible
+7. Refresh the packet when it is buggy:
+  * Example `sudo apt-get install --reinstall samba`
 
 ### Installing `dummy` display driver
 1. Supported packages for your board: `sudo apt-cache search video-dummy`
@@ -73,12 +75,13 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
 8. Mount ( auto ) the drive: `sudo mount -t ntfs /dev/sda1 /mnt/Disk` or via `/etc/fstab` `sudo mount -a`
 
 ### Move the heavy-read folders such as `home` and `var`
-This can be done by utilizing the [`move-link.sh`][ref-mvsh] script.
-1. Created data folder with the same name somewhere else
-2. Copy all the contents to the new location
+This can be via the [`move-link.sh`][ref-mvsh] script.
+1. Copy all the contents to the new location
+  * Example `rsync -va /var /mnt/Disk`
+2. Create a backup copy if it fails
+  * Example: `mv /var /var.old`
 3. Make symbolic link `ln -s /path/to/original /path/to/link`
-  * Example (/etc/var ) `ln -s /mnt/Disk/var  /etc/var`
-  * Example (/etc/home) `ln -s /mnt/Disk/home /etc/home`
+  * Example (/var ) `sudo ln -s /mnt/Disk/var  /var`
 
 ### Synchronizing the image clock
 0. Execute current directory [time.sh][ref-time] in the terminal.

@@ -33,8 +33,9 @@ else
       exit 0
     fi
   fi
-  # Copy contents to the new location
-  cp -rfp ${dirbase}/${dirname}/. ${dirdest}/${dirname}
+  # Sync contents to the new location
+  rsync -va ${dirbase}/${dirname} ${dirdest}
+  
   if [[ $? -ne 0 ]]; then
     echo "Data reallocation error!"
     exit 0
