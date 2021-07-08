@@ -2,7 +2,7 @@
 ![][ref-hw]
 
 ### Fix for the internet not working
-#### Method 1
+#### Method 1. Use Network connection GUI
 1. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
 2. Edit: `sudo vim /etc/netplan/01-netcfg.yaml`
 3. The example harware device name is `eth0`
@@ -20,7 +20,7 @@ network:
 3. Run `sudo netplan generate`
 4. Run `sudo netplan apply`
 5. Restart `shutdown -r now` or shutdown `shutdown -h now`
-####Method 2
+#### Method 2. Hardcode [resolve][ref-resolve] nameservers for session
 1. Edit: `sudo vim /etc/resolv.conf`
 
 ### Installing samba and creating shared folder
@@ -167,3 +167,4 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 [ref-ups-x64]: https://www.power-software-download.com/viewpower/installViewPowerHTML_Linux_text_x86_64.tar.gz
 [ref-box86]: https://github.com/ptitSeb/box86
 [ref-box86-install]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/i386-support.sh
+[ref-resolve]: https://man7.org/linux/man-pages/man5/resolv.conf.5.html
