@@ -2,20 +2,26 @@
 ![][ref-hw]
 
 ### Fix for the internet not working
-0. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
-1. Edit: `sudo vim /etc/netplan/01-netcfg.yaml`
+#### Method 1
+1. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
+2. Edit: `sudo vim /etc/netplan/01-netcfg.yaml`
+3. The example harware device name is `eth0`
 ```
 network:
   version: 2
   renderer: networkd
   ethernets:
-    eth0: # The harware ETH device name stays here
-      dhcp4: true
+    eth0:
+      dhcp4: yes
+      gateway4: 192.168.0.1
+      nameservers:
+        addresses: [8.8.8.8, 8.8.4.4, 1.1.1.1, 1.0.0.1]
 ```
-2. Run `sudo netplan generate`
-3. Run `sudo netplan apply`
-4. Restart `sutdown -r now` or shutdown `shutdown -h now`
-
+3. Run `sudo netplan generate`
+4. Run `sudo netplan apply`
+5. Restart `shutdown -r now` or shutdown `shutdown -h now`
+####Method 2
+1. Edit: `sudo vim /etc/resolv.conf`
 
 ### Installing samba and creating shared folder
 1. Navigate to `cd ~` and create folder `Share`
@@ -81,7 +87,7 @@ This can be via the [`move-link.sh`][ref-mvsh] script.
   * Example: `mv /var /var.old`
 3. Make symbolic link `ln -s /path/to/original /path/to/link`
   * Example ( `/var` ) `sudo ln -s /mnt/Disk/var  /var`
-4. Required commands for easire maintaining
+4. Required commands for easire maintaining. Beware for `etc`!
 ```
 sudo mv /var.old /var 
 sudo mv /var /var.old
@@ -92,7 +98,55 @@ lrwxrwxrwx   1 root root      14 Jul  6 20:00 home -> /mnt/Disk/home
 lrwxrwxrwx   1 root root      13 Jul  6 19:59 tmp -> /mnt/Disk/tmp
 lrwxrwxrwx   1 root root      13 Jul  6 19:58 srv -> /mnt/Disk/srv
 lrwxrwxrwx   1 root root      13 Jul  6 19:53 var -> /mnt/Disk/var
+lrwxrwxrwx   1 root root      20 Jul  7 10:11 etc/pihole -> /mnt/Disk/etc/pihole
+
 ```
+
+### Install [PI-HOLE][ref-pihole]
+1. Fetch PPSs and check for broken one `sudo apt-get update`
+  * Example `sudo vim /etc/apt/sources.list`
+2. Upgrade the distro when needed `sudo apt-get upgrade`
+3. Clone the repo `git clone --depth 1 https://github.com/pi-hole/pi-hole.git Pi-hole`
+4. Change `cd "Pi-hole/automated install/"`
+5. Make it executable `sudo chmod +x basic-install.sh`
+6. Run installer `sudo bash basic-install.sh`
+
+### Install [ViewPower][ref-fsp]
+1. Chech arhitecture `file /sbin/init`
+```
+/sbin/init: symbolic link to /lib/systemd/systemd
+olimex@a20-olinuxino:~/Documents/Pi-hole/automated install$ file  /lib/systemd/systemd
+/lib/systemd/systemd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, BuildID[sha1]=3ca7712fe69ab99bb55585c35af762a2491fc856, for GNU/Linux 3.2.0, stripped
+```
+2. Pick [x32][ref-vpx32] or [x64][ref-vpx64] text version
+3. Downlaod `wget --no-check-certificate <VERSION>`
+4. Extract `tar -xvf <VERSION>`
+5. Execute `sudo ./<VERSION>`
+  * When error occurs
+    * `/lib/libc.so.6`
+      1. `find / -name libc.so.6` > `/usr/lib/arm-linux-gnueabihf/libc.so.6`
+      2. `sudo ln -s /usr/lib/arm-linux-gnueabihf/libc.so.6 /lib/libc.so.6`
+      
+### Run [i386][ref-i386] binaries in Arm7 with [Box86][ref-box86]
+This is done for migrating [UPS monitoring software][ref-ups]
+Viewing the following info will decide whenever [i386][ref-ups-x32] or [x64][ref-ups-x64]
+1. View the type of CPU `cat /proc/cpuinfo`
+2. View other useful info: `uname -a`
+3. View arhitecture: `dpkg --print-architecture`
+4. View bits: `getconf LONG_BIT`
+5. View kernal config:
+```
+olimex@a20-olinuxino:~$ file /usr/bin/ld
+olimex@a20-olinuxino:/usr/bin$ file arm-linux-gnueabihf-ld.bfd
+arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter
+/lib/ld-linux-armhf.so.3, BuildID[sha1]=406e7704e457810576aeffacd33a0ffe5775e244, for GNU/Linux 3.2.0, stripped
+```
+6. When LONG_BIT is `32` install Box86 by using [i386][ref-box86-install] script.
+
+### Running [Pi-hole][ref-pihole]
+1. `git clone --depth 1 https://github.com/pi-hole/pi-hole.git Pi-hole`
+2. `cd "Pi-hole/automated install/"`
+3. `sudo bash basic-install.sh`
 
 ### Synchronizing the image clock
 0. Execute current directory [time.sh][ref-time] in the terminal.
@@ -106,4 +160,10 @@ lrwxrwxrwx   1 root root      13 Jul  6 19:53 var -> /mnt/Disk/var
 [ref-ip4]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Pics/ip4.jpg
 [ref-time]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/time.sh
 [ref-mvsh]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/move-link.sh
-
+[ref-pihole]: https://pi-hole.net/
+[ref-i386]: https://pimylifeup.com/raspberry-pi-x86/
+[ref-ups]: https://energy.fsp-europe.com/software/
+[ref-ups-x32]: https://www.power-software-download.com/viewpower/installViewPowerHTML_Linux_text_i386.tar.gz
+[ref-ups-x64]: https://www.power-software-download.com/viewpower/installViewPowerHTML_Linux_text_x86_64.tar.gz
+[ref-box86]: https://github.com/ptitSeb/box86
+[ref-box86-install]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/i386-support.sh

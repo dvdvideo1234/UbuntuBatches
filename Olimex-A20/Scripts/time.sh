@@ -1,6 +1,7 @@
 #!/bin/bash
 
-#GUI clock: Rifgt click > Timezone: "Europe/Sofia"
+# GUI Clock right-click properties:
+#Timezone: `Europe/Sofia`
 
 sudo unlink /etc/localtime
 sudo ln -s /usr/share/zoneinfo/Europe/Sofia /etc/localtime
