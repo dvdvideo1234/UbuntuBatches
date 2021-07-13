@@ -1,8 +1,10 @@
 ### Hardware topology
 ![][ref-hw]
 
+### Official [olimex image releases][ref-oimg]
+
 ### Fix for the internet not working
-#### Method 1. Use Network connection GUI
+* Method 1. Use Network connection GUI
 1. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
 2. Edit: `sudo vim /etc/netplan/01-netcfg.yaml`
 3. The example harware device name is `eth0`
@@ -20,7 +22,7 @@ network:
 3. Run `sudo netplan generate`
 4. Run `sudo netplan apply`
 5. Restart `shutdown -r now` or shutdown `shutdown -h now`
-#### Method 2. Hardcode [resolve][ref-resolve] nameservers for session
+* Method 2. Hardcode [resolve][ref-resolve] nameservers for session
 1. Edit: `sudo vim /etc/resolv.conf`
 
 ### Installing samba and creating shared folder
@@ -89,7 +91,7 @@ This can be via the [`move-link.sh`][ref-mvsh] script.
   * Example ( `/var` ) `sudo ln -s /mnt/Disk/var  /var`
 4. Required commands for easire maintaining. Beware for `etc`!
 ```
-sudo mv /var.old /var 
+sudo mv /var.old /var
 sudo mv /var /var.old
 sudo rsync -va /var /mnt/Disk
 sudo ln -s /mnt/Disk/var  /var
@@ -126,7 +128,7 @@ olimex@a20-olinuxino:~/Documents/Pi-hole/automated install$ file  /lib/systemd/s
     * `/lib/libc.so.6`
       1. `find / -name libc.so.6` > `/usr/lib/arm-linux-gnueabihf/libc.so.6`
       2. `sudo ln -s /usr/lib/arm-linux-gnueabihf/libc.so.6 /lib/libc.so.6`
-      
+
 ### Run [i386][ref-i386] binaries in Arm7 with [Box86][ref-box86]
 This is done for migrating [UPS monitoring software][ref-ups]
 Viewing the following info will decide whenever [i386][ref-ups-x32] or [x64][ref-ups-x64]
@@ -168,3 +170,4 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 [ref-box86]: https://github.com/ptitSeb/box86
 [ref-box86-install]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/i386-support.sh
 [ref-resolve]: https://man7.org/linux/man-pages/man5/resolv.conf.5.html
+[ref-oimg]: http://images.olimex.com/release/
