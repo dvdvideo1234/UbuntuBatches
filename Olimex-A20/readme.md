@@ -66,7 +66,13 @@ network:
 4. Run `sudo netplan apply`
 5. Restart `shutdown -r now` or shutdown `shutdown -h now`
 * Method 2. Hardcode [resolve][ref-resolve] nameservers for session
-1. Edit: `sudo vim /etc/resolv.conf`
+1. Edit: `sudo vim /etc/resolv.conf` and add the following:
+```
+nameserver 8.8.8.8
+nameserver 8.8.4.4
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+```
 
 ### Installing samba and creating shared folder
 1. Navigate to `cd ~` and create folder `Share`
