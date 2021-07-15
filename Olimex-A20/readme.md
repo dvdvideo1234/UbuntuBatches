@@ -31,7 +31,8 @@ This can be via the [`move-link.sh`][ref-mvsh] script.
   * Example: `mv /var /var.old`
 3. Make symbolic link `ln -s /path/to/original /path/to/link`
   * Example ( `/var` ) `sudo ln -s /mnt/Disk/var  /var`
-4. Required commands for easire maintaining. Beware for `etc`!
+4. Required commands for easier maintaining. Beware for `etc`!
+  * When you apply this on `etc`, the `sudo` command will fail!
 ```
 sudo mv /var.old /var
 sudo mv /var /var.old
@@ -49,7 +50,7 @@ lrwxrwxrwx   1 root root      20 Jul  7 10:11 etc/pihole -> /mnt/Disk/etc/pihole
 * Method 1. Use Network connection GUI
 1. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
 2. Edit: `sudo vim /etc/netplan/01-netcfg.yaml`
-3. The example harware device name is `eth0`
+3. The example hardware device name is `eth0`
 ```
 network:
   version: 2
@@ -70,7 +71,7 @@ network:
 ### Installing samba and creating shared folder
 1. Navigate to `cd ~` and create folder `Share`
 2. Install the server: `yes y | sudo apt-get install samba`
-3. Apply the [configiration file][ref-smb-conf]: `/etc/samba/smb.conf`
+3. Apply the [configuration file][ref-smb-conf]: `/etc/samba/smb.conf`
 4. Restart the system: `shutdown -r now`
 5. Controlling the server with these connand:
   * `sudo service smbd start`
@@ -87,8 +88,8 @@ xserver-xorg-video-dummy - X.Org X server -- dummy display driver
 xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video-dummy-hwe-16.04
 ```
 2. Install display: `yes y | sudo apt-get install xserver-xorg-video-dummy`
-3. Apply the [configiration file][ref-xorg-conf]: `sudo vim /etc/X11/xorg.conf`
-4. Restart the system: `sutdown -r now` for the `XORG` server to start running
+3. Apply the [configuration file][ref-xorg-conf]: `sudo vim /etc/X11/xorg.conf`
+4. Restart the system: `shutdown -r now` for the `XORG` server to start running
 5. Now the dummy video server is running
 
 ### Install x11VNC
@@ -99,7 +100,7 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
   * The value of `<PORT>` is the port you have used to install x11VNC
   * The password will be stored automatically by the installer as `<PASSWORD>`
   * Dedicated `run` script will be automatically created for the specified `<PORT>`
-4. Provide to the `VNC autentication` window the `<IP>:<PORT>` and `<PASSWORD>` then click OK
+4. Provide to the `VNC authentication` window the `<IP>:<PORT>` and `<PASSWORD>` then click OK
 5. For connecting outside of the LAN area forward the `<PORT>` in your router to `<IP>` server
 6. Now you are connected to the VNC server
 
@@ -112,17 +113,17 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
 5. Make it executable `sudo chmod +x basic-install.sh`
 6. Run installer `sudo bash basic-install.sh`
 7. Import [adlists][ref-adlists], [whitelists][ref-whitelist], [blacklists][ref-blacklist] and [regex][ref-regex]
-8. If it does not start you probably have to [reset someting][ref-reset]
+8. If it does not start you probably have to [reset something][ref-reset]
 
 ### Install [ViewPower][ref-fsp]
-1. Chech arhitecture `file /sbin/init`
+1. Check architecture `file /sbin/init`
 ```
 /sbin/init: symbolic link to /lib/systemd/systemd
 olimex@a20-olinuxino:~/Documents/Pi-hole/automated install$ file  /lib/systemd/systemd
 /lib/systemd/systemd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (SYSV), dynamically linked, interpreter /lib/ld-linux-armhf.so.3, BuildID[sha1]=3ca7712fe69ab99bb55585c35af762a2491fc856, for GNU/Linux 3.2.0, stripped
 ```
 2. Pick [x32][ref-vpx32] or [x64][ref-vpx64] text version
-3. Downlaod `wget --no-check-certificate <VERSION>`
+3. Download `wget --no-check-certificate <VERSION>`
 4. Extract `tar -xvf <VERSION>`
 5. Execute `sudo ./<VERSION>`
   * When error occurs
@@ -135,7 +136,7 @@ This is done for migrating [UPS monitoring software][ref-ups]
 Viewing the following info will decide whenever [i386][ref-ups-x32] or [x64][ref-ups-x64]
 1. View the type of CPU `cat /proc/cpuinfo`
 2. View other useful info: `uname -a`
-3. View arhitecture: `dpkg --print-architecture`
+3. View architecture: `dpkg --print-architecture`
 4. View bits: `getconf LONG_BIT`
 5. View kernal config:
 ```
