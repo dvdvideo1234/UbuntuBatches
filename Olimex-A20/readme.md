@@ -3,6 +3,48 @@
 
 ### Official [olimex image releases][ref-oimg]
 
+### When HDD or SSD is available for automount
+1. Install monitoring `sudo apt-get install -y gnome-disk-utility`
+2. List all drives `sudo fdisk -l`
+```
+    Disk /dev/sda: 596.18 GiB, 640135028736 bytes, 1250263728 sectors
+    Disk model: WDC WD6400BPVT-6
+    Units: sectors of 1 * 512 = 512 bytes
+    Sector size (logical/physical): 512 bytes / 4096 bytes
+    I/O size (minimum/optimal): 4096 bytes / 4096 bytes
+    Disklabel type: dos
+    Disk identifier: 0x0bba294c
+```
+3. Select storage disk and create EXT4 partition: `sudo fdisk /dev/sda`
+4. Format the selected partition to EXT4: `sudo mkfs -t ext4 /dev/sda1`
+5. Identify UUID: `sudo blkid | grep UUID=` or `ls -l /dev/disk/by-uuid` or `sudo lsblk`
+  * Example `/dev/sda1: UUID="3aa73106-944c-4c66-809f-d2b99d9c863c" TYPE="ext4"`
+7. Create directory: `/mnt/Disk` and edit mount options `sudo vim /etc/fstab`
+  * Example `UUID=3aa73106-944c-4c66-809f-d2b99d9c863c /mnt/Disk ext4 auto,exec,nouser,rw,async,suid,nodev,nofail,x-gvfs-show 0 0`
+8. Mount the drive: `sudo mount -t ext4 /dev/sda1 /mnt/Disk` or via `/etc/fstab` `sudo mount -a`
+
+### Move the heavy-read folders such as `home` and `var`
+This can be via the [`move-link.sh`][ref-mvsh] script.
+1. Copy all the contents to the new location
+  * Example `rsync -va /var /mnt/Disk`
+2. Create a backup copy if it fails
+  * Example: `mv /var /var.old`
+3. Make symbolic link `ln -s /path/to/original /path/to/link`
+  * Example ( `/var` ) `sudo ln -s /mnt/Disk/var  /var`
+4. Required commands for easire maintaining. Beware for `etc`!
+```
+sudo mv /var.old /var
+sudo mv /var /var.old
+sudo rsync -va /var /mnt/Disk
+sudo ln -s /mnt/Disk/var  /var
+
+lrwxrwxrwx   1 root root      14 Jul  6 20:00 home -> /mnt/Disk/home
+lrwxrwxrwx   1 root root      13 Jul  6 19:59 tmp -> /mnt/Disk/tmp
+lrwxrwxrwx   1 root root      13 Jul  6 19:58 srv -> /mnt/Disk/srv
+lrwxrwxrwx   1 root root      13 Jul  6 19:53 var -> /mnt/Disk/var
+lrwxrwxrwx   1 root root      20 Jul  7 10:11 etc/pihole -> /mnt/Disk/etc/pihole
+```
+
 ### Fix for the internet not working
 * Method 1. Use Network connection GUI
 1. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
@@ -61,50 +103,7 @@ xserver-xorg-video-dummy-hwe-16.04 - Transitional package for xserver-xorg-video
 5. For connecting outside of the LAN area forward the `<PORT>` in your router to `<IP>` server
 6. Now you are connected to the VNC server
 
-### When HDD or SSD is available for automount
-1. Install monitoring `sudo apt-get install -y gnome-disk-utility`
-2. List all drives `sudo fdisk -l`
-```
-    Disk /dev/sda: 596.18 GiB, 640135028736 bytes, 1250263728 sectors
-    Disk model: WDC WD6400BPVT-6
-    Units: sectors of 1 * 512 = 512 bytes
-    Sector size (logical/physical): 512 bytes / 4096 bytes
-    I/O size (minimum/optimal): 4096 bytes / 4096 bytes
-    Disklabel type: dos
-    Disk identifier: 0x0bba294c
-```
-3. Select storage disk and create EXT4 partition: `sudo fdisk /dev/sda`
-4. Format the selected partition to EXT4: `sudo mkfs -t ext4 /dev/sda1`
-5. Identify UUID: `sudo blkid | grep UUID=` or `ls -l /dev/disk/by-uuid` or `sudo lsblk`
-  * Example `/dev/sda1: UUID="3aa73106-944c-4c66-809f-d2b99d9c863c" TYPE="ext4"`
-7. Create directory: `/mnt/Disk` and edit mount options `sudo vim /etc/fstab`
-  * Example `UUID=3aa73106-944c-4c66-809f-d2b99d9c863c /mnt/Disk ext4 auto,exec,nouser,rw,async,suid,nodev,nofail,x-gvfs-show 0 0`
-8. Mount the drive: `sudo mount -t ext4 /dev/sda1 /mnt/Disk` or via `/etc/fstab` `sudo mount -a`
-
-### Move the heavy-read folders such as `home` and `var`
-This can be via the [`move-link.sh`][ref-mvsh] script.
-1. Copy all the contents to the new location
-  * Example `rsync -va /var /mnt/Disk`
-2. Create a backup copy if it fails
-  * Example: `mv /var /var.old`
-3. Make symbolic link `ln -s /path/to/original /path/to/link`
-  * Example ( `/var` ) `sudo ln -s /mnt/Disk/var  /var`
-4. Required commands for easire maintaining. Beware for `etc`!
-```
-sudo mv /var.old /var
-sudo mv /var /var.old
-sudo rsync -va /var /mnt/Disk
-sudo ln -s /mnt/Disk/var  /var
-
-lrwxrwxrwx   1 root root      14 Jul  6 20:00 home -> /mnt/Disk/home
-lrwxrwxrwx   1 root root      13 Jul  6 19:59 tmp -> /mnt/Disk/tmp
-lrwxrwxrwx   1 root root      13 Jul  6 19:58 srv -> /mnt/Disk/srv
-lrwxrwxrwx   1 root root      13 Jul  6 19:53 var -> /mnt/Disk/var
-lrwxrwxrwx   1 root root      20 Jul  7 10:11 etc/pihole -> /mnt/Disk/etc/pihole
-
-```
-
-### Install [PI-HOLE][ref-pihole]
+### Install [Pi-hole][ref-pihole]
 1. Fetch PPSs and check for broken one `sudo apt-get update`
   * Example `sudo vim /etc/apt/sources.list`
 2. Upgrade the distro when needed `sudo apt-get upgrade`
@@ -112,6 +111,8 @@ lrwxrwxrwx   1 root root      20 Jul  7 10:11 etc/pihole -> /mnt/Disk/etc/pihole
 4. Change `cd "Pi-hole/automated install/"`
 5. Make it executable `sudo chmod +x basic-install.sh`
 6. Run installer `sudo bash basic-install.sh`
+7. Import [adlists][ref-adlists], [whitelists][ref-whitelist], [blacklists][ref-blacklist] and [regex][ref-regex]
+8. If it does not start you probably have to [reset someting][ref-reset]
 
 ### Install [ViewPower][ref-fsp]
 1. Chech arhitecture `file /sbin/init`
@@ -145,11 +146,6 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 ```
 6. When LONG_BIT is `32` install Box86 by using [i386][ref-box86-install] script.
 
-### Running [Pi-hole][ref-pihole]
-1. `git clone --depth 1 https://github.com/pi-hole/pi-hole.git Pi-hole`
-2. `cd "Pi-hole/automated install/"`
-3. `sudo bash basic-install.sh`
-
 ### Synchronizing the image clock
 0. Execute current directory [time.sh][ref-time] in the terminal.
 
@@ -171,3 +167,8 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 [ref-box86-install]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/i386-support.sh
 [ref-resolve]: https://man7.org/linux/man-pages/man5/resolv.conf.5.html
 [ref-oimg]: http://images.olimex.com/release/
+[ref-adlists]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/adlist
+[ref-blacklist]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/blacklist
+[ref-whitelist]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/whitelist
+[ref-regex]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/regex
+[ref-reset]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/reset.sh
