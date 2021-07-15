@@ -14,17 +14,16 @@ then
   pihole -g -r
 fi
 
-read -sp "Delete all adlists ? " option
+read -sp "Delete exact whitelist ? " option
 if test "${option^^}" == "Y"
 then
   sudo sqlite3 /etc/pihole/gravity.db "delete from domainlist where type=0;"
 fi
 
-read -sp "Delete exact whitelist ? " option
+read -sp "Delete regex whitelist ? " option
 if test "${option^^}" == "Y"
 then
   sudo sqlite3 /etc/pihole/gravity.db "delete from domainlist where type=2;"
 fi
-
 
 exit 0
