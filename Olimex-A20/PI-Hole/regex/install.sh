@@ -17,7 +17,7 @@ arGravity+=("^mads\.                                                            
 arGravity+=("^pixels?[-.]                                                                         ")
 arGravity+=("^stat(s|istics)?[0-9]*[_.-]                                                          ")
 
-for url in ${arGravity[*]}; do
-  strTrim=$(echo -e "${url}" | tr -d '[:space:]')
-  echo "Test >>$strTrim<<"
+for regex in ${arGravity[*]}; do
+  trimrx=$(echo -e "${regex}" | tr -d '[:space:]')
+  pihole --regex ${trimrx}
 done
