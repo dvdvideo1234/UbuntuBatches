@@ -1,0 +1,17 @@
+chrome.google.com
+translate.google.com
+clients4.google.com
+clients2.google.com
+s.youtube.com
+video-stats.l.google.com
+android.clients.google.com
+reminders-pa.googleapis.com
+firestore.googleapis.com
+gstaticadssl.l.google.com
+googleapis.l.google.com
+dl.google.com
+redirector.gvt1.com
+connectivitycheck.android.com
+android.clients.google.com
+clients3.google.com
+connectivitycheck.gstatic.com
