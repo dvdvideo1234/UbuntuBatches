@@ -19,7 +19,7 @@ for file in *.txt; do
     then
       strurl=${strdat}
       echo "Adding: ${strcom} | ${strurl}"
-      pihole -a adlist add ${strurl} ${strcom}
+      pihole -a adlist add "${strurl}" "${strcom}"
     fi
   done <"$file"
 done

@@ -1,4 +1,4 @@
-# Other Lists (https://firebog.net/)
+# Other lists (https://firebog.net/)
 
 https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
 https://raw.githubusercontent.com/chadmayfield/my-pihole-blocklists/master/lists/pi_blocklist_porn_all.list

@@ -1,4 +1,4 @@
-# DeathbyBandaID's archive hosts
+# DeathbyBandaID archive hosts
 
 https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/AakList.txt
 https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/ABP-Bulgarian-List.txt

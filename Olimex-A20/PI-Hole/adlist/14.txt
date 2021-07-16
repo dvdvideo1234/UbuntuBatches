@@ -1,4 +1,4 @@
-# FadeMind's spyware hosts
+# FadeMind spyware hosts
 
 https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
 https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Dead/hosts

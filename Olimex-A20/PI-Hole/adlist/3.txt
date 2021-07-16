@@ -1,4 +1,4 @@
-# Tracking & Telemetry Lists (https://firebog.net/)
+# Tracking and telemetry Lists (https://firebog.net/)
 
 https://v.firebog.net/hosts/Easyprivacy.txt
 https://v.firebog.net/hosts/Prigent-Ads.txt

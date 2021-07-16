@@ -1,4 +1,4 @@
-# Malicious Lists (https://firebog.net/)
+# Malicious lists (https://firebog.net/)
 
 https://raw.githubusercontent.com/DandelionSprout/adfilt/master/Alternate%20versions%20Anti-Malware%20List/AntiMalwareHosts.txt
 https://osint.digitalside.it/Threat-Intel/lists/latestdomains.txt

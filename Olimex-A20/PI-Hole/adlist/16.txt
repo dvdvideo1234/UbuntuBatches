@@ -1,4 +1,4 @@
-# Crazy-max's windows spy blocker
+# Crazy-max windows spy blocker
 
 https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/dnscrypt/spy.txt
 https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/dnscrypt/extra.txt
