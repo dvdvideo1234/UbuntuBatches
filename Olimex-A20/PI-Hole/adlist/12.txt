@@ -2,5 +2,4 @@
 
 https://gitlab.com/Kurobeats/phishing_hosts/raw/master/hosts
 https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/hosts.txt
-https://raw.githubusercontent.com/XionKzn/PiHole-Lists/master/Cerber_Ransomware.txt
 https://raw.githubusercontent.com/pirat28/IHateTracker/master/iHateTracker.txt
