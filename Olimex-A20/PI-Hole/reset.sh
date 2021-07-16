@@ -14,6 +14,12 @@ then
   pihole -g -r
 fi
 
+read -sp "Delete AD-lists ? " option
+if test "${option^^}" == "Y"
+then
+  sudo sqlite3 /etc/pihole/gravity.db "DELETE FROM adlist;"
+fi
+
 read -sp "Delete exact whitelist ? " option
 if test "${option^^}" == "Y"
 then
