@@ -1,13 +1,6 @@
 # Prevent Ransomware (https://filterlists.com/)
 
-https://raw.githubusercontent.com/pirat28/IHateTracker/master/iHateTracker.txt
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/CryptoWall-Ransomware-C2-Domain-blocklist.tx
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/Locky-Ransomware-C2-Domain-Blocklist.txt
-https://raw.githubusercontent.com/XionKzn/PiHole-Lists/master/Cerber_Ransomware.txt
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/Ransomware-Domain-Blocklist.txt
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/TeslaCrypt-Ransomware-C2-Domain-Blocklist.tx
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/TeslaCrypt-Ransomware-Payment-Sites-Domain-B
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/TorrentLocker-Ransomware-C2-Domain-Blocklist
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/TorrentLocker-Ransomware-Payment-Sites-Domai
 https://gitlab.com/Kurobeats/phishing_hosts/raw/master/hosts
 https://raw.githubusercontent.com/MetaMask/eth-phishing-detect/master/src/hosts.txt
+https://raw.githubusercontent.com/XionKzn/PiHole-Lists/master/Cerber_Ransomware.txt
+https://raw.githubusercontent.com/pirat28/IHateTracker/master/iHateTracker.txt

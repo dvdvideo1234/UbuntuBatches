@@ -10,7 +10,6 @@ https://raw.githubusercontent.com/hectorm/hmirror/master/data/adaway.org/list.tx
 https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/Phishing-Angriffe
 https://raw.githubusercontent.com/RPiList/specials/master/Blocklisten/spam.mails
 https://raw.githubusercontent.com/crazy-max/WindowsSpyBlocker/master/data/dnscrypt/spy.txt
-https://raw.githubusercontent.com/AdguardTeam/AdguardFilters/master/MobileFilter/sections/adservers.txt
 https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
 https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
 https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt

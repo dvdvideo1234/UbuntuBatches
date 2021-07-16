@@ -1,7 +1,6 @@
 # Suspicious Lists (https://firebog.net/)
 
 https://raw.githubusercontent.com/PolishFiltersTeam/KADhosts/master/KADhosts.txt
-https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
 https://v.firebog.net/hosts/static/w3kbl.txt
 https://raw.githubusercontent.com/matomo-org/referrer-spam-blacklist/master/spammers.txt
 https://someonewhocares.org/hosts/zero/hosts

@@ -1,0 +1,25 @@
+# FadeMind's spyware hosts
+
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.2o7Net/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Dead/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Risk/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/add.Spam/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/antipopads/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/anudeepND-blacklist-adservers/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/anudeepND-blacklist-facebook/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/blocklists-facebook/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/CoinBlockerList/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/GoodbyeAds-Samsung-Adblock-Extension/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/GoodbyeAds-Spotify-AdBlock-Extension/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/GoodbyeAds-Xiaomi-Extension/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/GoodbyeAds-YouTube-Adblock-Extension/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/Lightswitch05-ads-tracking-extended/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/oisd.nl/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/osint.digitalside.it/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/rlwpx.free.fr.hrsk/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/rlwpx.free.fr.htrc/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/UncheckyAds/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/What-Zit-Tooya-Ad-Block/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/WindowsSpyBlocker-EXTRA/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/WindowsSpyBlocker-SPY/hosts
+https://raw.githubusercontent.com/FadeMind/hosts.extras/master/WindowsSpyBlocker-UPDATE/hosts

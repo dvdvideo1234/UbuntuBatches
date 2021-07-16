@@ -8,11 +8,8 @@ https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
 https://gitlab.com/my-privacy-dns/matrix/matrix/-/raw/master/source/tracking/domains.list
 https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardApps.txt
 https://raw.githubusercontent.com/r-a-y/mobile-hosts/master/AdguardMobileAds.txt
-https://raw.githubusercontent.com/FadeMind/hosts.extras/master/StreamingAds/hosts
 https://raw.githubusercontent.com/w13d/adblockListABP-PiHole/master/Spotify.txt
 https://raw.githubusercontent.com/DRSDavidSoft/additional-hosts/master/domains/blacklist/adservers-and-trackers.txt
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/AdAway-Default-Blocklist.txt
 https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
 https://v.firebog.net/hosts/Easyprivacy.txt
-https://raw.githubusercontent.com/deathbybandaid/piholeparser/master/Subscribable-Lists/ParsedBlacklists/FadeMind-addSpam.txt
 https://raw.githubusercontent.com/mitchellkrogza/The-Big-List-of-Hacked-Malware-Web-Sites/master/hacked-domains.list

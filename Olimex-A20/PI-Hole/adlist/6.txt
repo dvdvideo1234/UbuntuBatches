@@ -1,20 +1,13 @@
 # https://gist.github.com/rgstephens/e17f5730e9d172ce9725060b99375c03
 
 https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
-https://mirror1.malwaredomains.com/files/justdomains
 http://sysctl.org/cameleon/hosts
 https://s3.amazonaws.com/lists.disconnect.me/simple_tracking.txt
 https://s3.amazonaws.com/lists.disconnect.me/simple_ad.txt
-https://hosts-file.net/ad_servers.txt
-https://hosts-file.net/grm.txt
 https://reddestdream.github.io/Projects/MinimalHosts/etc/MinimalHostsBlocker/minimalhosts
 https://raw.githubusercontent.com/StevenBlack/hosts/master/data/KADhosts/hosts
 https://raw.githubusercontent.com/StevenBlack/hosts/master/data/add.Spam/hosts
 https://s3.amazonaws.com/lists.disconnect.me/simple_malvertising.txt
-https://hosts-file.net/exp.txt
-https://hosts-file.net/emd.txt
-https://hosts-file.net/psh.txt
-https://mirror.cedia.org.ec/malwaredomains/immortal_domains.txt
 https://www.malwaredomainlist.com/hostslist/hosts.txt
 https://bitbucket.org/ethanr/dns-blacklists/raw/8575c9f96e5b4a1308f2f12394abd86d0927a4a0/bad_lists/Mandiant_APT1_Report_Appendix_D.txt
 https://v.firebog.net/hosts/Prigent-Malware.txt
