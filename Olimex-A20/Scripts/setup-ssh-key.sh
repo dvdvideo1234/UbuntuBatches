@@ -16,24 +16,21 @@ fi
 read -p "Enter e-mail or leave blank: " scriptmail
 if test "$scriptmail" == ""
 then
-  ssh-keygen -t rsa -b 4096
+  ssh-keygen -t rsa -b 4096 -f $scriptfile
 else
-  ssh-keygen -t rsa -b 4096 -C "$scriptmail"
+  ssh-keygen -t rsa -b 4096 -C "$scriptmail" -f $scriptfile
 fi
 
 eval $(ssh-agent -s)
-ssh-add $HOME.ssh/$scriptfile
-clip < $HOME.ssh/$scriptfile.pub
-
-cp $HOME.ssh/$scriptfile $scriptpath/$scriptfile
-cp $HOME.ssh/$scriptfile.pub $scriptpath/$scriptfile.pub
+ssh-add $scriptfile
+clip < $scriptfile.pub
 
 echo Please follow the procedure described exactly:
 echo 1. The key now exists into the clipboard!
 echo 2. Go to: https://github.com/settings/keys
 echo 3. Create new SSH key and paste it there
 echo 4. Import the key with PUTTYGEN and write your password
-echo 5. Save the public and private version of the key 
+echo 5. Save the public and private version of the key
 echo 6. Add the PUTTY key to PAGEANT to identify computer
 
 echo You are all set for push and pull with github!
