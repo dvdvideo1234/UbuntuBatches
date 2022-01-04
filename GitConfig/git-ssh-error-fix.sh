@@ -1,3 +1,5 @@
+$ setx HOME "/c/Programs/Git/home"
+
 $ git clone git@github.com:xxxxx/xxxx.git my-awesome-proj
 Cloning into 'my-awesome-proj'...
 ssh: connect to host github.com port 22: Connection timed out
