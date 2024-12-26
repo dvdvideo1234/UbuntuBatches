@@ -118,35 +118,6 @@ case "$action" in
       yes y | ./dependencies.sh
     fi
 
-    read -sp "What password does the root user have ? " mysqlpa
-    if test "$mysqlpa" == ""
-    then
-      echo -e "\nVersion: $(mysql --version)"
-      echo "To change password for MySQL root user follow the steps below."
-      echo "1. sudo /etc/init.d/mysql stop"
-      echo "2. sudo pkill mysql"
-      echo "3. sudo mkdir -p /var/run/mysqld"
-      echo "4. sudo chown mysql /var/run/mysqld"
-      echo "5. sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &"
-      echo "6. mysql -uroot"
-      echo "7. flush privileges;"
-      echo "Use the root safe login to change your password."
-      echo "Replace the value of <new_password> with your new password."
-      echo "1. use mysql;"
-      echo "2. update user set plugin='mysql_native_password' where user='root';"
-      echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
-      echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
-      echo "5. If the password conversion function does not work use: SET CREDENTIALS FOR 'root' TO '<new_password>';"
-      echo "6. flush privileges;"
-      echo "7. commit;"
-      echo "8. exit;"
-      echo "9. sudo /etc/init.d/mysql stop"
-      echo "10. sudo /etc/init.d/mysql start"
-      echo "11. If starting the service fails, just restart the system."
-      echo "Now start the installation again but this time give the password you set."
-      exit 0
-    fi
-
     read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
     proxymc=$(grep -oE $proxyrg <<< $proxysv)
     if test "$proxysv" == "$proxymc"
@@ -282,6 +253,35 @@ case "$action" in
       fi
     fi
 
+    read -sp "What password does the root user have ? " mysqlpa
+    if test "$mysqlpa" == ""
+    then
+      echo -e "\nVersion: $(mysql --version)"
+      echo "To change password for MySQL root user follow the steps below."
+      echo "1. sudo /etc/init.d/mysql stop"
+      echo "2. sudo pkill mysql"
+      echo "3. sudo mkdir -p /var/run/mysqld"
+      echo "4. sudo chown mysql /var/run/mysqld"
+      echo "5. sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &"
+      echo "6. mysql -uroot"
+      echo "7. flush privileges;"
+      echo "Use the root safe login to change your password."
+      echo "Replace the value of <new_password> with your new password."
+      echo "1. use mysql;"
+      echo "2. update user set plugin='mysql_native_password' where user='root';"
+      echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
+      echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
+      echo "5. If the password conversion function does not work use: SET CREDENTIALS FOR 'root' TO '<new_password>';"
+      echo "6. flush privileges;"
+      echo "7. commit;"
+      echo "8. exit;"
+      echo "9. sudo /etc/init.d/mysql stop"
+      echo "10. sudo /etc/init.d/mysql start"
+      echo "11. If starting the service fails, just restart the system."
+      echo "Now start the installation again but this time give the password you set."
+      exit 0
+    fi
+
     read -p "Create MaNGOS databases [y/N] ? " bool
     if test "$bool" == "y"
     then
@@ -404,7 +404,7 @@ case "$action" in
     sqlstmt=$(echo ${sqlstmt/\{STARTPK\}/$startpk})
     sqlstmt=$(echo ${sqlstmt/\{ENDPK\}/$endpk})
     echo "STMT: $sqlstmt"
-    read -sp "What password does the root user have ? " mysqlpa    
+    read -sp "What password does the root user have ? " mysqlpa
     mysql -uroot -p$mysqlpa -e "$sqlstmt" > dbc-export.txt
   ;;
   *)
