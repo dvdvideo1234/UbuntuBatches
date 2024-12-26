@@ -15,6 +15,7 @@ apt-get install make
 apt-get install patch
 apt-get install libmysql++-dev
 apt-get install mysql-server
+apt-get install libmysqlclient-dev
 apt-get install libtool
 apt-get install libssl-dev
 apt-get install grep
