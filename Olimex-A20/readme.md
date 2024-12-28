@@ -64,6 +64,8 @@ network:
 ```
 3. Run `sudo netplan generate`
 4. Run `sudo netplan apply`
+  * `systemctl start systemd-resolved.service`
+  * `systemctl enable systemd-resolved.service`
 5. Restart `shutdown -r now` or shutdown `shutdown -h now`
 * Method 2. Hardcode [resolve][ref-resolve] nameservers for session
 1. Edit: `sudo vim /etc/resolv.conf` and add the following:
