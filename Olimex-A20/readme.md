@@ -47,7 +47,7 @@ lrwxrwxrwx   1 root root      20 Jul  7 10:11 etc/pihole -> /mnt/Disk/etc/pihole
 ```
 
 ### Fix for the internet not working
-* Method 1. Use Network connection GUI
+* Method 1: Use Network connection GUI
 1. Open VNC to [network connection][ref-ip4] with [ETH][ref-eth] device
 2. Edit: `sudo vim /etc/netplan/01-netcfg.yaml`
 3. The example hardware device name is `eth0`
@@ -67,7 +67,7 @@ network:
   * `systemctl start systemd-resolved.service`
   * `systemctl enable systemd-resolved.service`
 5. Restart `shutdown -r now` or shutdown `shutdown -h now`
-* Method 2. Hardcode [resolve][ref-resolve] nameservers for session
+* Method 2: Hardcode [resolve][ref-resolve] nameservers for session
 1. Edit: `sudo vim /etc/resolv.conf` and add the following:
 ```
 nameserver 8.8.8.8
@@ -75,7 +75,14 @@ nameserver 8.8.4.4
 nameserver 1.1.1.1
 nameserver 1.0.0.1
 ```
-
+2. This file is a symbolic link of the following:
+```
+olimex@a20-olinuxino:/etc$ ls -ltr res*.*
+lrwxrwxrwx 1 root root 39 рту 24  2019 resolv.conf -> ../run/systemd/resolve/stub-resolv.conf
+```
+3. To [make it permanent][ref-resolv-man] copy to `resolv.conf.manually-configured`
+4. Remove the file via `rm -f /etc/resolv.conf`
+5. Make new link `ln -s /etc/resolv.conf.manually-configured /etc/resolv.conf`
 ### Installing samba and creating shared folder
 1. Navigate to `cd ~` and create folder `Share`
 2. Install the server: `yes y | sudo apt-get install samba`
@@ -181,3 +188,4 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 [ref-whitelist]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/whitelist
 [ref-regex]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/regex
 [ref-reset]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/reset.sh
+[ref-resolv-man]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/Scripts/resolv-perm.sh
