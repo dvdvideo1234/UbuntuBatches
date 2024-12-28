@@ -296,9 +296,9 @@ case "$action" in
       then
         rm -f $scriptpath/$drtitle/run/mangosd.conf
         if [ -f $scriptpath/$drtitle/run/etc/mangosd.conf.dist ]; then
-          cp $scriptpath/$drtitle/run/etc/mangosd.conf.dist $scriptpath/$drtitle/run/mangosd.conf
+          cp -v $scriptpath/$drtitle/run/etc/mangosd.conf.dist $scriptpath/$drtitle/run/mangosd.conf
         else
-          cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
+          cp -v $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
         fi
       fi
 
@@ -307,9 +307,9 @@ case "$action" in
       then
         rm -f $scriptpath/$drtitle/run/realmd.conf
         if [ -f $scriptpath/$drtitle/run/etc/realmd.conf.dist ]; then
-          cp $scriptpath/$drtitle/run/etc/realmd.conf.dist $scriptpath/$drtitle/run/realmd.conf
+          cp -v $scriptpath/$drtitle/run/etc/realmd.conf.dist $scriptpath/$drtitle/run/realmd.conf
         else
-          cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
+          cp -v $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
         fi
       fi
 
@@ -318,9 +318,9 @@ case "$action" in
       then
         rm -f $scriptpath/$drtitle/run/anticheat.conf
         if [ -f $scriptpath/$drtitle/run/etc/anticheat.conf.dist ]; then
-          cp $scriptpath/$drtitle/run/etc/anticheat.conf.dist $scriptpath/$drtitle/run/anticheat.conf
+          cp -v $scriptpath/$drtitle/run/etc/anticheat.conf.dist $scriptpath/$drtitle/run/anticheat.conf
         else
-          cp $scriptpath/$drtitle/mangos/src/game/Anticheat/module/anticheat.conf.dist.in $scriptpath/$drtitle/run/anticheat.conf
+          cp -v $scriptpath/$drtitle/mangos/src/game/Anticheat/module/anticheat.conf.dist.in $scriptpath/$drtitle/run/anticheat.conf
         fi
       fi
 
@@ -329,9 +329,9 @@ case "$action" in
       then
         rm -f $scriptpath/$drtitle/run/ahbot.conf
         if [ -f $scriptpath/$drtitle/run/etc/ahbot.conf.dist ]; then
-          cp $scriptpath/$drtitle/run/etc/ahbot.conf.dist $scriptpath/$drtitle/run/ahbot.conf
+          cp -v $scriptpath/$drtitle/run/etc/ahbot.conf.dist $scriptpath/$drtitle/run/ahbot.conf
         else
-          cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
+          cp -v $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
         fi
       fi
 
@@ -340,9 +340,9 @@ case "$action" in
       then
         rm -f $scriptpath/$drtitle/run/playerbot.conf
         if [ -f $scriptpath/$drtitle/run/etc/playerbot.conf.dist ]; then
-          cp $scriptpath/$drtitle/run/etc/playerbot.conf.dist $scriptpath/$drtitle/run/playerbot.conf
+          cp -v $scriptpath/$drtitle/run/etc/playerbot.conf.dist $scriptpath/$drtitle/run/playerbot.conf
         else
-          cp $scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in $scriptpath/$drtitle/run/playerbot.conf
+          cp -v $scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in $scriptpath/$drtitle/run/playerbot.conf
         fi
       fi
     fi
