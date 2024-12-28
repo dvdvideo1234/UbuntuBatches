@@ -345,6 +345,17 @@ case "$action" in
           cp -v $scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in $scriptpath/$drtitle/run/playerbot.conf
         fi
       fi
+      
+      read -p "Renew player bot AI [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        rm -f $scriptpath/$drtitle/run/aiplayerbot.conf
+        if [ -f $scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist ]; then
+          cp -v $scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist $scriptpath/$drtitle/run/aiplayerbot.conf
+        else
+          cp -v $scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in $scriptpath/$drtitle/run/aiplayerbot.conf
+        fi
+      fi
     fi
 
     read -sp "What password does the root user have ? " mysqlpa
