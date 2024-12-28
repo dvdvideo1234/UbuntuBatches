@@ -71,6 +71,30 @@ function shCreateDesktop()
   mv $PWD/$key.sh $HOME/Desktop/$key.sh
 }
 
+function shCopyConf()
+{
+  local labe=$1
+  local dest=$2
+  local sors[1]=$3
+  local sors[2]=$4
+  local sors[3]=$5
+  local sors[4]=$6
+  local sors[5]=$7
+  
+  read -p "Renew $labe [y/N] ? " bool
+  if test "$bool" == "y"
+  then
+    rm -f $dest
+    for (( i=0; i<=$(( ${#sors[*]}-1 )); i++ ))
+    do
+      if [ -f "${sors[$i]}" ]; then
+        cp -v ${sors[$i]} $dest
+        break
+      fi
+    done
+  fi
+}
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -291,71 +315,56 @@ case "$action" in
         exit 0
       fi
 
-      read -p "Renew mangosd [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        rm -f $scriptpath/$drtitle/run/mangosd.conf
-        if [ -f $scriptpath/$drtitle/run/etc/mangosd.conf.dist ]; then
-          cp -v $scriptpath/$drtitle/run/etc/mangosd.conf.dist $scriptpath/$drtitle/run/mangosd.conf
-        else
-          cp -v $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
-        fi
-      fi
+      # find . -name *.conf.* | grep mangosd
+      shCopyConf "mangosd" "$scriptpath/$drtitle/run/mangosd.conf"   \
+        "$scriptpath/$drtitle/run/etc/mangosd.conf.dist"             \
+        "$scriptpath/$drtitle/build/src/mangosd/mangosd.conf.dist"   \
+        "$scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in"
+        
+      # find . -name *.conf.* | grep realmd
+      shCopyConf "realmd" "$scriptpath/$drtitle/run/realmd.conf"     \
+        "$scriptpath/$drtitle/run/etc/realmd.conf.dist"              \
+        "$scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in" 
 
-      read -p "Renew realmd [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        rm -f $scriptpath/$drtitle/run/realmd.conf
-        if [ -f $scriptpath/$drtitle/run/etc/realmd.conf.dist ]; then
-          cp -v $scriptpath/$drtitle/run/etc/realmd.conf.dist $scriptpath/$drtitle/run/realmd.conf
-        else
-          cp -v $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
-        fi
-      fi
+      # find . -name *.conf.* | grep anticheat
+      shCopyConf "anticheat system" "$scriptpath/$drtitle/run/anticheat.conf"     \
+        "$scriptpath/$drtitle/run/etc/anticheat.conf.dist"                        \
+        "$scriptpath/$drtitle/mangos/src/game/Anticheat/module/anticheat.conf.dist.in" 
 
-      read -p "Renew anticheat system [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        rm -f $scriptpath/$drtitle/run/anticheat.conf
-        if [ -f $scriptpath/$drtitle/run/etc/anticheat.conf.dist ]; then
-          cp -v $scriptpath/$drtitle/run/etc/anticheat.conf.dist $scriptpath/$drtitle/run/anticheat.conf
-        else
-          cp -v $scriptpath/$drtitle/mangos/src/game/Anticheat/module/anticheat.conf.dist.in $scriptpath/$drtitle/run/anticheat.conf
-        fi
-      fi
+      # find . -name *.conf.* | grep ahbot
+      shCopyConf "action house bot" "$scriptpath/$drtitle/run/ahbot.conf"             \
+        "$scriptpath/$drtitle/run/etc/ahbot.conf.dist"                                \
+        "$scriptpath/$drtitle/build/src/modules/PlayerBots/ahbot.conf.dist"           \
+        "$scriptpath/$drtitle/build/src/mangosd/ahbot.conf.dist"                      \
+        "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/ahbot/ahbot.conf.dist.in" \
+        "$scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in"
 
-      read -p "Renew action house bot [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        rm -f $scriptpath/$drtitle/run/ahbot.conf
-        if [ -f $scriptpath/$drtitle/run/etc/ahbot.conf.dist ]; then
-          cp -v $scriptpath/$drtitle/run/etc/ahbot.conf.dist $scriptpath/$drtitle/run/ahbot.conf
-        else
-          cp -v $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
-        fi
-      fi
+      # find . -name *.conf.* | grep playerbot
+      shCopyConf "player bot" "$scriptpath/$drtitle/run/playerbot.conf"           \
+        "$scriptpath/$drtitle/run/etc/playerbot.conf.dist"                        \
+        "$scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in" 
 
-      read -p "Renew player bot [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        rm -f $scriptpath/$drtitle/run/playerbot.conf
-        if [ -f $scriptpath/$drtitle/run/etc/playerbot.conf.dist ]; then
-          cp -v $scriptpath/$drtitle/run/etc/playerbot.conf.dist $scriptpath/$drtitle/run/playerbot.conf
-        else
-          cp -v $scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in $scriptpath/$drtitle/run/playerbot.conf
-        fi
-      fi
-      
-      read -p "Renew player bot AI [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        rm -f $scriptpath/$drtitle/run/aiplayerbot.conf
-        if [ -f $scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist ]; then
-          cp -v $scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist $scriptpath/$drtitle/run/aiplayerbot.conf
-        else
-          cp -v $scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in $scriptpath/$drtitle/run/aiplayerbot.conf
-        fi
-      fi
+      # find . -name *.conf.* | grep aiplayerbot
+      case "$idtitle" in
+      0)
+        shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
+          "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
+          "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
+          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in"      
+      ;;
+      1)
+        shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
+          "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
+          "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
+          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.tbc"  
+      ;;
+      2)
+        shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
+          "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
+          "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
+          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.wotlk" 
+      ;;
+      esac
     fi
 
     read -sp "What password does the root user have ? " mysqlpa
