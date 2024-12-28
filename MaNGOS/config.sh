@@ -133,8 +133,7 @@ case "$action" in
     if test "$bool" == "y"
     then
       cd $scriptpath
-      rm -rf $drtitle
-      mkdir $drtitle
+      [ ! -d "$drtitle" ] && mkdir -p "$drtitle"
       cd $scriptpath/$drtitle
 
       rm -rf mangos
