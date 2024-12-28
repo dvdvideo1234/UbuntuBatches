@@ -133,6 +133,7 @@ case "$action" in
     if test "$bool" == "y"
     then
       cd $scriptpath
+      rm -rf $drtitle
       mkdir $drtitle
       cd $scriptpath/$drtitle
 
