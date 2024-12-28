@@ -171,7 +171,15 @@ case "$action" in
 
       makecmd="cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run"
 
-      read -p "Enable compilation debug mode [y/N] ? " bool
+      read -p "Enable link-time optimizations [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=1"
+      else
+        makecmd="$makecmd -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=0"
+      fi
+
+      read -p "Enable additional debug-code in core [y/N] ? " bool
       if test "$bool" == "y"
       then
         makecmd="$makecmd -DDEBUG=1"
@@ -195,12 +203,20 @@ case "$action" in
         makecmd="$makecmd -DWARNINGS=OFF"
       fi
 
-      read -p "Enable PostgreSQL [y/N] ? " bool
+      read -p "Enable PostgreSQL instead of mysql [y/N] ? " bool
       if test "$bool" == "y"
       then
         makecmd="$makecmd -DPOSTGRESQL=ON"
       else
         makecmd="$makecmd -DPOSTGRESQL=OFF"
+      fi
+
+      read -p "Enable SQLite instead of mysql [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DSQLITE=ON"
+      else
+        makecmd="$makecmd -DSQLITE=OFF"
       fi
 
       read -p "Compile included map extraction tools [y/N] ? " bool
@@ -211,6 +227,14 @@ case "$action" in
         makecmd="$makecmd -DBUILD_EXTRACTORS=OFF"
       fi
 
+      read -p "Compile included map viewer tools [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_RECASTDEMOMOD=ON"
+      else
+        makecmd="$makecmd -DBUILD_RECASTDEMOMOD=OFF"
+      fi
+
       read -p "Enable building script DEV [y/N] ? " bool
       if test "$bool" == "y"
       then
@@ -219,12 +243,36 @@ case "$action" in
         makecmd="$makecmd -DBUILD_SCRIPTDEV=OFF"
       fi
 
-      read -p "Enable building player bot mod [y/N] ? " bool
+      read -p "Enable building player bots mod [y/N] ? " bool
       if test "$bool" == "y"
       then
-        makecmd="$makecmd -DBUILD_PLAYERBOT=ON"
+        makecmd="$makecmd -DBUILD_PLAYERBOTS=ON"
       else
-        makecmd="$makecmd -DBUILD_PLAYERBOT=OFF"
+        makecmd="$makecmd -DBUILD_PLAYERBOTS=OFF"
+      fi
+
+      read -p "Enable action house bots mod [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_AHBOT=ON"
+      else
+        makecmd="$makecmd -DBUILD_AHBOT=OFF"
+      fi
+
+      read -p "Enable metrics, generate data for Grafana [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_METRICS=ON"
+      else
+        makecmd="$makecmd -DBUILD_METRICS=OFF"
+      fi
+
+      read -p "Enable documentation with doxygen [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        makecmd="$makecmd -DBUILD_DOCS=ON"
+      else
+        makecmd="$makecmd -DBUILD_DOCS=OFF"
       fi
 
       echo Command: $makecmd
