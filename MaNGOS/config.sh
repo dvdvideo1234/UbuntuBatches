@@ -286,17 +286,64 @@ case "$action" in
     then
       [ ! -d "$scriptpath/$drtitle/run" ] && mkdir -p "$scriptpath/$drtitle/run"
 
-      rm -f $scriptpath/$drtitle/run/mangosd.conf
-      rm -f $scriptpath/$drtitle/run/realmd.conf
-      rm -f $scriptpath/$drtitle/run/ahbot.conf
-
-      if [ -d "$scriptpath/$drtitle/mangos/src" ]; then
-        cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
-        cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
-        cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
-      else
-        echo "Configuration unavailable. Download sources !"
+      if [ ! -d "$scriptpath/$drtitle/mangos/src" ]; then
+        echo "Configuration unavailable. Download sources first !"
         exit 0
+      fi
+
+      read -p "Renew mangosd [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        rm -f $scriptpath/$drtitle/run/mangosd.conf
+        if [ -f $scriptpath/$drtitle/run/etc/mangosd.conf.dist ]; then
+          cp $scriptpath/$drtitle/run/etc/mangosd.conf.dist $scriptpath/$drtitle/run/mangosd.conf
+        else
+          cp $scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in $scriptpath/$drtitle/run/mangosd.conf
+        fi
+      fi
+
+      read -p "Renew realmd [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        rm -f $scriptpath/$drtitle/run/realmd.conf
+        if [ -f $scriptpath/$drtitle/run/etc/realmd.conf.dist ]; then
+          cp $scriptpath/$drtitle/run/etc/realmd.conf.dist $scriptpath/$drtitle/run/realmd.conf
+        else
+          cp $scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in $scriptpath/$drtitle/run/realmd.conf
+        fi
+      fi
+
+      read -p "Renew anticheat system [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        rm -f $scriptpath/$drtitle/run/anticheat.conf
+        if [ -f $scriptpath/$drtitle/run/etc/anticheat.conf.dist ]; then
+          cp $scriptpath/$drtitle/run/etc/anticheat.conf.dist $scriptpath/$drtitle/run/anticheat.conf
+        else
+          cp $scriptpath/$drtitle/mangos/src/game/Anticheat/module/anticheat.conf.dist.in $scriptpath/$drtitle/run/anticheat.conf
+        fi
+      fi
+
+      read -p "Renew action house bot [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        rm -f $scriptpath/$drtitle/run/ahbot.conf
+        if [ -f $scriptpath/$drtitle/run/etc/ahbot.conf.dist ]; then
+          cp $scriptpath/$drtitle/run/etc/ahbot.conf.dist $scriptpath/$drtitle/run/ahbot.conf
+        else
+          cp $scriptpath/$drtitle/mangos/src/game/AuctionHouseBot/ahbot.conf.dist.in $scriptpath/$drtitle/run/ahbot.conf
+        fi
+      fi
+
+      read -p "Renew player bot [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        rm -f $scriptpath/$drtitle/run/playerbot.conf
+        if [ -f $scriptpath/$drtitle/run/etc/playerbot.conf.dist ]; then
+          cp $scriptpath/$drtitle/run/etc/playerbot.conf.dist $scriptpath/$drtitle/run/playerbot.conf
+        else
+          cp $scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in $scriptpath/$drtitle/run/playerbot.conf
+        fi
       fi
     fi
 
