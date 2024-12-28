@@ -132,8 +132,7 @@ case "$action" in
     read -p "Download the sources [y/N] ? " bool
     if test "$bool" == "y"
     then
-      cd $scriptpath
-      [ ! -d "$drtitle" ] && mkdir -p "$drtitle"
+      [ ! -d "$scriptpath/$drtitle" ] && mkdir -p "$scriptpath/$drtitle"
       cd $scriptpath/$drtitle
 
       rm -rf mangos
