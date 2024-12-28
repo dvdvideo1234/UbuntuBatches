@@ -1,32 +1,35 @@
 #!/bin/bash
 
-apt-get update
+sudo apt-get update
 
 # Dependencies
 
-apt-get install vim
-apt-get install build-essential
-apt-get install gcc
-apt-get install g++
-apt-get install automake
-apt-get install git-core
-apt-get install autoconf
-apt-get install make
-apt-get install patch
-apt-get install libmysql++-dev
-apt-get install mysql-server
-apt-get install libmysqlclient-dev
-apt-get install libtool
-apt-get install libssl-dev
-apt-get install grep
-apt-get install binutils
-apt-get install zlibc
-apt-get install libc6
-apt-get install libbz2-dev
-apt-get install cmake
-apt-get install subversion
-apt-get install libboost-all-dev
-apt-get install xtitle
+sudo apt-get install vim
+sudo apt-get install build-essential
+sudo apt-get install gcc
+sudo apt-get install g++
+sudo apt-get install automake
+sudo apt-get install git-core
+sudo apt-get install autoconf
+sudo apt-get install make
+sudo apt-get install patch
+sudo apt-get install libmysql++-dev
+sudo apt-get install mysql-server
+sudo apt-get install libmysqlclient-dev
+sudo apt-get install libtool
+sudo apt-get install libssl-dev
+sudo apt-get install grep
+sudo apt-get install binutils
+sudo apt-get install zlibc
+sudo apt-get install libc6
+sudo apt-get install libbz2-dev
+sudo apt-get install cmake
+sudo apt-get install subversion
+sudo apt-get install libboost-all-dev
+sudo apt-get install xtitle
+
+# Clean PPAs
+sudo apt-get autoremove
+sudo apt-get autoclean
 
 exit 0
-
