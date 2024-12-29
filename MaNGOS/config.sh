@@ -95,6 +95,32 @@ function shCopyConf()
   fi
 }
 
+function getVersion()
+{
+  local ver="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
+              WHERE TABLE_SCHEMA='$1mangos'
+                AND TABLE_NAME='db_version'
+                AND DATA_TYPE='bit'
+                AND COLUMN_TYPE='bit(1)';"
+  if [ ! -z "$2" ]; then echo -n "$2 ... "; fi
+  local res=$(mysql -uroot --silent -e"$ver" 2>&1 > /dev/null)
+  if [ ! -z "$res" ]; then
+    echo "FAILED > $res"
+    false
+    return
+  else
+    echo -n "SUCCESS > "
+    for v in $(mysql -uroot -e"$ver")
+    do
+      if [ ! "COLUMN_NAME" == "$v" ]; then
+        echo $v
+        return
+      fi
+    done
+  fi
+  true
+}
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -394,65 +420,102 @@ case "$action" in
       echo "11. If starting the service fails, just restart the system."
       echo "Now start the installation again but this time give the password you set."
       exit 0
+    else
+      echo "Database password exported to MYSQL_PWD!"
+      export MYSQL_PWD="$mysqlpa"
     fi
 
     read -p "Create MaNGOS databases [y/N] ? " bool
     if test "$bool" == "y"
     then
-      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
-      mysql -uroot -p$mysqlpa -e "flush privileges;"
+      mysql -f -uroot < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
+      mysql -uroot -e "flush privileges;"
     fi
 
     read -p "Initialize the databases [y/N] ? " bool
     if test "$bool" == "y"
     then
-      mysql -f -umangos -pmangos "$drtitle"mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
-      mysql -f -umangos -pmangos "$drtitle"characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
-      mysql -f -umangos -pmangos "$drtitle"realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
-    fi
-
-    read -p "Populate the database [y/N] ? " bool
-    if test "$bool" == "y"
-    then
-      case "$idtitle" in
-      0|1|2)
-        cd $scriptpath/$drtitle/db/
-        rm -f InstallFullDB.config
-        chmod +x InstallFullDB.sh
-        ./InstallFullDB.sh
-        read -p "Apply CORE_PATH value [y/N] ? " bool
-        if test "$bool" == "y"
+      # Check mangos version present
+      dummy=$(getVersion $drtitle "Checking mangos version")
+      if [[ $dummy != *"FAIL"* ]]
+      then
+        dummy=$(sed -e "s/^.*\s*>\s*//g" <<< ${dummy})
+        if [[ ! -z $dummy ]]
         then
-          sed -i "s@.*CORE_PATH=.*@CORE_PATH=\"$scriptpath/$drtitle/mangos\"@" InstallFullDB.config
+          # Database exists and we must apply the updates
+          read -p "Update mangos server since [$drtitle][$dummy] [y/N] ? " bool
+          if test "$bool" == "y"
+          then
+            cd $scriptpath/$drtitle/db/
+            rm -f InstallFullDB.config
+            chmod +x InstallFullDB.sh
+            ./InstallFullDB.sh -UpdateCore
+          fi
+        else
+          # Database does not exist as the version is missing
+          # Apply base configuration for mangos
+          if [ -f "$scriptpath/$drtitle/mangos/sql/base/mangos.sql" ]; then
+            mysql -f -umangos "$drtitle"mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
+          fi 
+          # Apply base configuration for realmd
+          if [ -f "$scriptpath/$drtitle/mangos/sql/base/realmd.sql" ]; then
+            mysql -f -umangos "$drtitle"realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
+          fi 
+          # Apply base configuration for characters
+          if [ -f "$scriptpath/$drtitle/mangos/sql/base/characters.sql" ]; then
+            mysql -f -umangos "$drtitle"characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
+          fi 
+          # Apply base configuration for logs
+          if [ -f "$scriptpath/$drtitle/mangos/sql/base/logs.sql" ]; then
+            mysql -f -umangos "$drtitle"logs < $scriptpath/$drtitle/mangos/sql/base/logs.sql
+          fi 
+          # Populate the database entry as empty set is expected
+          read -p "Populate the database [y/N] ? " bool
+          if test "$bool" == "y"
+          then
+            case "$idtitle" in
+            0|1|2)
+              cd $scriptpath/$drtitle/db/
+              rm -f InstallFullDB.config
+              chmod +x InstallFullDB.sh
+              ./InstallFullDB.sh
+              read -p "Apply CORE_PATH value [y/N] ? " bool
+              if test "$bool" == "y"
+              then
+                sed -i "s@.*CORE_PATH=.*@CORE_PATH=\"$scriptpath/$drtitle/mangos\"@" InstallFullDB.config
+              fi
+              read -p "Apply ACID_PATH value [y/N] ? " bool
+              if test "$bool" == "y"
+              then
+                sed -i "s@.*ACID_PATH=.*@ACID_PATH=\"$scriptpath/$drtitle/db/ACID\"@" InstallFullDB.config
+              fi
+              read -p "Enable DEV_UPDATES [y/N] ? " bool
+              if test "$bool" == "y"
+              then
+                sed -i "s@.*DEV_UPDATES=.*@DEV_UPDATES=\"YES\"@" InstallFullDB.config
+              fi
+              read -p "Start the database population  [y/N] ? " bool
+              if test "$bool" == "y"
+              then
+                ./InstallFullDB.sh
+              fi
+            ;;
+            3)
+              echo "$nmtitle package DB installation not matched to git [$idtitle] !"
+            ;;
+            *)
+              echo "$nmtitle package DB installation not defined to git [$idtitle] !"
+            ;;
+            esac
+          fi
         fi
-        read -p "Apply ACID_PATH value [y/N] ? " bool
-        if test "$bool" == "y"
-        then
-          sed -i "s@.*ACID_PATH=.*@ACID_PATH=\"$scriptpath/$drtitle/db/ACID\"@" InstallFullDB.config
-        fi
-        read -p "Enable DEV_UPDATES [y/N] ? " bool
-        if test "$bool" == "y"
-        then
-          sed -i "s@.*DEV_UPDATES=.*@DEV_UPDATES=\"YES\"@" InstallFullDB.config
-        fi
-        read -p "Start the database population  [y/N] ? " bool
-        if test "$bool" == "y"
-        then
-          ./InstallFullDB.sh
-        fi
-      ;;
-      3)
-        echo "$nmtitle package DB installation not matched to git [$idtitle] !"
-      ;;
-      *)
-        echo "$nmtitle package DB installation not defined to git [$idtitle] !"
-      ;;
-      esac
+      else
+        echo "General version error: $dummy !"
+      fi
     fi
 
     echo For extracting the files from the client you can follow the link below:
     echo https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client
-
   ;;
   "drop-mangos")
     echo "This will delete the MaNGOS database from your SQL server !!!"
@@ -466,8 +529,8 @@ case "$action" in
         exit 0
       fi
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
-      mysql -f -uroot -p$mysqlpa < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
-      mysql -uroot -p$mysqlpa -e "flush privileges;"
+      mysql -f -uroot < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
+      mysql -uroot -e "flush privileges;"
     fi
   ;;
   "purge-mysql")
@@ -519,7 +582,7 @@ case "$action" in
     sqlstmt=$(echo ${sqlstmt/\{ENDPK\}/$endpk})
     echo "STMT: $sqlstmt"
     read -sp "What password does the root user have ? " mysqlpa
-    mysql -uroot -p$mysqlpa -e "$sqlstmt" > dbc-export.txt
+    mysql -uroot -e "$sqlstmt" > dbc-export.txt
   ;;
   *)
     echo "Please use some of the options in the list below for [./config.sh]."
