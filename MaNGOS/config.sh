@@ -121,6 +121,43 @@ function getVersion()
   true
 }
 
+function updateConfigDB()
+{
+  cd $1/db 
+  # Wipe the configuration file
+  rm -f InstallFullDB.config
+  # Generate new configuration file
+  chmod +x InstallFullDB.sh
+  # Update configuration file
+  ./InstallFullDB.sh -Config
+  # Apply core path
+  read -p "Apply CORE_PATH value [y/N] ? " bool
+  if test "$bool" == "y"
+  then
+    sed -i "s@.*CORE_PATH=.*@CORE_PATH=\"$1/mangos\"@" InstallFullDB.config
+  fi
+  # Apply dev updates
+  read -p "Enable DEV_UPDATES [y/N] ? " bool
+  if test "$bool" == "y"
+  then
+    sed -i "s@.*DEV_UPDATES=.*@DEV_UPDATES=\"YES\"@" InstallFullDB.config
+  fi
+  # Apply action house bot
+  read -p "Enable AHBOT [y/N] ? " bool
+  if test "$bool" == "y"
+  then
+    sed -i "s@.*AHBOT=.*@AHBOT=\"YES\"@" InstallFullDB.config
+  fi
+  # Apply action house bot
+  read -p "Enable PLAYERBOTS [y/N] ? " bool
+  if test "$bool" == "y"
+  then
+    sed -i "s@.*PLAYERBOTS_DB=.*@PLAYERBOTS_DB=\"YES\"@" InstallFullDB.config
+  fi
+  # Revert the current directory to the base one
+  cd $1
+}
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -446,9 +483,7 @@ case "$action" in
           read -p "Update mangos server since [$drtitle][$dummy] [y/N] ? " bool
           if test "$bool" == "y"
           then
-            cd $scriptpath/$drtitle/db/
-            rm -f InstallFullDB.config
-            chmod +x InstallFullDB.sh
+            updateConfigDB "$scriptpath/$drtitle"
             ./InstallFullDB.sh -UpdateCore
           fi
         else
@@ -475,29 +510,11 @@ case "$action" in
           then
             case "$idtitle" in
             0|1|2)
-              cd $scriptpath/$drtitle/db/
-              rm -f InstallFullDB.config
-              chmod +x InstallFullDB.sh
-              ./InstallFullDB.sh
-              read -p "Apply CORE_PATH value [y/N] ? " bool
-              if test "$bool" == "y"
-              then
-                sed -i "s@.*CORE_PATH=.*@CORE_PATH=\"$scriptpath/$drtitle/mangos\"@" InstallFullDB.config
-              fi
-              read -p "Apply ACID_PATH value [y/N] ? " bool
-              if test "$bool" == "y"
-              then
-                sed -i "s@.*ACID_PATH=.*@ACID_PATH=\"$scriptpath/$drtitle/db/ACID\"@" InstallFullDB.config
-              fi
-              read -p "Enable DEV_UPDATES [y/N] ? " bool
-              if test "$bool" == "y"
-              then
-                sed -i "s@.*DEV_UPDATES=.*@DEV_UPDATES=\"YES\"@" InstallFullDB.config
-              fi
+              updateConfigDB "$scriptpath/$drtitle"
               read -p "Start the database population  [y/N] ? " bool
               if test "$bool" == "y"
               then
-                ./InstallFullDB.sh
+                ./InstallFullDB.sh -InstallAll "root" "$mysqlpa" "DeleteAll"
               fi
             ;;
             3)
