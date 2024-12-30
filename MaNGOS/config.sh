@@ -544,6 +544,9 @@ case "$action" in
       then
         echo "Please provide mysql root password first !"
         exit 0
+      else
+        echo "Database password exported to MYSQL_PWD!"
+        export MYSQL_PWD="$mysqlpa"
       fi
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
       mysql -f -uroot < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
@@ -556,25 +559,26 @@ case "$action" in
     read -p "Continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
-      apt-get --purge remove mysql-server
-      apt-get --purge remove mysql-client
-      apt-get --purge remove mysql-common
-      apt-get --purge remove mysql-server-core
-      apt-get --purge remove mysql-client-core
-      rm -rf /etc/mysql /var/lib/mysql
-      apt-get autoremove
-      apt-get autoclean
+      sudo apt-get --purge remove mysql-server
+      sudo apt-get --purge remove mysql-client
+      sudo apt-get --purge remove mysql-common
+      sudo apt-get --purge remove mysql-server-core
+      sudo apt-get --purge remove mysql-client-core
+      sudo rm -rf /etc/mysql /var/lib/mysql
+      sudo apt-get autoremove
+      sudo apt-get autoclean
     fi
   ;;
   "setup")
     getTitle "Select a title for the configuration:" idtitle drtitle nmtitle
+    echo "Options: { mangosd | realmd | ahbot | anticheat | playerbot | aiplayerbot }"
     case "$option" in
-    mangosd|realmd|ahbot)
+    mangosd|realmd|ahbot|anticheat|playerbot|aiplayerbot)
       vim $scriptpath/$drtitle/run/$option.conf
     ;;
     *)
       echo "Wrong configuration name [$option]!"
-      echo "Options: { mangosd | realmd | ahbot }"
+      echo "Options: { mangosd | realmd | ahbot | anticheat | playerbot | aiplayerbot }"
     ;;
     esac
   ;;
