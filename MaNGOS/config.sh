@@ -142,6 +142,8 @@ function getPasswordSQL()
     export MYSQL_PWD="$pass"
   fi
   
+  echo
+  
   eval "$1='$pass'"
 }
 
