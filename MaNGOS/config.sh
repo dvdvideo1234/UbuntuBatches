@@ -303,7 +303,7 @@ case "$action" in
   "reroute")
     getTitle "Select title to be rerouted:" idtitle drtitle nmtitle
     getDefautPorts "$drtitle" defprealm defpworld
-    updateConfigRun $scriptpath/$drtitle defprealm defpworld
+    updateConfigRun "$scriptpath/$drtitle" "$defprealm" "$defpworld"
   ;;
   "rehost")
     getTitle "Select title to be rehosted:" idtitle drtitle nmtitle
@@ -660,7 +660,7 @@ case "$action" in
     fi
     
     getDefautPorts "$drtitle" defprealm defpworld
-    updateConfigRun $scriptpath/$drtitle defprealm defpworld
+    updateConfigRun "$scriptpath/$drtitle" "$defprealm" "$defpworld"
     updateRealmlistDB "$drtitle" "0.0.0.0:$defpworld"
     
     echo "For extracting the files from the client you can follow the link below:"
