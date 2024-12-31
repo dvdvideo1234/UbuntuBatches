@@ -15,6 +15,8 @@ dummy=""
 startpk=""
 endpk=""
 sqlstmt=""
+defpworld=""
+defprealm=""
 result=0
 
 scriptname=$(readlink -f "$0")
@@ -95,6 +97,44 @@ function shCopyConf()
   fi
 }
 
+function getPasswordSQL()
+{
+  local pass=""
+  read -sp "What password does the root user have ? " pass
+  if test "$pass" == ""
+  then
+    echo -e "\nVersion: $(mysql --version)"
+    echo "To change password for MySQL root user follow the steps below."
+    echo "1. sudo /etc/init.d/mysql stop"
+    echo "2. sudo pkill mysql"
+    echo "3. sudo mkdir -p /var/run/mysqld"
+    echo "4. sudo chown mysql /var/run/mysqld"
+    echo "5. sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &"
+    echo "6. mysql -uroot"
+    echo "7. flush privileges;"
+    echo "Use the root safe login to change your password."
+    echo "Replace the value of <new_password> with your new password."
+    echo "1. use mysql;"
+    echo "2. update user set plugin='mysql_native_password' where user='root';"
+    echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
+    echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
+    echo "5. If the password conversion function does not work use: SET CREDENTIALS FOR 'root' TO '<new_password>';"
+    echo "6. flush privileges;"
+    echo "7. commit;"
+    echo "8. exit;"
+    echo "9. sudo /etc/init.d/mysql stop"
+    echo "10. sudo /etc/init.d/mysql start"
+    echo "11. If starting the service fails, just restart the system."
+    echo "Now start the installation again but this time give the password you set."
+    exit 0
+  else
+    echo "Database password exported to MYSQL_PWD!"
+    export MYSQL_PWD="$pass"
+  fi
+  
+  eval "$1='$pass'"
+}
+
 function getVersion()
 {
   local ver="SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS
@@ -158,9 +198,105 @@ function updateConfigDB()
   cd $1
 }
 
+function updateConfigRoutes()
+{
+  cd $1/run
+  # Prepare logs destination folder
+  [ ! -d "$1/run/logs" ] && mkdir -p "$1/run/logs"
+  # Update configuration contents run folder
+  sed -i "s@.*DataDir.*=.*@DataDir = \"$1/run\"@" mangosd.conf
+  # Update configuration contents realm port
+  sed -i "s@.*RealmServerPort.*=.*@RealmServerPort = \"$2\"@" realmd.conf
+  # Update configuration contents realm logs
+  sed -i "s@.*LogsDir.*=.*@LogsDir = \"$1/run/logs\"@" realmd.conf
+  # Update configuration contents world port
+  sed -i "s@.*WorldServerPort.*=.*@WorldServerPort = \"$3\"@" mangosd.conf
+  # Update configuration contents world logs
+  sed -i "s@.*LogsDir.*=.*@LogsDir = \"$1/run/logs\"@" mangosd.conf
+  # Revert the current directory to the base one
+  cd $1
+}
+
+function updateRealmlistDB()
+{
+  local idx=""
+  local rlm="$2"
+  echo "Realms available in the database:"
+  local wtf="SELECT CONCAT('|', LPAD(id, 10,  '_'), '|',
+                    RPAD(SUBSTRING(name, 1, 30), 30 ,'_'), '|',
+                    LPAD(address, 16,  '_'), ':',
+                    RPAD(port, 6,  '_'), '|') FROM $1realmd.realmlist;"  
+  for v in $(mysql -uroot -N -e "$wtf"); do echo "$v"; done
+  if [[ -z $rlm ]]; then
+    read -p "Enter realmlist descriptor (zero proxy no change) [REALM:PORT] " rlm
+  fi
+  if [[ -z "$rlm" ]]; then return; fi
+  echo "Realmlist descriptor: [$rlm]"
+  local prr=$(grep -oE $proxyrg <<< $rlm)
+  if test "$rlm" = "$prr"; then
+    local con=(${rlm//:/ })
+    echo "New host address: IP ${con[0]} PORT ${con[1]}"
+    read -p "Choose a realm to be updated: " idx
+    if [[ ! -z $idx ]]; then
+      local wtf="UPDATE $1realmd.realmlist
+                    SET ADDRESS = IFNULL(NULLIF('${con[0]}', '0.0.0.0'), ADDRESS),
+                           PORT = IFNULL(NULLIF('${con[1]}', '00000'), PORT)
+                  WHERE ID = $idx; COMMIT;"
+      mysql -uroot -e "$wtf"
+    fi
+  else
+    echo "Realm configuration invalid [$rlm]!"
+  fi
+}
+
+function getDefautPorts()
+{
+  local rep="3724"
+  local wrp="8085"
+  case "$1" in
+    classic)
+      rep=$(expr $rep + 0)
+      wrp=$(expr $wrp + 0)
+    ;;
+    tbc)
+      rep=$(expr $rep + 1)
+      wrp=$(expr $wrp + 1)
+    ;;
+    wotlk)
+      rep=$(expr $rep + 2)
+      wrp=$(expr $wrp + 2)
+    ;;
+    cata)
+      rep=$(expr $rep + 3)
+      wrp=$(expr $wrp + 3)
+    ;;
+    pandaria)
+      rep=$(expr $rep + 4)
+      wrp=$(expr $wrp + 4)
+    ;;
+    legion)
+      rep=$(expr $rep + 5)
+      wrp=$(expr $wrp + 5)
+    ;;
+    *)
+      echo "Default ports for title [$1] undefined !"
+      exit 0
+    ;;
+  esac
+  eval "$2='$rep'"
+  eval "$3='$wrp'"
+}
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
+  "reroute")
+    getTitle "Select title to be rerouted:" idtitle drtitle nmtitle
+    getDefautPorts "$drtitle" defprealm defpworld
+    updateConfigRoutes $scriptpath/$drtitle defprealm defpworld
+  "rehost")
+    getTitle "Select title to be rehosted:" idtitle drtitle nmtitle
+    updateRealmlistDB "$drtitle"
   "start")
     getTitle "Select title to start:" idtitle drtitle nmtitle
     case "$option" in
@@ -210,7 +346,7 @@ case "$action" in
       yes y | ./dependencies.sh
     fi
 
-    read -p "$(echo -e '\nAre you using a proxy [proxy:port] ? ')" proxysv
+    read -p "$(echo -e '\nAre you using a proxy [PROXY:PORT] ? ')" proxysv
     proxymc=$(grep -oE $proxyrg <<< $proxysv)
     if test "$proxysv" == "$proxymc"
     then
@@ -229,20 +365,20 @@ case "$action" in
 
       rm -rf mangos
       rm -rf db
-      case "$idtitle" in
-      0)
+      case "$drtitle" in
+      classic)
         git clone https://github.com/cmangos/mangos-classic.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/classic-db.git $scriptpath/$drtitle/db
       ;;
-      1)
+      tbc)
         git clone https://github.com/cmangos/mangos-tbc.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/tbc-db.git $scriptpath/$drtitle/db
       ;;
-      2)
+      wotlk)
         git clone https://github.com/cmangos/mangos-wotlk.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/wotlk-db.git $scriptpath/$drtitle/db
       ;;
-      3)
+      cata)
         git clone https://github.com/cmangos/mangos-cata.git $scriptpath/$drtitle/mangos
         git clone https://github.com/cmangos/cata-db.git $scriptpath/$drtitle/db
       ;;
@@ -413,20 +549,20 @@ case "$action" in
         "$scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in" 
 
       # find . -name *.conf.* | grep aiplayerbot
-      case "$idtitle" in
-      0)
+      case "$drtitle" in
+      classic)
         shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
           "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
           "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
           "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in"      
       ;;
-      1)
+      tbc)
         shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
           "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
           "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
           "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.tbc"  
       ;;
-      2)
+      wotlk)
         shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
           "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
           "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
@@ -435,38 +571,13 @@ case "$action" in
       esac
     fi
 
-    read -sp "What password does the root user have ? " mysqlpa
+    getPasswordSQL mysqlpa
     if test "$mysqlpa" == ""
     then
-      echo -e "\nVersion: $(mysql --version)"
-      echo "To change password for MySQL root user follow the steps below."
-      echo "1. sudo /etc/init.d/mysql stop"
-      echo "2. sudo pkill mysql"
-      echo "3. sudo mkdir -p /var/run/mysqld"
-      echo "4. sudo chown mysql /var/run/mysqld"
-      echo "5. sudo /usr/sbin/mysqld --skip-grant-tables --skip-networking &"
-      echo "6. mysql -uroot"
-      echo "7. flush privileges;"
-      echo "Use the root safe login to change your password."
-      echo "Replace the value of <new_password> with your new password."
-      echo "1. use mysql;"
-      echo "2. update user set plugin='mysql_native_password' where user='root';"
-      echo "3. MySQL 5.7+ : update user set authentication_string=PASSWORD('<new_password>') where user='root';"
-      echo "4. MySQL 5.6- : update user set password=PASSWORD('<new_password>') where user='root';"
-      echo "5. If the password conversion function does not work use: SET CREDENTIALS FOR 'root' TO '<new_password>';"
-      echo "6. flush privileges;"
-      echo "7. commit;"
-      echo "8. exit;"
-      echo "9. sudo /etc/init.d/mysql stop"
-      echo "10. sudo /etc/init.d/mysql start"
-      echo "11. If starting the service fails, just restart the system."
-      echo "Now start the installation again but this time give the password you set."
+      echo "Please provide mysql root password first !"
       exit 0
-    else
-      echo "Database password exported to MYSQL_PWD!"
-      export MYSQL_PWD="$mysqlpa"
     fi
-
+      
     read -p "Create MaNGOS databases [y/N] ? " bool
     if test "$bool" == "y"
     then
@@ -513,8 +624,8 @@ case "$action" in
           read -p "Populate the database [y/N] ? " bool
           if test "$bool" == "y"
           then
-            case "$idtitle" in
-            0|1|2)
+            case "$drtitle" in
+            classic|tbc|wotlk)
               updateConfigDB "$scriptpath/$drtitle"
               read -p "Start the database population  [y/N] ? " bool
               if test "$bool" == "y"
@@ -522,11 +633,11 @@ case "$action" in
                 ./InstallFullDB.sh -InstallAll "root" "$mysqlpa" "DeleteAll"
               fi
             ;;
-            3)
-              echo "$nmtitle package DB installation not matched to git [$idtitle] !"
+            cata)
+              echo "$nmtitle package DB installation not matched to git [$idtitle][$drtitle] !"
             ;;
             *)
-              echo "$nmtitle package DB installation not defined to git [$idtitle] !"
+              echo "$nmtitle package DB installation not defined to git [$idtitle][$drtitle] !"
             ;;
             esac
           fi
@@ -535,7 +646,10 @@ case "$action" in
         echo "General version error: $dummy !"
       fi
     fi
-
+    
+    getDefautPorts "$drtitle" defprealm defpworld
+    updateRealmlistDB "$drtitle" "0.0.0.0:$defpworld"
+    
     echo For extracting the files from the client you can follow the link below:
     echo https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client
   ;;
@@ -544,14 +658,11 @@ case "$action" in
     read -p "Continue with this process [y/N] ? " bool
     if test "$bool" == "y"
     then
-      read -sp "What password does the root user have ? " mysqlpa
+      getPasswordSQL mysqlpa
       if test "$mysqlpa" == ""
       then
         echo "Please provide mysql root password first !"
         exit 0
-      else
-        echo "Database password exported to MYSQL_PWD!"
-        export MYSQL_PWD="$mysqlpa"
       fi
       getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
       mysql -f -uroot < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
@@ -607,7 +718,12 @@ case "$action" in
     sqlstmt=$(echo ${sqlstmt/\{STARTPK\}/$startpk})
     sqlstmt=$(echo ${sqlstmt/\{ENDPK\}/$endpk})
     echo "STMT: $sqlstmt"
-    read -sp "What password does the root user have ? " mysqlpa
+    getPasswordSQL mysqlpa
+    if test "$mysqlpa" == ""
+    then
+      echo "Please provide mysql root password first !"
+      exit 0
+    fi
     mysql -uroot -e "$sqlstmt" > dbc-export.txt
   ;;
   *)
