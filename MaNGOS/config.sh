@@ -10,7 +10,6 @@ mysqlpa=""
 makecmd=""
 proxysv=""
 proxymc=""
-proxyrg="([0-9]{1,3}\.){3}[0-9]{1,3}\:[0-9]{1,5}"
 dummy=""
 startpk=""
 endpk=""
@@ -21,6 +20,8 @@ result=0
 
 scriptname=$(readlink -f "$0")
 scriptpath=$(dirname "$scriptname")
+cpucores=$(grep -Pc '^processor\t' /proc/cpuinfo)
+proxyrg="([0-9]{1,3}\.){3}[0-9]{1,3}\:[0-9]{1,5}"
 
 function getTitle()
 {
@@ -519,7 +520,7 @@ case "$action" in
       echo Command: $makecmd
 
       eval "$makecmd"
-      make
+      make -j$cpucores
       make install
     fi
 

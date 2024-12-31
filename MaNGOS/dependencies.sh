@@ -3,7 +3,6 @@
 sudo apt-get update
 
 # Dependencies
-
 sudo apt-get install vim
 sudo apt-get install build-essential
 sudo apt-get install gcc
@@ -22,6 +21,7 @@ sudo apt-get install grep
 sudo apt-get install binutils
 sudo apt-get install zlibc
 sudo apt-get install libc6
+sudo apt-get install zlib1g-dev
 sudo apt-get install libbz2-dev
 sudo apt-get install cmake
 sudo apt-get install subversion
