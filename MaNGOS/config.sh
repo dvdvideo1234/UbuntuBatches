@@ -208,7 +208,7 @@ function updateConfigDB()
   cd $1
 }
 
-function updateConfigRunupdateConfigRun()
+function updateConfigRun()
 {
   cd $1/run
   # Prepare logs destination folder
