@@ -73,6 +73,16 @@ function shCreateDesktop()
   mv $PWD/$key.sh $HOME/Desktop/$key.sh
 }
 
+function syncClinetMapData()
+{
+  if sudo test -d "$1/mount/$2/$3"; then
+    echo "Synchronization for [/$2/run/$3]..." 
+    sudo rsync -ar --progress --info=name0 --info=progress2 "$1/mount/$2/$3" "$1/$2/run/"
+    sudo chown -R mangos:mangos "$1/$2/run/$3"
+    sudo chmod 755 "$1/$2/run/$3"
+  fi
+}
+
 function shCopyConf()
 {
   local labe=$1
@@ -654,27 +664,29 @@ case "$action" in
     echo "For extracting the files from the client you can follow the link below:"
     echo "https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client"
     
-    if [ -d "$scriptpath/$drtitle/run/bin/tools" ]; then
-      if [ -d "$scriptpath/mount/$drtitle" ]; then
+    if sudo test -d "$scriptpath/$drtitle/run/bin/tools"; then
+      if sudo test -d "$scriptpath/mount/$drtitle"; then
         # Copy the map exreation tools to the client mount point
         echo -n "Copy the map extraction tools to client... "
-        sudo cp -r -a -f $scriptpath/$drtitle/run/bin/tools/* $scriptpath/mount/$drtitle
+        sudo chown -R mangos:mangos "$scriptpath/$drtitle/run"
+        sudo cp -r -a -f $scriptpath/$drtitle/run/bin/tools/. $scriptpath/mount/$drtitle
         echo "OK"
         # Start map extraction process. Handled by `ExtractResources.sh`
         read -p "Start client map extraction process [y/N] ? " bool
         if test "$bool" == "y"
         then
-          echo "Starting extraction from client mount point... "
           sudo sh -c "cd $scriptpath/mount/$drtitle 2> /dev/null && ./ExtractResources.sh || echo FAIL"
         fi
         # Synchronize the needed folder after completion
-        read -p "Starting synchronization for the client map folders [y/N] ? " bool
+        read -p "Start client map synchronization [y/N] ? " bool
         if test "$bool" == "y"
         then
-          echo "Starting synchronization from mount point... "
-          if [ -d "$scriptpath/mount/$drtitle/Buildings" ]; then
-            sudo rsync -avr --progress "$scriptpath/mount/$drtitle/Buildings/" "$scriptpath/$drtitle/run/"
-          fi
+          syncClinetMapData "$scriptpath" "$drtitle" "Buildings"
+          syncClinetMapData "$scriptpath" "$drtitle" "Cameras"
+          syncClinetMapData "$scriptpath" "$drtitle" "dbc"
+          syncClinetMapData "$scriptpath" "$drtitle" "vmaps"
+          syncClinetMapData "$scriptpath" "$drtitle" "maps"
+          syncClinetMapData "$scriptpath" "$drtitle" "mmaps"
         fi
       else
         echo "Client for [$drtitle] not mounted properly!"
