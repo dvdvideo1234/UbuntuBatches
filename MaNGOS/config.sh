@@ -110,7 +110,7 @@ function shCopyConf()
 function getPasswordSQL()
 {
   local pass=""
-  read -p "What password does the root user have ? " pass
+  read -sp "What password does the root user have ? " pass
   if test "$pass" == ""
   then
     echo -e "\nVersion: $(mysql --version)"
@@ -663,7 +663,7 @@ case "$action" in
     updateConfigRun "$scriptpath/$drtitle" "$defprealm" "$defpworld"
     updateRealmlistDB "$drtitle" "0.0.0.0:$defpworld"
     
-    echo "For extracting the files from the client you can follow the link below:"
+    echo "Extracting the files from the client is implemented from following the link below:"
     echo "https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client"
     
     if sudo test -d "$scriptpath/$drtitle/run/bin/tools"; then
@@ -671,6 +671,7 @@ case "$action" in
         # Copy the map exreation tools to the client mount point
         echo -n "Copy the map extraction tools to client... "
         sudo chown -R mangos:mangos "$scriptpath/$drtitle/run"
+        sudo chmod 755 "$scriptpath/$drtitle/run"
         sudo cp -r -a -f $scriptpath/$drtitle/run/bin/tools/. $scriptpath/mount/$drtitle
         echo "OK"
         # Start map extraction process. Handled by `ExtractResources.sh`

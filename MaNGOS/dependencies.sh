@@ -28,6 +28,8 @@ sudo apt-get install subversion
 sudo apt-get install libboost-all-dev
 sudo apt-get install xtitle
 sudo apt-get install rsync
+sudo apt-get install virtualbox-guest-utils
+sudo adduser $USER vboxsf
 
 # Clean PPAs
 sudo apt-get autoremove
