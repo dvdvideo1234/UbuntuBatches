@@ -199,8 +199,10 @@ case "$action" in
 
     echo "Installing package: <$nmtitle> in $scriptpath/$drtitle"
     
-    echo "Creating client mount point path: [client/$drtitle]"
-    [ ! -d "$scriptpath/client/$drtitle" ] && mkdir -p "$scriptpath/client/$drtitle"
+    if [ ! -d "$scriptpath/client/$drtitle" ]; then
+      echo "Creating client mount point path: [$scriptpath/client/$drtitle]..."
+      mkdir -p "$scriptpath/client/$drtitle"
+    fi
 
     read -p "Install dependencies [y/N] ? " bool
     if test "$bool" == "y"
