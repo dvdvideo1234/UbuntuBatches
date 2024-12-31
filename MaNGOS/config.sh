@@ -304,9 +304,11 @@ case "$action" in
     getTitle "Select title to be rerouted:" idtitle drtitle nmtitle
     getDefautPorts "$drtitle" defprealm defpworld
     updateConfigRun $scriptpath/$drtitle defprealm defpworld
+  ;;
   "rehost")
     getTitle "Select title to be rehosted:" idtitle drtitle nmtitle
     updateRealmlistDB "$drtitle"
+  ;;
   "start")
     getTitle "Select title to start:" idtitle drtitle nmtitle
     case "$option" in
