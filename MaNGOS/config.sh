@@ -644,7 +644,7 @@ case "$action" in
               read -p "Start the database population  [y/N] ? " bool
               if test "$bool" == "y"
               then
-                ./InstallFullDB.sh -InstallAll "root" "$mysqlpa" "DeleteAll"
+                ./InstallFullDB.sh
               fi
             ;;
             cata)
