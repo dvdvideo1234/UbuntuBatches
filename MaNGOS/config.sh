@@ -110,7 +110,7 @@ function shCopyConf()
 function getPasswordSQL()
 {
   local pass=""
-  read -sp "What password does the root user have ? " pass
+  read -p "What password does the root user have ? " pass
   if test "$pass" == ""
   then
     echo -e "\nVersion: $(mysql --version)"
