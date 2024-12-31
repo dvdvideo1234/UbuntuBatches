@@ -27,6 +27,7 @@ sudo apt-get install cmake
 sudo apt-get install subversion
 sudo apt-get install libboost-all-dev
 sudo apt-get install xtitle
+sudo apt-get install rsync
 
 # Clean PPAs
 sudo apt-get autoremove

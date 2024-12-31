@@ -198,7 +198,7 @@ function updateConfigDB()
   cd $1
 }
 
-function updateConfigRoutes()
+function updateConfigRunupdateConfigRun()
 {
   cd $1/run
   # Prepare logs destination folder
@@ -293,7 +293,7 @@ case "$action" in
   "reroute")
     getTitle "Select title to be rerouted:" idtitle drtitle nmtitle
     getDefautPorts "$drtitle" defprealm defpworld
-    updateConfigRoutes $scriptpath/$drtitle defprealm defpworld
+    updateConfigRun $scriptpath/$drtitle defprealm defpworld
   "rehost")
     getTitle "Select title to be rehosted:" idtitle drtitle nmtitle
     updateRealmlistDB "$drtitle"
@@ -648,10 +648,40 @@ case "$action" in
     fi
     
     getDefautPorts "$drtitle" defprealm defpworld
+    updateConfigRun $scriptpath/$drtitle defprealm defpworld
     updateRealmlistDB "$drtitle" "0.0.0.0:$defpworld"
     
-    echo For extracting the files from the client you can follow the link below:
-    echo https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client
+    echo "For extracting the files from the client you can follow the link below:"
+    echo "https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client"
+    
+    if [ -d "$scriptpath/$drtitle/run/bin/tools" ]; then
+      if [ -d "$scriptpath/mount/$drtitle" ]; then
+        # Copy the map exreation tools to the client mount point
+        echo -n "Copy the map extraction tools to client... "
+        sudo cp -r -a -f $scriptpath/$drtitle/run/bin/tools/* $scriptpath/mount/$drtitle
+        echo "OK"
+        # Start map extraction process. Handled by `ExtractResources.sh`
+        read -p "Start client map extraction process [y/N] ? " bool
+        if test "$bool" == "y"
+        then
+          echo "Starting extraction from client mount point... "
+          sudo sh -c "cd $scriptpath/mount/$drtitle 2> /dev/null && ./ExtractResources.sh || echo FAIL"
+        fi
+        # Synchronize the needed folder after completion
+        read -p "Starting synchronization for the client map folders [y/N] ? " bool
+        if test "$bool" == "y"
+        then
+          echo "Starting synchronization from mount point... "
+          if [ -d "$scriptpath/mount/$drtitle/Buildings" ]; then
+            sudo rsync -avr --progress "$scriptpath/mount/$drtitle/Buildings/" "$scriptpath/$drtitle/run/"
+          fi
+        fi
+      else
+        echo "Client for [$drtitle] not mounted properly!"
+      fi
+    else
+      echo "Map extraction tools for [$drtitle] not compiled!"
+    fi
   ;;
   "drop-mangos")
     echo "This will delete the MaNGOS database from your SQL server !!!"
