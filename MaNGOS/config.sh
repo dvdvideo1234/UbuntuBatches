@@ -37,7 +37,7 @@ function getTitle()
   local info[4]="[Mists of Pandaria (MoP)] {pandaria}"
   local info[5]="[Legion] {legion}"
 
-  echo -e $1
+  echo -e "Pick a title to $1:"
 
   for (( i=0; i<=$(( ${#info[*]} -1 )); i++ ))
   do
@@ -139,12 +139,11 @@ function getPasswordSQL()
     echo "Now start the installation again but this time give the password you set."
     exit 0
   else
+    echo
     echo "Database password exported to MYSQL_PWD!"
     export MYSQL_PWD="$pass"
   fi
-  
-  echo
-  
+
   eval "$1='$pass'"
 }
 
@@ -266,36 +265,43 @@ function getDefautPorts()
 {
   local rep="3724"
   local wrp="8085"
-  case "$1" in
-    classic)
-      rep=$(expr $rep + 0)
-      wrp=$(expr $wrp + 0)
-    ;;
-    tbc)
-      rep=$(expr $rep + 1)
-      wrp=$(expr $wrp + 1)
-    ;;
-    wotlk)
-      rep=$(expr $rep + 2)
-      wrp=$(expr $wrp + 2)
-    ;;
-    cata)
-      rep=$(expr $rep + 3)
-      wrp=$(expr $wrp + 3)
-    ;;
-    pandaria)
-      rep=$(expr $rep + 4)
-      wrp=$(expr $wrp + 4)
-    ;;
-    legion)
-      rep=$(expr $rep + 5)
-      wrp=$(expr $wrp + 5)
-    ;;
-    *)
-      echo "Default ports for title [$1] undefined !"
-      exit 0
-    ;;
-  esac
+  local num=$(echo $1 | grep -E "^[0-9]+$")
+  if test "$1" == "$num"; then
+    rep=$(expr $rep + $num)
+    wrp=$(expr $wrp + $num) 
+  else
+    case "$1" in
+      classic)
+        rep=$(expr $rep + 0)
+        wrp=$(expr $wrp + 0)
+      ;;
+      tbc)
+        rep=$(expr $rep + 1)
+        wrp=$(expr $wrp + 1)
+      ;;
+      wotlk)
+        rep=$(expr $rep + 2)
+        wrp=$(expr $wrp + 2)
+      ;;
+      cata)
+        rep=$(expr $rep + 3)
+        wrp=$(expr $wrp + 3)
+      ;;
+      pandaria)
+        rep=$(expr $rep + 4)
+        wrp=$(expr $wrp + 4)
+      ;;
+      legion)
+        rep=$(expr $rep + 5)
+        wrp=$(expr $wrp + 5)
+      ;;
+      *)
+        echo "Default ports for title [$1] undefined !"
+        exit 0
+      ;;
+    esac
+  fi
+  
   eval "$2='$rep'"
   eval "$3='$wrp'"
 }
@@ -304,16 +310,16 @@ echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
   "reroute")
-    getTitle "Select title to be rerouted:" idtitle drtitle nmtitle
-    getDefautPorts "$drtitle" defprealm defpworld
+    getTitle "$action" idtitle drtitle nmtitle
+    getDefautPorts "$idtitle" defprealm defpworld
     updateConfigRun "$scriptpath/$drtitle" "$defprealm" "$defpworld"
   ;;
   "rehost")
-    getTitle "Select title to be rehosted:" idtitle drtitle nmtitle
+    getTitle "$action" idtitle drtitle nmtitle
     updateRealmlistDB "$drtitle"
   ;;
   "start")
-    getTitle "Select title to start:" idtitle drtitle nmtitle
+    getTitle "$action" idtitle drtitle nmtitle
     case "$option" in
     mangos)
       if test -f "$scriptpath/$drtitle/run/bin/mangosd"; then
@@ -346,9 +352,11 @@ case "$action" in
     esac
   ;;
   "install")
-    getTitle "The directory will be created automatically\nWhich title do you want to install ?" idtitle drtitle nmtitle
+    echo "The directory will be created automatically"
+    getTitle "$action" idtitle drtitle nmtitle
 
-    echo "Installing package: <$nmtitle> in $scriptpath/$drtitle"
+    echo "Installing package: $nmtitle"
+    echo "Server destination: [$scriptpath/$drtitle]"
     
     if [ ! -d "$scriptpath/mount/$drtitle" ]; then
       echo "Creating client mount point path: [$scriptpath/mount/$drtitle]..."
@@ -584,6 +592,10 @@ case "$action" in
           "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.wotlk" 
       ;;
       esac
+      
+      getDefautPorts "$idtitle" defprealm defpworld
+      updateConfigRun "$scriptpath/$drtitle" "$defprealm" "$defpworld"
+      updateRealmlistDB "$drtitle" "0.0.0.0:$defpworld"
     fi
 
     getPasswordSQL mysqlpa
@@ -661,11 +673,7 @@ case "$action" in
         echo "General version error: $dummy !"
       fi
     fi
-    
-    getDefautPorts "$drtitle" defprealm defpworld
-    updateConfigRun "$scriptpath/$drtitle" "$defprealm" "$defpworld"
-    updateRealmlistDB "$drtitle" "0.0.0.0:$defpworld"
-    
+        
     echo "Extracting the files from the client is implemented from following the link below:"
     echo "https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client"
     
@@ -712,7 +720,7 @@ case "$action" in
         echo "Please provide mysql root password first !"
         exit 0
       fi
-      getTitle "Select a title for the drop process:" idtitle drtitle nmtitle
+      getTitle "drop databases:" idtitle drtitle nmtitle
       mysql -f -uroot < $scriptpath/$drtitle/mangos/sql/create/db_drop_mysql.sql
       mysql -uroot -e "flush privileges;"
     fi
@@ -734,7 +742,7 @@ case "$action" in
     fi
   ;;
   "setup")
-    getTitle "Select a title for the configuration:" idtitle drtitle nmtitle
+    getTitle "$action" idtitle drtitle nmtitle
     echo "Options: { mangosd | realmd | ahbot | anticheat | playerbot | aiplayerbot }"
     case "$option" in
     mangosd|realmd|ahbot|anticheat|playerbot|aiplayerbot)
@@ -760,7 +768,7 @@ case "$action" in
     read -p "DBC file: " dummy
     read -p "Start PK: " startpk
     read -p "End   PK: " endpk
-    getTitle "Select a title for extraction:" idtitle drtitle nmtitle
+    getTitle "extraction" idtitle drtitle nmtitle
     sqlstmt=$(cat $scriptpath/settings/stmt/${dummy,,}.txt)
     sqlstmt=$(echo ${sqlstmt/\{TITLE\}/$drtitle})
     sqlstmt=$(echo ${sqlstmt/\{STARTPK\}/$startpk})
