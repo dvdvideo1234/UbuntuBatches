@@ -392,6 +392,7 @@ case "$action" in
       echo "Creating client mount point path: [$scriptpath/mount/$drtitle]..."
       mkdir -p "$scriptpath/mount/$drtitle"
     else
+      echo "Changing client mount point owner: [$scriptpath/mount/$drtitle]..."
       sudo chown -R mangos:mangos "$scriptpath/mount"
       sudo chmod 755 "$scriptpath/mount"
     fi
