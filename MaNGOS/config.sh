@@ -45,9 +45,19 @@ function getTitle()
   done
   read -p "Enter ID: " res1
 
-  if [[ -z "${info[$res1]}" ]]
-  then
-    echo "Wrong ID: $res1"
+  if [[ -z "${res1}" ]]; then
+    echo "Title ID is empty!"
+    exit 0
+  fi
+  
+  local num=$(echo $res1 | grep -E "^[0-9]+$")
+  if test "$res1" != "$num"; then
+    echo "Title ID [$res1] not a number!"
+    exit 0
+  fi
+
+  if [[ -z "${info[$res1]}" ]]; then
+    echo "Title ID [$res1] out of range!"
     exit 0
   fi
 
@@ -306,6 +316,26 @@ function getDefautPorts()
   eval "$3='$wrp'"
 }
 
+function setBuildParam()
+{
+  local com=""
+  read -p "$1 [y/n/D] ? " com
+  if [[ -z $com ]]; then
+    echo "Using default parameter for: [$2]..."
+  else
+    if test "$com" == "y"
+    then
+      echo "Changed parameter [$2=$3]!"
+      com="-$2=$3"
+    else
+      echo "Changed parameter [$2=$3]!"
+      com="-$2=$4"
+    fi
+  fi
+  
+  eval "$6='$5 $com'"
+}
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -386,8 +416,9 @@ case "$action" in
       [ ! -d "$scriptpath/$drtitle" ] && mkdir -p "$scriptpath/$drtitle"
       cd $scriptpath/$drtitle
 
-      rm -rf mangos
-      rm -rf db
+      [ ! -d "$scriptpath/$drtitle/mangos" ] && rm -rf "$scriptpath/$drtitle/mangos"
+      [ ! -d "$scriptpath/$drtitle/db"     ] && rm -rf "$scriptpath/$drtitle/db"    
+
       case "$drtitle" in
       classic)
         git clone https://github.com/cmangos/mangos-classic.git $scriptpath/$drtitle/mangos
@@ -421,109 +452,31 @@ case "$action" in
 
       makecmd="cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run"
 
-      read -p "Enable link-time optimizations [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=1"
-      else
-        makecmd="$makecmd -DCMAKE_INTERPROCEDURAL_OPTIMIZATION=0"
-      fi
+      setBuildParam "Enable link-time optimizations" "DCMAKE_INTERPROCEDURAL_OPTIMIZATION" "1" "0" "$makecmd" makecmd
+      
+      setBuildParam "Enable additional debug-code in core" "DDEBUG" "1" "0" "$makecmd" makecmd
+      
+      setBuildParam "Enable precompiled headers" "DPCH" "1" "0" "$makecmd" makecmd
+      
+      setBuildParam "Show warnings during compilation" "DWARNINGS" "ON" "OFF" "$makecmd" makecmd
 
-      read -p "Enable additional debug-code in core [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DDEBUG=1"
-      else
-        makecmd="$makecmd -DDEBUG=0"
-      fi
+      setBuildParam "Enable PostgreSQL instead of mysql" "DPOSTGRESQL" "ON" "OFF" "$makecmd" makecmd
 
-      read -p "Enable precompiled headers [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DPCH=1"
-      else
-        makecmd="$makecmd -DPCH=0"
-      fi
+      setBuildParam "Enable SQLite instead of mysql" "DSQLITE" "ON" "OFF" "$makecmd" makecmd
 
-      read -p "Show warnings during compilation [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DWARNINGS=ON"
-      else
-        makecmd="$makecmd -DWARNINGS=OFF"
-      fi
+      setBuildParam "Compile included map extraction tools" "DBUILD_EXTRACTORS" "ON" "OFF" "$makecmd" makecmd
 
-      read -p "Enable PostgreSQL instead of mysql [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DPOSTGRESQL=ON"
-      else
-        makecmd="$makecmd -DPOSTGRESQL=OFF"
-      fi
+      setBuildParam "Compile included map viewer tools" "DBUILD_RECASTDEMOMOD" "ON" "OFF" "$makecmd" makecmd
 
-      read -p "Enable SQLite instead of mysql [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DSQLITE=ON"
-      else
-        makecmd="$makecmd -DSQLITE=OFF"
-      fi
+      setBuildParam "Enable building script DEV" "DBUILD_SCRIPTDEV" "ON" "OFF" "$makecmd" makecmd
+      
+      setBuildParam "Enable building player bots mod" "DBUILD_PLAYERBOTS" "ON" "OFF" "$makecmd" makecmd
+      
+      setBuildParam "Enable action house bots mod" "DBUILD_AHBOT" "ON" "OFF" "$makecmd" makecmd
 
-      read -p "Compile included map extraction tools [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_EXTRACTORS=ON"
-      else
-        makecmd="$makecmd -DBUILD_EXTRACTORS=OFF"
-      fi
-
-      read -p "Compile included map viewer tools [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_RECASTDEMOMOD=ON"
-      else
-        makecmd="$makecmd -DBUILD_RECASTDEMOMOD=OFF"
-      fi
-
-      read -p "Enable building script DEV [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_SCRIPTDEV=ON"
-      else
-        makecmd="$makecmd -DBUILD_SCRIPTDEV=OFF"
-      fi
-
-      read -p "Enable building player bots mod [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_PLAYERBOTS=ON"
-      else
-        makecmd="$makecmd -DBUILD_PLAYERBOTS=OFF"
-      fi
-
-      read -p "Enable action house bots mod [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_AHBOT=ON"
-      else
-        makecmd="$makecmd -DBUILD_AHBOT=OFF"
-      fi
-
-      read -p "Enable metrics, generate data for Grafana [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_METRICS=ON"
-      else
-        makecmd="$makecmd -DBUILD_METRICS=OFF"
-      fi
-
-      read -p "Enable documentation with doxygen [y/N] ? " bool
-      if test "$bool" == "y"
-      then
-        makecmd="$makecmd -DBUILD_DOCS=ON"
-      else
-        makecmd="$makecmd -DBUILD_DOCS=OFF"
-      fi
+      setBuildParam "Enable metrics, generate data for Grafana" "DBUILD_METRICS" "ON" "OFF" "$makecmd" makecmd
+      
+      setBuildParam "Enable documentation with doxygen" "DBUILD_DOCS" "ON" "OFF" "$makecmd" makecmd
 
       echo Command: $makecmd
 
@@ -617,11 +570,9 @@ case "$action" in
     then
       # Check mangos version present
       dummy=$(getVersion $drtitle "Checking mangos version")
-      if [[ $dummy != *"FAIL"* ]]
-      then
+      if [[ $dummy != *"FAIL"* ]]; then
         dummy=$(sed -e "s/^.*\s*>\s*//g" <<< ${dummy})
-        if [[ ! -z $dummy ]]
-        then
+        if [[ ! -z $dummy ]]; then
           # Database exists and we must apply the updates
           read -p "Update mangos server since [$drtitle][$dummy] [y/N] ? " bool
           if test "$bool" == "y"
