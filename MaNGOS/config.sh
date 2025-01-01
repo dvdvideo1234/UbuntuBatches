@@ -347,6 +347,16 @@ function clearClinetMapData()
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
+  "sync-maps")
+    getTitle "$action" idtitle drtitle nmtitle
+    # Sync the currently used map data
+    syncClinetMapData "$scriptpath" "$drtitle" "Buildings"
+    syncClinetMapData "$scriptpath" "$drtitle" "Cameras"
+    syncClinetMapData "$scriptpath" "$drtitle" "dbc"
+    syncClinetMapData "$scriptpath" "$drtitle" "vmaps"
+    syncClinetMapData "$scriptpath" "$drtitle" "maps"
+    syncClinetMapData "$scriptpath" "$drtitle" "mmaps"
+  ;;
   "reroute")
     getTitle "$action" idtitle drtitle nmtitle
     getDefautPorts "$idtitle" defprealm defpworld
@@ -354,6 +364,7 @@ case "$action" in
   ;;
   "rehost")
     getTitle "$action" idtitle drtitle nmtitle
+    getPasswordSQL mysqlpa
     updateRealmlistDB "$drtitle"
   ;;
   "start")
