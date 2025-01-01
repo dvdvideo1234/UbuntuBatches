@@ -391,6 +391,9 @@ case "$action" in
     if [ ! -d "$scriptpath/mount/$drtitle" ]; then
       echo "Creating client mount point path: [$scriptpath/mount/$drtitle]..."
       mkdir -p "$scriptpath/mount/$drtitle"
+    else
+      sudo chown -R mangos:mangos "$scriptpath/mount"
+      sudo chmod 755 "$scriptpath/mount"
     fi
 
     read -p "Install dependencies [y/N] ? " bool
