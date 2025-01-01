@@ -336,6 +336,14 @@ function setBuildParam()
   eval "$6='$5 $com'"
 }
 
+function clearClinetMapData()
+{
+  if sudo test -d "$1/mount/$2/$3"; then
+    echo "Clearing mount point [$1/mount/$2/$3]..."
+    sudo rm -rf "$1/mount/$2/$3"
+  fi 
+}
+
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
 
 case "$action" in
@@ -644,6 +652,12 @@ case "$action" in
         read -p "Start client map extraction process [y/N] ? " bool
         if test "$bool" == "y"
         then
+          clearClinetMapData "$scriptpath" "$drtitle" "Buildings"
+          clearClinetMapData "$scriptpath" "$drtitle" "Cameras"
+          clearClinetMapData "$scriptpath" "$drtitle" "dbc"
+          clearClinetMapData "$scriptpath" "$drtitle" "vmaps"
+          clearClinetMapData "$scriptpath" "$drtitle" "maps"
+          clearClinetMapData "$scriptpath" "$drtitle" "mmaps"
           sudo sh -c "cd $scriptpath/mount/$drtitle 2> /dev/null && ./ExtractResources.sh || echo FAIL"
         fi
         # Synchronize the needed folder after completion
