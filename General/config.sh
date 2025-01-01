@@ -10,18 +10,16 @@
 # 6. Enter update node and chose file
 
 # Add the user to sudo group
-# usermod -aG sudo <user>
 # /etc/sudoers
 # cd /etc/sudoers.d
+usermod -aG sudo $USER
 
+# install various neat tools
+sudo apt-get install baobab
 sudo apt-get install curl
 sudo apt-get install vim
 sudo apt-get install git
 git config --global core.editor "vim"
-
-# Clean PPAs
-sudo apt-get autoremove
-sudo apt-get autoclean
 
 # Install GParted
 sudo wget -q -O- http://archive.getdeb.net/getdeb-archive.key | sudo apt-key add -

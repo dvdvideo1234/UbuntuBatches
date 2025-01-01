@@ -49,7 +49,7 @@ function getTitle()
     echo "Title ID is empty!"
     exit 0
   fi
-  
+
   local num=$(echo $res1 | grep -E "^[0-9]+$")
   if test "$res1" != "$num"; then
     echo "Title ID [$res1] not a number!"
@@ -87,7 +87,7 @@ function shCreateDesktop()
 function syncClinetMapData()
 {
   if sudo test -d "$1/mount/$2/$3"; then
-    echo "Synchronization for [/$2/run/$3]..." 
+    echo "Synchronization for [/$2/run/$3]..."
     sudo rsync -ar --progress --info=name0 --info=progress2 "$1/mount/$2/$3" "$1/$2/run/"
     sudo chown -R mangos:mangos "$1/$2/run/$3"
     sudo chmod 755 "$1/$2/run/$3"
@@ -103,7 +103,7 @@ function shCopyConf()
   local sors[3]=$5
   local sors[4]=$6
   local sors[5]=$7
-  
+
   read -p "Renew $labe [y/N] ? " bool
   if test "$bool" == "y"
   then
@@ -185,7 +185,7 @@ function getVersion()
 
 function updateConfigDB()
 {
-  cd $1/db 
+  cd $1/db
   # Wipe the configuration file
   rm -f InstallFullDB.config
   # Generate new configuration file
@@ -247,7 +247,7 @@ function updateRealmlistDB()
   local wtf="SELECT CONCAT('|', LPAD(id, 10,  '_'), '|',
                     RPAD(SUBSTRING(name, 1, 30), 30 ,'_'), '|',
                     LPAD(address, 16,  '_'), ':',
-                    RPAD(port, 6,  '_'), '|') FROM $1realmd.realmlist;"  
+                    RPAD(port, 6,  '_'), '|') FROM $1realmd.realmlist;"
   for v in $(mysql -uroot -N -e "$wtf"); do echo "$v"; done
   if [[ -z $rlm ]]; then
     read -p "Enter realmlist descriptor (zero proxy no change) [REALM:PORT] " rlm
@@ -278,7 +278,7 @@ function getDefautPorts()
   local num=$(echo $1 | grep -E "^[0-9]+$")
   if test "$1" == "$num"; then
     rep=$(expr $rep + $num)
-    wrp=$(expr $wrp + $num) 
+    wrp=$(expr $wrp + $num)
   else
     case "$1" in
       classic)
@@ -311,7 +311,7 @@ function getDefautPorts()
       ;;
     esac
   fi
-  
+
   eval "$2='$rep'"
   eval "$3='$wrp'"
 }
@@ -332,7 +332,7 @@ function setBuildParam()
       com="-$2=$4"
     fi
   fi
-  
+
   eval "$6='$5 $com'"
 }
 
@@ -341,7 +341,7 @@ function clearClinetMapData()
   if sudo test -d "$1/mount/$2/$3"; then
     echo "Clearing mount point [$1/mount/$2/$3]..."
     sudo rm -rf "$1/mount/$2/$3"
-  fi 
+  fi
 }
 
 echo Source: https://github.com/cmangos/issues/wiki/Installation-Instructions
@@ -395,7 +395,7 @@ case "$action" in
 
     echo "Installing package: $nmtitle"
     echo "Server destination: [$scriptpath/$drtitle]"
-    
+
     if [ ! -d "$scriptpath/mount/$drtitle" ]; then
       echo "Creating client mount point path: [$scriptpath/mount/$drtitle]..."
       mkdir -p "$scriptpath/mount/$drtitle"
@@ -429,7 +429,7 @@ case "$action" in
       cd $scriptpath/$drtitle
 
       [ ! -d "$scriptpath/$drtitle/mangos" ] && rm -rf "$scriptpath/$drtitle/mangos"
-      [ ! -d "$scriptpath/$drtitle/db"     ] && rm -rf "$scriptpath/$drtitle/db"    
+      [ ! -d "$scriptpath/$drtitle/db"     ] && rm -rf "$scriptpath/$drtitle/db"
 
       case "$drtitle" in
       classic)
@@ -465,29 +465,29 @@ case "$action" in
       makecmd="cmake ../mangos -DCMAKE_INSTALL_PREFIX=$scriptpath/$drtitle/run"
 
       setBuildParam "Enable link-time optimizations" "DCMAKE_INTERPROCEDURAL_OPTIMIZATION" "1" "0" "$makecmd" makecmd
-      
+
       setBuildParam "Enable additional debug-code in core" "DDEBUG" "1" "0" "$makecmd" makecmd
-      
+
       setBuildParam "Enable precompiled headers" "DPCH" "1" "0" "$makecmd" makecmd
-      
+
       setBuildParam "Show warnings during compilation" "DWARNINGS" "ON" "OFF" "$makecmd" makecmd
 
-      setBuildParam "Enable PostgreSQL instead of mysql" "DPOSTGRESQL" "ON" "OFF" "$makecmd" makecmd
+      setBuildParam "Enable PostgreSQL database" "DPOSTGRESQL" "ON" "OFF" "$makecmd" makecmd
 
-      setBuildParam "Enable SQLite instead of mysql" "DSQLITE" "ON" "OFF" "$makecmd" makecmd
+      setBuildParam "Enable SQLite database" "DSQLITE" "ON" "OFF" "$makecmd" makecmd
 
       setBuildParam "Compile included map extraction tools" "DBUILD_EXTRACTORS" "ON" "OFF" "$makecmd" makecmd
 
       setBuildParam "Compile included map viewer tools" "DBUILD_RECASTDEMOMOD" "ON" "OFF" "$makecmd" makecmd
 
       setBuildParam "Enable building script DEV" "DBUILD_SCRIPTDEV" "ON" "OFF" "$makecmd" makecmd
-      
+
       setBuildParam "Enable building player bots mod" "DBUILD_PLAYERBOTS" "ON" "OFF" "$makecmd" makecmd
-      
+
       setBuildParam "Enable action house bots mod" "DBUILD_AHBOT" "ON" "OFF" "$makecmd" makecmd
 
       setBuildParam "Enable metrics, generate data for Grafana" "DBUILD_METRICS" "ON" "OFF" "$makecmd" makecmd
-      
+
       setBuildParam "Enable documentation with doxygen" "DBUILD_DOCS" "ON" "OFF" "$makecmd" makecmd
 
       echo Command: $makecmd
@@ -512,16 +512,16 @@ case "$action" in
         "$scriptpath/$drtitle/run/etc/mangosd.conf.dist"             \
         "$scriptpath/$drtitle/build/src/mangosd/mangosd.conf.dist"   \
         "$scriptpath/$drtitle/mangos/src/mangosd/mangosd.conf.dist.in"
-        
+
       # find . -name *.conf.* | grep realmd
       shCopyConf "realmd" "$scriptpath/$drtitle/run/realmd.conf"     \
         "$scriptpath/$drtitle/run/etc/realmd.conf.dist"              \
-        "$scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in" 
+        "$scriptpath/$drtitle/mangos/src/realmd/realmd.conf.dist.in"
 
       # find . -name *.conf.* | grep anticheat
       shCopyConf "anticheat system" "$scriptpath/$drtitle/run/anticheat.conf"     \
         "$scriptpath/$drtitle/run/etc/anticheat.conf.dist"                        \
-        "$scriptpath/$drtitle/mangos/src/game/Anticheat/module/anticheat.conf.dist.in" 
+        "$scriptpath/$drtitle/mangos/src/game/Anticheat/module/anticheat.conf.dist.in"
 
       # find . -name *.conf.* | grep ahbot
       shCopyConf "action house bot" "$scriptpath/$drtitle/run/ahbot.conf"             \
@@ -534,7 +534,7 @@ case "$action" in
       # find . -name *.conf.* | grep playerbot
       shCopyConf "player bot" "$scriptpath/$drtitle/run/playerbot.conf"           \
         "$scriptpath/$drtitle/run/etc/playerbot.conf.dist"                        \
-        "$scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in" 
+        "$scriptpath/$drtitle/mangos/src/game/PlayerBot/playerbot.conf.dist.in"
 
       # find . -name *.conf.* | grep aiplayerbot
       case "$drtitle" in
@@ -542,22 +542,22 @@ case "$action" in
         shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
           "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
           "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
-          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in"      
+          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in"
       ;;
       tbc)
         shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
           "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
           "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
-          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.tbc"  
+          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.tbc"
       ;;
       wotlk)
         shCopyConf "player bot AI" "$scriptpath/$drtitle/run/aiplayerbot.conf"                        \
           "$scriptpath/$drtitle/run/etc/aiplayerbot.conf.dist"                                        \
           "$scriptpath/$drtitle/build/src/modules/PlayerBots/aiplayerbot.conf.dist"                   \
-          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.wotlk" 
+          "$scriptpath/$drtitle/mangos/src/modules/PlayerBots/playerbot/aiplayerbot.conf.dist.in.wotlk"
       ;;
       esac
-      
+
       getDefautPorts "$idtitle" defprealm defpworld
       updateConfigRun "$scriptpath/$drtitle" "$defprealm" "$defpworld"
       updateRealmlistDB "$drtitle" "0.0.0.0:$defpworld"
@@ -566,80 +566,79 @@ case "$action" in
     getPasswordSQL mysqlpa
     if test "$mysqlpa" == ""
     then
-      echo "Please provide mysql root password first !"
-      exit 0
-    fi
-      
-    read -p "Create MaNGOS databases [y/N] ? " bool
-    if test "$bool" == "y"
-    then
-      mysql -f -uroot < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
-      mysql -uroot -e "flush privileges;"
-    fi
+      echo "Skipping SQL access dependent options..."
+    else
+      read -p "Create MaNGOS databases [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        mysql -f -uroot < $scriptpath/$drtitle/mangos/sql/create/db_create_mysql.sql
+        mysql -uroot -e "flush privileges;"
+      fi
 
-    read -p "Initialize the databases [y/N] ? " bool
-    if test "$bool" == "y"
-    then
-      # Check mangos version present
-      dummy=$(getVersion $drtitle "Checking mangos version")
-      if [[ $dummy != *"FAIL"* ]]; then
-        dummy=$(sed -e "s/^.*\s*>\s*//g" <<< ${dummy})
-        if [[ ! -z $dummy ]]; then
-          # Database exists and we must apply the updates
-          read -p "Update mangos server since [$drtitle][$dummy] [y/N] ? " bool
-          if test "$bool" == "y"
-          then
-            updateConfigDB "$scriptpath/$drtitle"
-            ./InstallFullDB.sh -UpdateCore
+      read -p "Initialize the databases [y/N] ? " bool
+      if test "$bool" == "y"
+      then
+        # Check mangos version present
+        dummy=$(getVersion $drtitle "Checking mangos version")
+        if [[ $dummy != *"FAIL"* ]]; then
+          dummy=$(sed -e "s/^.*\s*>\s*//g" <<< ${dummy})
+          if [[ ! -z $dummy ]]; then
+            # Database exists and we must apply the updates
+            read -p "Update mangos server since [$drtitle][$dummy] [y/N] ? " bool
+            if test "$bool" == "y"
+            then
+              updateConfigDB "$scriptpath/$drtitle"
+              ./InstallFullDB.sh -UpdateCore
+            fi
+          else
+            # Database does not exist as the version is missing
+            # Apply base configuration for mangos
+            if [ -f "$scriptpath/$drtitle/mangos/sql/base/mangos.sql" ]; then
+              mysql -f -umangos "$drtitle"mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
+            fi
+            # Apply base configuration for realmd
+            if [ -f "$scriptpath/$drtitle/mangos/sql/base/realmd.sql" ]; then
+              mysql -f -umangos "$drtitle"realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
+            fi
+            # Apply base configuration for characters
+            if [ -f "$scriptpath/$drtitle/mangos/sql/base/characters.sql" ]; then
+              mysql -f -umangos "$drtitle"characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
+            fi
+            # Apply base configuration for logs
+            if [ -f "$scriptpath/$drtitle/mangos/sql/base/logs.sql" ]; then
+              mysql -f -umangos "$drtitle"logs < $scriptpath/$drtitle/mangos/sql/base/logs.sql
+            fi
+            # Populate the database entry as empty set is expected
+            read -p "Populate the database [y/N] ? " bool
+            if test "$bool" == "y"
+            then
+              case "$drtitle" in
+              classic|tbc|wotlk)
+                updateConfigDB "$scriptpath/$drtitle"
+                read -p "Start the database population  [y/N] ? " bool
+                if test "$bool" == "y"
+                then
+                  ./InstallFullDB.sh
+                fi
+              ;;
+              cata)
+                echo "$nmtitle package DB installation not matched to git [$idtitle][$drtitle] !"
+              ;;
+              *)
+                echo "$nmtitle package DB installation not defined to git [$idtitle][$drtitle] !"
+              ;;
+              esac
+            fi
           fi
         else
-          # Database does not exist as the version is missing
-          # Apply base configuration for mangos
-          if [ -f "$scriptpath/$drtitle/mangos/sql/base/mangos.sql" ]; then
-            mysql -f -umangos "$drtitle"mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
-          fi 
-          # Apply base configuration for realmd
-          if [ -f "$scriptpath/$drtitle/mangos/sql/base/realmd.sql" ]; then
-            mysql -f -umangos "$drtitle"realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
-          fi 
-          # Apply base configuration for characters
-          if [ -f "$scriptpath/$drtitle/mangos/sql/base/characters.sql" ]; then
-            mysql -f -umangos "$drtitle"characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
-          fi 
-          # Apply base configuration for logs
-          if [ -f "$scriptpath/$drtitle/mangos/sql/base/logs.sql" ]; then
-            mysql -f -umangos "$drtitle"logs < $scriptpath/$drtitle/mangos/sql/base/logs.sql
-          fi 
-          # Populate the database entry as empty set is expected
-          read -p "Populate the database [y/N] ? " bool
-          if test "$bool" == "y"
-          then
-            case "$drtitle" in
-            classic|tbc|wotlk)
-              updateConfigDB "$scriptpath/$drtitle"
-              read -p "Start the database population  [y/N] ? " bool
-              if test "$bool" == "y"
-              then
-                ./InstallFullDB.sh
-              fi
-            ;;
-            cata)
-              echo "$nmtitle package DB installation not matched to git [$idtitle][$drtitle] !"
-            ;;
-            *)
-              echo "$nmtitle package DB installation not defined to git [$idtitle][$drtitle] !"
-            ;;
-            esac
-          fi
+          echo "General version error: $dummy !"
         fi
-      else
-        echo "General version error: $dummy !"
       fi
     fi
-        
+
     echo "Extracting the files from the client is implemented from following the link below:"
     echo "https://github.com/cmangos/issues/wiki/Installation-Instructions#extract-files-from-the-client"
-    
+
     if sudo test -d "$scriptpath/$drtitle/run/bin/tools"; then
       if sudo test -d "$scriptpath/mount/$drtitle"; then
         # Copy the map exreation tools to the client mount point
