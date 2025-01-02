@@ -193,11 +193,7 @@ function updateConfigDB()
   # Update configuration file
   ./InstallFullDB.sh -Config
   # Apply core path
-  read -p "Apply CORE_PATH value [y/N] ? " bool
-  if test "$bool" == "y"
-  then
-    sed -i "s@.*CORE_PATH=.*@CORE_PATH=\"$1/mangos\"@" InstallFullDB.config
-  fi
+  sed -i "s@.*CORE_PATH=.*@CORE_PATH=\"$1/mangos\"@" InstallFullDB.config
   # Apply dev updates
   read -p "Enable DEV_UPDATES [y/N] ? " bool
   if test "$bool" == "y"
