@@ -626,11 +626,8 @@ case "$action" in
               case "$drtitle" in
               classic|tbc|wotlk)
                 updateConfigDB "$scriptpath/$drtitle"
-                read -p "Start the database population  [y/N] ? " bool
-                if test "$bool" == "y"
-                then
-                  ./InstallFullDB.sh
-                fi
+                echo "Starting the automated database manager..."
+                ./InstallFullDB.sh
               ;;
               cata)
                 echo "$nmtitle package DB installation not matched to git [$idtitle][$drtitle] !"
