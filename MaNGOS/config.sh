@@ -607,11 +607,11 @@ case "$action" in
             if [ -f "$scriptpath/$drtitle/mangos/sql/base/mangos.sql" ]; then
               mysql -f -umangos "$drtitle"mangos < $scriptpath/$drtitle/mangos/sql/base/mangos.sql
             fi
-            # Apply base configuration for realmd
+            # Apply base configuration for realmd ( mandatory for characters and accounts transfer )
             if [ -f "$scriptpath/$drtitle/mangos/sql/base/realmd.sql" ]; then
               mysql -f -umangos "$drtitle"realmd < $scriptpath/$drtitle/mangos/sql/base/realmd.sql
             fi
-            # Apply base configuration for characters
+            # Apply base configuration for characters ( mandatory for characters and accounts transfer )
             if [ -f "$scriptpath/$drtitle/mangos/sql/base/characters.sql" ]; then
               mysql -f -umangos "$drtitle"characters < $scriptpath/$drtitle/mangos/sql/base/characters.sql
             fi
