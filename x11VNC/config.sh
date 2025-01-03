@@ -37,6 +37,11 @@ case "$action" in
     getInput "Enter installation password: " passw
     $srvname -storepasswd $passw $scriptpath/$srvname.pass
   ;;
+  "password")
+    # Create password for the server must not be empty
+    getInput "Change installation password: " passw
+    $srvname -storepasswd $passw $scriptpath/$srvname.pass
+  ;;
   "run")
     echo "Scripting package ... $srvname"
     echo "#!/bin/bash" > $scriptpath/run.sh
