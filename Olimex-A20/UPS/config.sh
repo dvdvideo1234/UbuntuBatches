@@ -5,6 +5,8 @@ scriptpath=$(dirname "$scriptname")
 backcnfdr="nut-conf"
 action="$1"
 
+# sudo chmod +x config.sh
+
 case "$action" in
   install)
     sudo apt-get install nut
@@ -15,12 +17,12 @@ case "$action" in
     echo "Backup configuration in [$scriptpath/$backcnfdr]"
     [ ! -d "$scriptpath/$backcnfdr" ] && rm -rf "$scriptpath/$backcnfdr"
     sudo mkdir "$scriptpath/$backcnfdr"
-    sudo cp /etc/nut/upssched.conf  ~/Downloads/$backcnfdr/upssched.conf
-    sudo cp /etc/nut/upsd.conf      ~/Downloads/$backcnfdr/upsd.conf
-    sudo cp /etc/nut/nut.conf       ~/Downloads/$backcnfdr/nut.conf
-    sudo cp /etc/nut/upsd.users     ~/Downloads/$backcnfdr/upsd.users
-    sudo cp /etc/nut/ups.conf       ~/Downloads/$backcnfdr/ups.conf
-    sudo cp /etc/nut/upsmon.conf    ~/Downloads/$backcnfdr/upsmon.conf
+    sudo cp /etc/nut/upssched.conf  "$scriptpath/$backcnfdr/upssched.conf"
+    sudo cp /etc/nut/upsd.conf      "$scriptpath/$backcnfdr/upsd.conf"
+    sudo cp /etc/nut/nut.conf       "$scriptpath/$backcnfdr/nut.conf"
+    sudo cp /etc/nut/upsd.users     "$scriptpath/$backcnfdr/upsd.users"
+    sudo cp /etc/nut/ups.conf       "$scriptpath/$backcnfdr/ups.conf"
+    sudo cp /etc/nut/upsmon.conf    "$scriptpath/$backcnfdr/upsmon.conf"
     sudo chown olimex:olimex "$scriptpath/$backcnfdr"
     sudo chmod 664 "$scriptpath/$backcnfdr"
   ;;
