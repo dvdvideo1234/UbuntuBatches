@@ -23,8 +23,8 @@ case "$action" in
     sudo cp /etc/nut/upsd.users     "$scriptpath/$backcnfdr/upsd.users"
     sudo cp /etc/nut/ups.conf       "$scriptpath/$backcnfdr/ups.conf"
     sudo cp /etc/nut/upsmon.conf    "$scriptpath/$backcnfdr/upsmon.conf"
-    sudo chown olimex:olimex "$scriptpath/$backcnfdr"
-    sudo chmod 664 "$scriptpath/$backcnfdr"
+    sudo chown -R olimex:olimex "$scriptpath/$backcnfdr"
+    sudo chmod -R 755 "$scriptpath/$backcnfdr"
   ;;
   scanusb)
     echo "Enter the followng information in [/etc/nut]"
