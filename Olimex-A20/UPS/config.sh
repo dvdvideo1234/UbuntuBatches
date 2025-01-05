@@ -21,6 +21,10 @@ case "$action" in
     sudo apt-get install nut-cgi
     sudo apt autoremove
     sudo apt autoclean
+    # Enable apache2 CGI module
+    sudo a2enmod cgi
+    sudo systemctl restart apache2
+    echo "Access via: http://192.168.0.7/cgi-bin/nut/upsstats.cgi"
   ;;
   backup)
     echo "Backup configuration in [$scriptpath/$backcnfdr]"
