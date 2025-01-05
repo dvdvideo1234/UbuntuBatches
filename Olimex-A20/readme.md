@@ -146,9 +146,10 @@ olimex@a20-olinuxino:~/Documents/Pi-hole/automated install$ file  /lib/systemd/s
       1. `find / -name libc.so.6` > `/usr/lib/arm-linux-gnueabihf/libc.so.6`
       2. `sudo ln -s /usr/lib/arm-linux-gnueabihf/libc.so.6 /lib/libc.so.6`
 
-### When [ViewPower][ref-fsp] fails try [general software][ref-nut-tur]:
+### When [ViewPower][ref-fsp] fails try [general software][ref-nut-tool]:
 1. Install via: `sudo apt-get install nut nut-client nut-server`
-2. Check usb via: `lsusb`
+  * General tutorial with [step-by-step action here][ref-nut-tur]
+2. Check usb via: `lsusb`. It will show `Champ3K` as `0665:5161`
 3. Scan USB bus via: `sudo nut-scanner -U`
 4. Edit the configuration like used in the main folder
 6. Check confuguration `sudo cat upsmon.conf upsd.conf ups.conf nut.conf upsd.users`
@@ -197,3 +198,4 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 [ref-reset]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/reset.sh
 [ref-resolv-man]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/Scripts/resolv-perm.sh
 [ref-nut-tur]: https://www.youtube.com/watch?v=vyBP7wpN72c
+[ref-nut-tool]: https://networkupstools.org/index.html

@@ -5,24 +5,44 @@ scriptpath=$(dirname "$scriptname")
 backcnfdr="nut-conf"
 action="$1"
 
+# git checkout -- config.sh
 # sudo chmod +x config.sh
 
 case "$action" in
-  install)
+  install-core)
     sudo apt-get install nut
     sudo apt-get install nut-client
     sudo apt-get install nut-server
+    sudo apt autoremove
+    sudo apt autoclean
+  ;;
+  install-web)
+    sudo apt-get install apache2
+    sudo apt-get install nut-cgi
+    sudo apt autoremove
+    sudo apt autoclean
   ;;
   backup)
     echo "Backup configuration in [$scriptpath/$backcnfdr]"
-    [ ! -d "$scriptpath/$backcnfdr" ] && rm -rf "$scriptpath/$backcnfdr"
+    if sudo test -d "$scriptpath/$backcnfdr"; then
+      sudo rm -rf "$scriptpath/$backcnfdr"
+    fi
+    # Create destination folder
     sudo mkdir "$scriptpath/$backcnfdr"
+    # NUT service website crap
+    sudo cp /etc/nut/upsstats.html        "$scriptpath/$backcnfdr/upsstats.html"
+    sudo cp /etc/nut/upsstats-single.html "$scriptpath/$backcnfdr/upsstats-single.html"
+    sudo cp /etc/nut/upsset.conf          "$scriptpath/$backcnfdr/upsset.conf"
+    sudo cp /etc/nut/upssched.conf        "$scriptpath/$backcnfdr/upssched.conf"
+    sudo cp /etc/nut/hosts.conf           "$scriptpath/$backcnfdr/hosts.conf"
+    # NUT service itself
     sudo cp /etc/nut/upssched.conf  "$scriptpath/$backcnfdr/upssched.conf"
     sudo cp /etc/nut/upsd.conf      "$scriptpath/$backcnfdr/upsd.conf"
     sudo cp /etc/nut/nut.conf       "$scriptpath/$backcnfdr/nut.conf"
     sudo cp /etc/nut/upsd.users     "$scriptpath/$backcnfdr/upsd.users"
     sudo cp /etc/nut/ups.conf       "$scriptpath/$backcnfdr/ups.conf"
     sudo cp /etc/nut/upsmon.conf    "$scriptpath/$backcnfdr/upsmon.conf"
+    # Change backup permissions
     sudo chown -R olimex:olimex "$scriptpath/$backcnfdr"
     sudo chmod -R 755 "$scriptpath/$backcnfdr"
   ;;
