@@ -146,6 +146,13 @@ olimex@a20-olinuxino:~/Documents/Pi-hole/automated install$ file  /lib/systemd/s
       1. `find / -name libc.so.6` > `/usr/lib/arm-linux-gnueabihf/libc.so.6`
       2. `sudo ln -s /usr/lib/arm-linux-gnueabihf/libc.so.6 /lib/libc.so.6`
 
+### When [ViewPower][ref-fsp] fails try [general software][ref-nut-tur]:
+1. Install via: `sudo apt-get install nut nut-client nut-server`
+2. Check usb via: `lsusb`
+3. Scan USB bus via: `sudo nut-scanner -U`
+4. Edit the configuration like used in the main folder
+6. Check confuguration `sudo cat upsmon.conf upsd.conf ups.conf nut.conf upsd.users`
+
 ### Run [i386][ref-i386] binaries in Arm7 with [Box86][ref-box86]
 This is done for migrating [UPS monitoring software][ref-ups]
 Viewing the following info will decide whenever [i386][ref-ups-x32] or [x64][ref-ups-x64]
@@ -176,7 +183,7 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 [ref-mvsh]: https://raw.githubusercontent.com/dvdvideo1234/UbuntuBatches/master/Olimex-A20/Scripts/move-link.sh
 [ref-pihole]: https://pi-hole.net/
 [ref-i386]: https://pimylifeup.com/raspberry-pi-x86/
-[ref-ups]: https://energy.fsp-europe.com/software/
+[ref-fsp]: https://energy.fsp-europe.com/software/
 [ref-ups-x32]: https://www.power-software-download.com/viewpower/installViewPowerHTML_Linux_text_i386.tar.gz
 [ref-ups-x64]: https://www.power-software-download.com/viewpower/installViewPowerHTML_Linux_text_x86_64.tar.gz
 [ref-box86]: https://github.com/ptitSeb/box86
@@ -189,3 +196,4 @@ arm-linux-gnueabihf-ld.bfd: ELF 32-bit LSB shared object, ARM, EABI5 version 1 (
 [ref-regex]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/regex
 [ref-reset]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/PI-Hole/reset.sh
 [ref-resolv-man]: https://github.com/dvdvideo1234/UbuntuBatches/blob/master/Olimex-A20/Scripts/resolv-perm.sh
+[ref-nut-tur]: https://www.youtube.com/watch?v=vyBP7wpN72c
