@@ -40,6 +40,8 @@ case "$action" in
     sudo upsdrvctl start
   ;;
   *)
+    echo "Mark executable: $scriptname"
+    sudo chmod +x "$scriptname"
     echo "[install]: Installs the NUT package"
     echo "[backup] : Backup configuration"
     echo "[scanusb]: Scans for conected UPS"
