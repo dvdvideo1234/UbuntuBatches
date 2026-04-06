@@ -7,13 +7,13 @@ scriptpath=$(dirname "$scriptname")
 
 echo This will create a public and private keys with use of github SSH!
 
-read -p "Enter filename or leave blank: " scriptfile
+read -p "Enter filename or leave it blank: " scriptfile
 if test "$scriptfile" == ""
 then
   scriptfile=id_rsa
 fi
 
-read -p "Enter e-mail or leave blank: " scriptmail
+read -p "Enter e-mail or leave it blank: " scriptmail
 if test "$scriptmail" == ""
 then
   ssh-keygen -t rsa -b 4096 -f $scriptfile
